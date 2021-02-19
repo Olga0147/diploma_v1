@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="fragments/menu :: header-css"/>
+    <meta charset="UTF-8">
+    <title th:text="${title}"></title>
+</head>
+<div th:replace="fragments/menu :: header"/>
+<div class = "inner" th:switch="${pages.size()}">
+    <h2 th:case="0">Не было найдено ни одной страницы!</h2>
+    <div th:case="*">
+        <h2>Страницы</h2>
+        <table>
+            <thead>
+            <tr>
+                <th>Имя</th>
+                <th>Описание</th>
+                <th>Детали</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="page : ${pages}">
+                <td th:text="${page.name}"></td>
+                <td th:text="${page.description}"></td>
+                <td ><a th:href="@{${detailPath}+${page.id}}" >(---)</a></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</html>

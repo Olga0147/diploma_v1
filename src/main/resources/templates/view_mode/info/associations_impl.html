@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="fragments/menu :: header-css"/>
+    <meta charset="UTF-8">
+    <title th:text="${title}"></title>
+</head>
+<div th:replace="fragments/menu :: header"/>
+<div class = "inner" th:switch="${associationsImpl.size()}">
+    <h2 th:case="0">Не было найдено ни одной гиперсвязи!</h2>
+    <div th:case="*">
+        <h2 th:text="${title}"></h2>
+        <table>
+            <thead>
+            <tr>
+                <th>Идентификатор</th>
+                <th>Начало</th>
+                <th>Конец</th>
+                <th>Детали</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="association : ${associationsImpl}">
+                <td th:text="${association.id}"></td>
+                <td th:text="${association.fromObjectId}"></td>
+                <td th:text="${association.toObjectId}"></td>
+                <td ><a th:href="@{${detailPath}+${association.id}}" >(---)</a></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</html>

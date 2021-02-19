@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="fragments/menu :: header-css"/>
+    <meta charset="UTF-8">
+    <title th:text="${title}"></title>
+</head>
+<div th:replace="fragments/menu :: header"/>
+
+
+<div class = "inner">
+    <h2 th:text="${title}"></h2>
+
+    <table>
+        <thead>
+        <tr >
+            <th>Атрибуты</th>
+            <th>Данные</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="instance : ${object}">
+            <td th:text="${instance.key}">keyvalue</td>
+            <td th:text="${instance.value}">num</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<div class = "inner">
+    <h2><a class = "inner" th:href="@{${detailClassPath}+${class.id}}" >Класс объекта</a></h2>
+</div>
+
+<div class = "inner" th:switch="${templates.size()}">
+    <h2>Шаблоны</h2>
+    <h3 th:case="0">Не было найдено ни одного шаблона!</h3>
+    <div th:case="*">
+        <table>
+            <thead>
+            <tr>
+                <th>Идентификатор</th>
+                <th>Имя</th>
+                <th>Детально</th>
+                <th>Объект в Шаблоне</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="template : ${templates}">
+                <td th:text="${template.id}"></td>
+                <td th:text="${template.name}"></td>
+                <td><a th:href="@{${detailTemplatePath}+${template.id}}" >(---)</a></td>
+                <td><a th:href="@{${objectInTemplatePath}+${template.id}}" target="_blank">(---)</a></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class = "inner" th:switch="${aggregationsImplF.size()}">
+    <h2>Связи (от текущего объекта)</h2>
+    <h3 th:case="0">Не было найдено ни одной связи!</h3>
+    <div th:case="*">
+        <table>
+            <thead>
+            <tr>
+                <th>Идентификатор</th>
+                <th>Конец</th>
+                <th>Детально</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="aggregation : ${aggregationsImplF}">
+                <td th:text="${aggregation.id}"></td>
+                <td><a th:href="@{${detailObjectPath}+${aggregation.toObjectId}}" th:text="${aggregation.toObjectId}"></a></td>
+                <td><a th:href="@{${detailAggregationImplPath}+${aggregation.aggregationId}}">(---)</a></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class = "inner" th:switch="${aggregationsImplT.size()}">
+    <h2>Связи (к текущему объекта)</h2>
+    <h3 th:case="0">Не было найдено ни одной связи!</h3>
+    <div th:case="*">
+        <table>
+            <thead>
+            <tr>
+                <th>Идентификатор</th>
+                <th>Начало</th>
+                <th>Детально</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="aggregation : ${aggregationsImplT}">
+                <td th:text="${aggregation.id}"></td>
+                <td><a th:href="@{${detailObjectPath}+${aggregation.fromObjectId}}" th:text="${aggregation.fromObjectId}"></a></td>
+                <td><a th:href="@{${detailAggregationImplPath}+${aggregation.aggregationId}}">(---)</a></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class = "inner" th:switch="${associationsImplF.size()}">
+    <h2>Гиперсвязь (от текущего объекта)</h2>
+    <h3 th:case="0">Не было найдено ни одной гиперсвязи!</h3>
+    <div th:case="*">
+        <table>
+            <thead>
+            <tr>
+                <th>Идентификатор</th>
+                <th>Конец</th>
+                <th>Детально</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="assosiation : ${associationsImplF}">
+                <td th:text="${assosiation.id}"></td>
+                <td><a th:href="@{${detailObjectPath}+${assosiation.toObjectId}}" th:text="${assosiation.toObjectId}"></a></td>
+                <td><a th:href="@{${detailAssociationImplPath}+${assosiation.associationId}}">(---)</a></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class = "inner" th:switch="${associationsImplT.size()}">
+    <h2>Гиперсвязь (к текущему объекта)</h2>
+    <h3 th:case="0">Не было найдено ни одной гиперсвязи!</h3>
+    <div th:case="*">
+        <table>
+            <thead>
+            <tr>
+                <th>Идентификатор</th>
+                <th>Начало</th>
+                <th>Детально</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="assosiation : ${associationsImplT}">
+                <td th:text="${assosiation.id}"></td>
+                <td><a th:href="@{${detailObjectPath}+${assosiation.fromObjectId}}" th:text="${assosiation.fromObjectId}"></a></td>
+                <td><a th:href="@{${detailAssociationImplPath}+${assosiation.associationId}}">(---)</a></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+</html>

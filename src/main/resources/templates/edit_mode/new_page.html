@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="fragments/menu_editor :: header-css"></div>
+    <script async src="/js/new_page.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <meta charset="UTF-8">
+    <title th:text="${title}"></title>
+</head>
+<div th:replace="fragments/menu_editor :: header"></div>
+<body>
+    <div class = "inner" >
+            <h2 align="center" th:text="${title}"></h2>
+
+            <form id = "toDelete" onsubmit="sendPost(); return false;" method="post">
+                <p><label for="name">Название</label><textarea id="name" placeholder="Page_name" cols="60" rows="1"></textarea></p>
+                <p><label for="description">Описание</label><textarea id="description" placeholder="Some Page description" cols="60" rows="5"></textarea></p>
+
+                <p align="center">Атрибуты страницы</p>
+                <div class="attributes">
+                    <div th:replace="edit_mode/new_attribute :: new_attr"></div>
+                </div>
+                <button type="button" class="btn" onclick="addAttributeForm()">Добавить атрибут</button>
+                <p><input type="submit" value="Сохранить класс"></p>
+            </form>
+            <div class="error" id="error"></div>
+        <div class="success" id="success"></div>
+    </div>
+</body>
+</html>

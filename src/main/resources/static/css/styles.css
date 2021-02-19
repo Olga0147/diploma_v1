@@ -1,0 +1,33 @@
+.error {
+    color: red;
+}
+
+.success {
+    color: mediumseagreen;
+}
+
+.logMessage {
+    color: green;
+}
+
+label {
+    display: block;
+    text-align: center;
+}
+
+.attributes{
+    border: 1px solid #BABABA;
+}
+
+.attribute{
+    margin: 10px;
+    border: 1px solid #dedede;
+    background-color: #FCFCFC;
+}
+.attribute h2{
+    color: #BABABA;
+}
+
+button{
+    margin: 10px;
+}

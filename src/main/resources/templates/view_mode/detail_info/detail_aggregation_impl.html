@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="fragments/menu :: header-css"/>
+    <meta charset="UTF-8">
+    <title th:text="${title}"></title>
+</head>
+<div th:replace="fragments/menu :: header"/>
+
+<div class = "inner" >
+    <h2 th:text="${title}"></h2>
+        <table>
+            <thead>
+            <tr>
+                <th>Идентификатор</th>
+                <th>Агрегация</th>
+                <th>Начало</th>
+                <th>Конец</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td th:text="${aggregationImpl.id}"></td>
+                <td ><a th:href="@{${detailAggregationPath}+${aggregationImpl.aggregationId}}" th:text="${aggregationImpl.aggregationId}"></a></td>
+                <td ><a th:href="@{${detailObjectPath}+${aggregationImpl.fromObjectId}}" th:text="${aggregationImpl.fromObjectId}"></a></td>
+                <td ><a th:href="@{${detailObjectPath}+${aggregationImpl.toObjectId}}" th:text="${aggregationImpl.toObjectId}"></a></td>
+            </tr>
+            </tbody>
+        </table>
+</div>
+</html>

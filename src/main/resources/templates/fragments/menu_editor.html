@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <div th:fragment="header-css">
+    <link rel="stylesheet" th:href="@{/css/menu.css}" href="../../css/menu.css">
+        <link rel="stylesheet" th:href="@{/css/styles.css}" href="../../css/styles.css">
+    <meta charset="UTF-8">
+    </div>
+    <title></title>
+</head>
+<div class = "header" th:fragment="header">
+    <ul class="menu">
+        <li><a th:href="${m.view_mode}" style="color: dodgerblue">Режим просмотра</a></li>
+        <li><a th:href="${m.edit_mode}" style="color: orangered">Режим редактирования</a></li>
+    </ul>
+    <ul class="menu">
+        <li><a style="color: orangered" th:href="@{${m.action}+${menu_url.PAGE}}">Страницы</a></li>
+        <li><a style="color: orangered" th:href="@{${m.action}+${menu_url.CLASS}}">Классы</a></li>
+        <li><a style="color: orangered" th:href="@{${m.action}+${menu_url.OBJECT}}">Объекты</a></li>
+        <li><a style="color: orangered" th:href="@{${m.action}+${menu_url.AGGREGATION}}">Агрегации</a></li>
+        <li><a style="color: orangered" th:href="@{${m.action}+${menu_url.AGGREGATION_IMPL}}">Связи</a></li>
+        <li><a style="color: orangered" th:href="@{${m.action}+${menu_url.ASSOCIATION}}">Ассоциации</a></li>
+        <li><a style="color: orangered" th:href="@{${m.action}+${menu_url.ASSOCIATION_IMPL}}">Гиперсвязи</a></li>
+        <li><a style="color: orangered" th:href="@{${m.action}+${menu_url.TEMPLATE}}">Шаблоны</a></li>
+    </ul>
+</div>
+
+</html>

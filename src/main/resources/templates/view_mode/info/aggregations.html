@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="fragments/menu :: header-css"/>
+    <meta charset="UTF-8">
+    <title th:text="${title}"></title>
+</head>
+<div th:replace="fragments/menu :: header"/>
+<div class = "inner" th:switch="${aggregations.size()}">
+    <h2 th:case="0">Не было найдено ни одной агрегации!</h2>
+    <div th:case="*">
+        <h2 th:text="${title}"></h2>
+        <table>
+            <thead>
+            <tr>
+                <th>Имя</th>
+                <th>Начало</th>
+                <th>Конец</th>
+                <th>Детали</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="aggregation : ${aggregations}">
+                <td th:text="${aggregation.name}"></td>
+                <td th:text="${aggregation.fromClassId}"></td>
+                <td th:text="${aggregation.toClassId}"></td>
+                <td ><a th:href="@{${detailPath}+${aggregation.id}}">(---)</a></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</html>

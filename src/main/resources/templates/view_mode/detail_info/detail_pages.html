@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="fragments/menu :: header-css"/>
+    <meta charset="UTF-8">
+    <title th:text="${title}"></title>
+</head>
+<div th:replace="fragments/menu :: header"/>
+
+
+<div class = "inner">
+    <h2 th:text="${title}"></h2>
+    <table>
+        <thead>
+        <tr>
+            <th>Идентификатор</th>
+            <th>Имя</th>
+            <th>Системное Имя</th>
+            <th>Описание</th>
+            <th>Страница?</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td th:text="${page.id}"></td>
+            <td th:text="${page.name}"></td>
+            <td th:text="${page.systemName}"></td>
+            <td th:text="${page.description}"></td>
+            <td th:text="${page.isPage}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<div class = "inner" th:switch="${attributes.size()}">
+    <h2>Аттрибуты</h2>
+    <h3 th:case="0">Не было найдено ни одного аттрибута!</h3>
+    <div th:case="*">
+        <table>
+            <thead>
+            <tr>
+                <th>Идентификатор</th>
+                <th>Имя</th>
+                <th>Идентификатор Класса</th>
+                <th>Тип</th>
+                <th>Размер</th>
+                <th>Может быть 0?</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="attribute : ${attributes}">
+                <td th:text="${attribute.id}"></td>
+                <td th:text="${attribute.name}"></td>
+                <td th:text="${attribute.ownerClassId}"></td>
+                <td th:text="${attribute.attributeType}"></td>
+                <td th:text="${attribute.attributeSize}"></td>
+                <td th:text="${attribute.canBeNull}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class = "inner" th:switch="${aggregationsF.size()}">
+    <h2>Агрегации (от текущего класса)</h2>
+    <h3 th:case="0">Не было найдено ни одной агрегации!</h3>
+    <div th:case="*">
+        <table>
+            <thead>
+            <tr>
+                <th>Идентификатор</th>
+                <th>Имя</th>
+                <th>Системное Имя</th>
+                <th>Конец</th>
+                <th>Детально</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="aggregation : ${aggregationsF}">
+                <td th:text="${aggregation.id}"></td>
+                <td th:text="${aggregation.name}"></td>
+                <td th:text="${aggregation.systemName}"></td>
+                <td><a th:href="@{${detailClassPath}+${aggregation.toClassId}}" th:text="${aggregation.toClassId}"></a></td>
+                <td><a th:href="@{${detailAggregationPath}+${aggregation.id}}">(---)</a></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class = "inner" th:switch="${aggregationsT.size()}">
+    <h2>Агрегации (к текущему классу)</h2>
+    <h3 th:case="0">Не было найдено ни одной агрегации!</h3>
+    <div th:case="*">
+        <table>
+            <thead>
+            <tr>
+                <th>Идентификатор</th>
+                <th>Имя</th>
+                <th>Системное Имя</th>
+                <th>Начало</th>
+                <th>Детально</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="aggregation : ${aggregationsT}">
+                <td th:text="${aggregation.id}"></td>
+                <td th:text="${aggregation.name}"></td>
+                <td th:text="${aggregation.systemName}"></td>
+                <td ><a th:href="@{${detailClassPath}+${aggregation.fromClassId}}" th:text="${aggregation.fromClassId}"></a></td>
+                <td><a th:href="@{${detailAggregationPath}+${aggregation.id}}">(---)</a></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class = "inner" th:switch="${associationsF.size()}">
+    <h2>Ассоциация (от текущего класса)</h2>
+    <h3 th:case="0">Не было найдено ни одной ассоциаци!</h3>
+    <div th:case="*">
+        <table>
+            <thead>
+            <tr>
+                <th>Идентификатор</th>
+                <th>Имя</th>
+                <th>Системное Имя</th>
+                <th>Конец</th>
+                <th>Детально</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="assosiation : ${associationsF}">
+                <td th:text="${assosiation.id}"></td>
+                <td th:text="${assosiation.name}"></td>
+                <td th:text="${assosiation.systemName}"></td>
+                <td><a th:href="@{${detailClassPath}+${assosiation.toClassId}}" th:text="${assosiation.toClassId}"></a></td>
+                <td><a th:href="@{${detailAssociationPath}+${assosiation.id}}">(---)</a></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class = "inner" th:switch="${associationsT.size()}">
+    <h2>Ассоциация (к текущему классу)</h2>
+    <h3 th:case="0">Не было найдено ни одной ассоциаци!</h3>
+    <div th:case="*">
+        <table>
+            <thead>
+            <tr>
+                <th>Идентификатор</th>
+                <th>Имя</th>
+                <th>Системное Имя</th>
+                <th>Начало</th>
+                <th>Детально</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="assosiation : ${associationsT}">
+                <td th:text="${assosiation.id}"></td>
+                <td th:text="${assosiation.name}"></td>
+                <td th:text="${assosiation.systemName}"></td>
+                <td><a th:href="@{${detailClassPath}+${assosiation.fromClassId}}" th:text="${assosiation.fromClassId}"></a></td>
+                <td><a th:href="@{${detailAssociationPath}+${assosiation.id}}">(---)</a></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class = "inner" th:switch="${templates.size()}">
+    <h2>Шаблоны</h2>
+    <h3 th:case="0">Не было найдено ни одного шаблона!</h3>
+    <div th:case="*">
+        <table>
+            <thead>
+            <tr>
+                <th>Идентификатор</th>
+                <th>Имя</th>
+                <th>Системное Имя</th>
+                <th>Описание</th>
+                <th>Детально</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="template : ${templates}">
+                <td th:text="${template.id}"></td>
+                <td th:text="${template.name}"></td>
+                <td th:text="${template.systemName}"></td>
+                <td th:text="${template.description}"></td>
+                <td><a th:href="@{${detailTemplatePath}+${template.id}}">(---)</a></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class = "inner" th:switch="${objects.size()}">
+    <h2>Объекты</h2>
+    <h3 th:case="0">Не было найдено ни одного объекта!</h3>
+    <div th:case="*">
+        <table>
+            <thead>
+            <tr>
+                <th>Идентификатор</th>
+                <th>Детально</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="object : ${objects}">
+                <td th:text="${object.id}"></td>
+                <td><a th:href="@{${detailObjectPath}+${object.id}}">(---)</a></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</html>
