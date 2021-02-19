@@ -15,7 +15,6 @@ public class SysAssociationService {
     private final SysAssociationRepository sysAssociationRepository;
     private final SysAssociationImplRepository sysAssociationImplRepository;
 
-
     public List<SysAssociation> getSysAssociations(){
         return sysAssociationRepository.findAll();
     }

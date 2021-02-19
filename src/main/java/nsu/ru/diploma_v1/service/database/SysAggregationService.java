@@ -16,7 +16,6 @@ public class SysAggregationService {
     private final SysAggregationRepository sysAggregationRepository;
     private final SysAggregationImplRepository sysAggregationImplRepository;
 
-
     public List<SysAggregation> getSysAggregations(){
         return sysAggregationRepository.findAll();
     }

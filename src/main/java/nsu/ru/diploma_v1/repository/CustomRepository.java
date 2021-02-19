@@ -2,7 +2,7 @@ package nsu.ru.diploma_v1.repository;
 
 import lombok.AllArgsConstructor;
 import nsu.ru.diploma_v1.model.entity.SysAttribute;
-import nsu.ru.diploma_v1.utils.SysTypes;
+import nsu.ru.diploma_v1.model.const_data.SystemTypes;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -12,7 +12,6 @@ import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
 import java.util.List;
 import java.util.Map;
 
@@ -20,44 +19,33 @@ import java.util.Map;
 @AllArgsConstructor
 public class CustomRepository{
 
-    private final EntityManager entityManager;
+    //private final EntityManager entityManager;
+    //entityManager.createNativeQuery(sql.toString()).executeUpdate();
+
     private final JdbcTemplate jdbcTemplate;
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
-    private final SysTypes sysTypes;
 
     /**
      * Создать таблицу
      *
-     * SysAttribute sysAttribute = new SysAttribute(1,"n",1,1,0,false);
-     * customRepository.createTable("testt",List.of(sysAttribute));
-     *
-     *
      * @param tableName название новой таблицы
      * @param attributeList её атрибуты
-     * @return что-то
      */
     @Transactional
     public void createTable(String tableName, List<SysAttribute> attributeList){
-        StringBuilder sql = new StringBuilder();
-        sql.append(String.format("CREATE TABLE %s ( ID SERIAL NOT NULL PRIMARY KEY, ",tableName));
+        StringBuilder columns = new StringBuilder();
 
         for (SysAttribute attribute : attributeList) {
-            sql.append(attributeToString(attribute));
+            columns.append(attributeToString(attribute));
         }
-        sql.deleteCharAt(sql.length()-1);
-        sql.append(");");
+        columns.deleteCharAt(columns.length()-1);
 
-        System.out.println(sql.toString());
-
+        String sql = String.format("CREATE TABLE %s ( ID SERIAL NOT NULL PRIMARY KEY, %s );",tableName,columns);
         try{
-        //v1
-        jdbcTemplate.execute(sql.toString());
-        //v2
-        //entityManager.createNativeQuery(sql.toString()).executeUpdate();
+            jdbcTemplate.execute(sql);
         }
         catch (Exception e){
-            System.out.println(e.getMessage());
-            //TODO
+            //TODO : log + send error
         }
     }
 
@@ -95,9 +83,7 @@ public class CustomRepository{
             where.delete(where.length()-5,where.length()-1);
         }
 
-
         String sql = String.format("SELECT %s FROM %s %s",columns.toString(),tableName,where.toString());
-        System.out.println(sql);
          return namedParameterJdbcTemplate.queryForList(sql,namedParameters);
     }
 
@@ -109,54 +95,45 @@ public class CustomRepository{
     String attributeToString(SysAttribute attribute){
 
         StringBuilder str = new StringBuilder();
+
         //имя и тип атрибута
-        str.append(
-                String.format(
-                        " %s %s",
+        str.append(String.format(" %s %s",
                         attribute.getName(),
-                        sysTypes.getType(attribute.getAttributeType())
-                )
+                        SystemTypes.getType(attribute.getAttributeType()))
         );
+
         //размер атрибута (если есть)
         if(attribute.getAttributeSize()!=null){
-            str.append(
-                    String.format(
-                            "(%s)",
-                            attribute.getAttributeSize()
-                    )
+            str.append(String.format("(%s)",
+                            attribute.getAttributeSize())
             );
         }
-        //ненулевой?
+
+        //ненулевой ?
         if(!attribute.isCanBeNull()){
             str.append(" NOT NULL");
         }
+
         str.append(",");
         return str.toString();
     }
 
     @Transactional
     public void insertInTable(Map<String,Object> list, String tableName){
-        StringBuilder sql = new StringBuilder();
-        sql.append(String.format("INSERT INTO %s ( ",tableName));
-
+        StringBuilder columns = new StringBuilder();
         StringBuilder vars = new StringBuilder();
-        vars.append("VALUES ( ");
 
         SqlParameterSource namedParameters = new MapSqlParameterSource().addValues(list);
 
         for (Map.Entry<String, Object> objectAttribute : list.entrySet()) {
-            sql.append(objectAttribute.getKey()).append(",");
+            columns.append(objectAttribute.getKey()).append(",");
             vars.append(":").append(objectAttribute.getKey()).append(",");
         }
-        sql.deleteCharAt(sql.length()-1);
         vars.deleteCharAt(vars.length()-1);
-        sql.append(")");
-        vars.append(");");
+        columns.deleteCharAt(columns.length()-1);
 
-        sql.append(vars);
-        System.out.println(sql.toString());
-
-        namedParameterJdbcTemplate.update(sql.toString(), namedParameters);
+        String sql = String.format("INSERT INTO %s ( %s ) VALUES ( %s )",tableName,columns,vars);
+        namedParameterJdbcTemplate.update(sql, namedParameters);
     }
 
 }

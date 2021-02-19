@@ -13,14 +13,14 @@
         <li><a th:href="${m.edit_mode}" style="color: orangered">Режим редактирования</a></li>
     </ul>
     <ul class="menu">
-        <li><a style="color: dodgerblue" th:href="@{${m.action}+${menu_url.PAGE}}">Страницы</a></li>
-        <li><a style="color: dodgerblue" th:href="@{${m.action}+${menu_url.CLASS}}">Классы</a></li>
-        <li><a style="color: dodgerblue" th:href="@{${m.action}+${menu_url.OBJECT}}">Объекты</a></li>
-        <li><a style="color: dodgerblue" th:href="@{${m.action}+${menu_url.AGGREGATION}}">Агрегации</a></li>
-        <li><a style="color: dodgerblue" th:href="@{${m.action}+${menu_url.AGGREGATION_IMPL}}">Связи</a></li>
-        <li><a style="color: dodgerblue" th:href="@{${m.action}+${menu_url.ASSOCIATION}}">Ассоциации</a></li>
-        <li><a style="color: dodgerblue" th:href="@{${m.action}+${menu_url.ASSOCIATION_IMPL}}">Гиперсвязи</a></li>
-        <li><a style="color: dodgerblue" th:href="@{${m.action}+${menu_url.TEMPLATE}}">Шаблоны</a></li>
+        <li><a style="color: dodgerblue" th:href="${m.pagePath}">Страницы</a></li>
+        <li><a style="color: dodgerblue" th:href="${m.classPath}">Классы</a></li>
+        <li><a style="color: dodgerblue" th:href="${m.objectPath}">Объекты</a></li>
+        <li><a style="color: dodgerblue" th:href="${m.aggregationPath}">Агрегации</a></li>
+        <li><a style="color: dodgerblue" th:href="${m.aggregationImplPath}">Связи</a></li>
+        <li><a style="color: dodgerblue" th:href="${m.associationPath}">Ассоциации</a></li>
+        <li><a style="color: dodgerblue" th:href="${m.associationImplPath}">Гиперсвязи</a></li>
+        <li><a style="color: dodgerblue" th:href="${m.templatePath}">Шаблоны</a></li>
     </ul>
 </div>
 

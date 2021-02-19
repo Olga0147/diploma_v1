@@ -1,4 +1,4 @@
-package nsu.ru.diploma_v1.utils;
+package nsu.ru.diploma_v1.model.const_data;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -8,22 +8,12 @@ import java.util.Map;
 import java.util.Set;
 
 @Component
-public class SysTypes {
+public class SystemTypes {
 
-    private final Map<String,InnerSysTypes> types;
-    private final Map<Integer,InnerSysTypes> innerTypes;
+    private static final Map<String,InnerSysTypes> types;
+    private static final Map<Integer,InnerSysTypes> innerTypes;
 
-//            (1,'FLOAT','FLOAT'),
-//            (2,'INTEGER','INTEGER'),
-//            (3,'MEDIA','bytea'),    -- кнопка скачать (потом)
-//            (4,'TEXT','TEXT'),
-//            (5,'STRING','VARCHAR'),
-//            (6,'SMALLINT','SMALLINT'),
-//            (7,'TIME','DATE');
-
-    public SysTypes() {
-
-        innerTypes = new HashMap<>();
+    static  {
 
         InnerSysTypes t1 = new InnerSysTypes(1, "FLOAT", "FLOAT");
         InnerSysTypes t2 = new InnerSysTypes(2, "INTEGER", "INTEGER");
@@ -33,7 +23,7 @@ public class SysTypes {
         InnerSysTypes t6 = new InnerSysTypes(6, "SMALLINT", "SMALLINT");
         InnerSysTypes t7 = new InnerSysTypes(7, "DATE", "TIME");
 
-
+        innerTypes = new HashMap<>();
         innerTypes.put(t1.id, t1);
         innerTypes.put(t2.id, t2);
         innerTypes.put(t3.id,t3);
@@ -41,7 +31,6 @@ public class SysTypes {
         innerTypes.put(t5.id, t5);//need size!
         innerTypes.put(t6.id, t6);
         innerTypes.put(t7.id, t7);
-
 
         types = new HashMap<>();
         types.put(t1.nameForUser, t1);
@@ -58,22 +47,27 @@ public class SysTypes {
      * @param key ключ
      * @return имя типа для бд
      */
-    public String getType(Integer key){
+    public static String getType(Integer key){
         return innerTypes.get(key).nameForDB;
     }
 
-    public Integer getIdByTypeForUser(String type){ return types.get(type).id;}
+    /**
+     * По пользьзовательскому типу получить номер
+     * @param type пользовательский тип
+     * @return номер
+     */
+    public static Integer getIdByTypeForUser(String type){ return types.get(type).id;}
 
     /**
      * Нужно ли указывать размер?
      * @param type пользовательское имя типа
      * @return да-нет
      */
-    public Boolean checkNeedSize(String type){
+    public static Boolean checkNeedSize(String type){
         return type.equals("STRING");
     }
 
-    public Set<String> getTypes(){
+    public static Set<String> getTypes(){
         return types.keySet();
     }
 

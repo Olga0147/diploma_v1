@@ -14,4 +14,5 @@ public interface SysClassRepository extends JpaRepository<SysClass, Long> {
     List<SysClass> getSysClassesByIsPageIsFalse();
 
     SysClass getSysClassById(Integer id);
+
 }

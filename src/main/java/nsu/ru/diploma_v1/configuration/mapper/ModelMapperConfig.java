@@ -1,4 +1,4 @@
-package nsu.ru.diploma_v1.utils;
+package nsu.ru.diploma_v1.configuration.mapper;
 
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;

@@ -56,7 +56,7 @@ function addAttributeForm() {
     let length = $(".attribute").length;
     console.log(length);
     let request = new XMLHttpRequest();
-    let url = '/edit-mode/util/attribute/'+length;
+    let url = '/edit-mode/part-form/attribute/'+length;
     request.open('GET', url, false);
     request.send();
     let str = request.responseText;

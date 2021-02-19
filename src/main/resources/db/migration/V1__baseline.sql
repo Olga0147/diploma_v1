@@ -110,11 +110,11 @@ INSERT INTO Class_1 (ID,NAME) VALUES
 
 CREATE TABLE Class_2 (
  ID             INTEGER NOT NULL PRIMARY KEY,
- NAME           VARCHAR(64) NOT NULL,
+ TITLE           VARCHAR(64) NOT NULL,
  AUTHOR         VARCHAR(64) NOT NULL
 );
 
-INSERT INTO Class_2 (ID,NAME,AUTHOR) VALUES
+INSERT INTO Class_2 (ID,TITLE,AUTHOR) VALUES
 (3,'Math','Cat'),
 (4,'Русский язык для самых маленьких','Пушкин');
 

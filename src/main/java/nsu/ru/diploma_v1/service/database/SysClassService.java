@@ -53,4 +53,22 @@ public class SysClassService {
         }
         return newList;
     }
+
+    public List<String> getAllPagesIds(){
+        List<SysClass> pages = sysClassRepository.getSysClassesByIsPageIsTrue();
+        List<String> str = new LinkedList<>();
+        for (SysClass page : pages) {
+            str.add(page.getId()+"-"+page.getName());
+        }
+        return str;
+    }
+
+    public List<String> getAllClassesIds(){
+        List<SysClass> classes = sysClassRepository.getSysClassesByIsPageIsFalse();
+        List<String> str = new LinkedList<>();
+        for (SysClass sysClass : classes) {
+            str.add(sysClass.getId()+"-"+sysClass.getName());
+        }
+        return str;
+    }
 }

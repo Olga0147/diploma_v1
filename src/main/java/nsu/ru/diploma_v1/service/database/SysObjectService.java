@@ -26,8 +26,7 @@ public class SysObjectService {
         return sysObjectRepository.getSysObjectById(id);
     }
 
-
-
+    //TODO : перенести в сервис? -- да
     public Map<String, Object> getObjectDetailInfo(int id){
 
         SysObject sysObject = sysObjectRepository.getSysObjectById(id);
@@ -37,23 +36,8 @@ public class SysObjectService {
         param.put("ID",id);
 
         List<Map<String, Object>> list = customRepository.selectFromTable(sysClass.getSystemName(),null,param);
-//        for (Map<String, Object> row : list) {
-//            System.out.println("row : ");
-//            for (Map.Entry<String, Object> column : row.entrySet()) {
-//                System.out.println("key = "+column.getKey()+" val = "+column.getValue());
-//            }
-//            System.out.println("-------------");
-//        }
         //TODO: исключение что не нашли
         return list.get(0);
-    }
-
-    public Map<String, Object> getObjectAssociationImpl(int id){
-        SysObject sysObject = sysObjectRepository.getSysObjectById(id);
-        SysClass sysClass = sysObject.getOwnerSysClass();
-
-        //hz
-        return null;
     }
 
     public SysObject saveObject(SysObject sysObject){
