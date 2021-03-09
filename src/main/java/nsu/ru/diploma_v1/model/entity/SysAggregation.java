@@ -2,6 +2,7 @@ package nsu.ru.diploma_v1.model.entity;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.util.List;
@@ -13,14 +14,12 @@ import java.util.List;
 public class SysAggregation {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GenericGenerator(name="keygen_aggr" , strategy="increment")
+    @GeneratedValue(generator="keygen_aggr")
     private Integer id;
 
     @Column(nullable = false)
     private String name;
-
-    @Column(nullable = false, unique = true)
-    private String systemName;
 
     private Integer fromClassId;
 

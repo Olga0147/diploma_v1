@@ -34,4 +34,8 @@ public class SysCompositionService {
     public SysCompositionImpl getSysCompositionImpl(int id){
         return sysCompositionImplRepository.getSysCompositionImplById(id);
     }
+
+    public void saveSysComposition(SysComposition sysComposition){
+        sysCompositionRepository.save(sysComposition);
+    }
 }

@@ -31,7 +31,7 @@ public class EditMode extends EntityPath {
         public static final String POST_ASSOCIATION =      PREF + ASSOCIATION;
         public static final String POST_ASSOCIATION_IMPL = PREF + ASSOCIATION_IMPL;
         public static final String POST_TEMPLATE =         PREF + TEMPLATE;
-        public static final String GET_COMPOSITION =       PREF + COMPOSITION;
+        public static final String POST_COMPOSITION =       PREF + COMPOSITION;
     }
 
     public static class PartForm{

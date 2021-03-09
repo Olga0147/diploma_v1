@@ -2,6 +2,7 @@ package nsu.ru.diploma_v1.model.entity;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.util.List;
@@ -13,7 +14,8 @@ import java.util.List;
 public class SysAggregationImpl {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GenericGenerator(name="keygen_aggr_im" , strategy="increment")
+    @GeneratedValue(generator="keygen_aggr_im")
     private Integer id;
 
     private Integer aggregationId;

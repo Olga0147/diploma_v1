@@ -8,6 +8,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import java.util.List;
+
 import static nsu.ru.diploma_v1.configuration.urls.ModePath.EDIT_MODE;
 import static nsu.ru.diploma_v1.configuration.urls.mode.EditMode.GetForm;
 
@@ -62,6 +64,47 @@ public class GetFormController {
         model.addAttribute("m", menu);
 
         return "/edit_mode/new_object";
+    }
+
+    @GetMapping(GetForm.GET_AGGREGATION)
+    public String editNewAggregation(Model model) {
+
+        model.addAttribute("classIdents", sysClassService.getAllClassesIds());
+        model.addAttribute("pageIdents", sysClassService.getAllPagesIds());
+
+        model.addAttribute("title", "Создать Агрегацию");
+
+        model.addAttribute("m", menu);
+
+        return "/edit_mode/new_aggregation";
+    }
+
+    @GetMapping(GetForm.GET_ASSOCIATION)
+    public String editNewAssociation(Model model) {
+
+        List<String> list = sysClassService.getAllClassesIds();
+        list.addAll(sysClassService.getAllPagesIds());
+        model.addAttribute("classIdents", list);
+
+        model.addAttribute("title", "Создать Агрегацию");
+
+        model.addAttribute("m", menu);
+
+        return "/edit_mode/new_association";
+    }
+
+    @GetMapping(GetForm.GET_COMPOSITION)
+    public String editNewComposition(Model model) {
+
+        List<String> list = sysClassService.getAllClassesIds();
+        list.addAll(sysClassService.getAllPagesIds());
+        model.addAttribute("classIdents", list);
+
+        model.addAttribute("title", "Создать Композицию");
+
+        model.addAttribute("m", menu);
+
+        return "/edit_mode/new_composition";
     }
 
     private String getPath(String str){

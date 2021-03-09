@@ -31,4 +31,8 @@ public class SysAssociationService {
     public SysAssociationImpl getSysAssociationImpl(int id){
         return sysAssociationImplRepository.getSysAssociationImplById(id);
     }
+
+    public void saveSysAssociation(SysAssociation sysAssociation){
+        sysAssociationRepository.save(sysAssociation);
+    }
 }

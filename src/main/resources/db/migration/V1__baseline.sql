@@ -39,7 +39,6 @@ CREATE TABLE Attribute (
 CREATE TABLE Association (
      ID            SERIAL NOT NULL PRIMARY KEY,
      NAME          VARCHAR(128) NOT NULL,
-     SystemName   VARCHAR(128) NOT NULL,
      FromClassId INTEGER NOT NULL REFERENCES Class(ID),
      ToClassId   INTEGER NOT NULL REFERENCES Class(ID)
 );
@@ -54,7 +53,6 @@ CREATE TABLE AssociationImplementation (
 CREATE TABLE Aggregation (
     ID            SERIAL NOT NULL PRIMARY KEY,
     NAME          VARCHAR(128) NOT NULL,
-    SystemName   VARCHAR(128) NOT NULL,
     FromClassId INTEGER NOT NULL REFERENCES Class(ID),
     ToClassId   INTEGER NOT NULL REFERENCES Class(ID)
 );
@@ -134,17 +132,17 @@ INSERT INTO Class_2 (ID,TITLE,AUTHOR) VALUES
 (3,'Math','Cat'),
 (4,'Русский язык для самых маленьких','Пушкин');
 
-INSERT INTO Aggregation (ID,NAME,SystemName,FromClassId,ToClassId) VALUES
-(1,'включает в себя','включает в себя123',1,2),
-(2,'включен в','включен в123',2,1);
+INSERT INTO Aggregation (ID,NAME,FromClassId,ToClassId) VALUES
+(1,'включает в себя',1,2),
+(2,'включен в',2,1);
 
 INSERT INTO AggregationImplementation (ID,AggregationId,FromObjectId,ToObjectId) VALUES
 (1,1,1,2),
 (2,2,2,1);
 
-INSERT INTO Association (ID,NAME,SystemName,FromClassId,ToClassId) VALUES
-(1,'включает в себя','включает в себя123',1,2),
-(2,'включен в','включен в123',2,1);
+INSERT INTO Association (ID,NAME,FromClassId,ToClassId) VALUES
+(1,'включает в себя',1,2),
+(2,'включен в',2,1);
 
 INSERT INTO AssociationImplementation (ID,AssociationId,FromObjectId,ToObjectId) VALUES
 (1,1,1,2),
