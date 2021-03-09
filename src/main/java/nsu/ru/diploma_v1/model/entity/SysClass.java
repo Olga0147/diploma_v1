@@ -37,42 +37,51 @@ public class SysClass {
     /**
      * Агрегации
      */
-    @OneToMany(mappedBy="fromSysClass")
+    @OneToMany(mappedBy="fromSysClass", fetch=FetchType.LAZY)
     List<SysAggregation> aggregationFromList;//(от текущего класса в лист)
 
-    @OneToMany(mappedBy="toSysClass")
+    @OneToMany(mappedBy="toSysClass", fetch=FetchType.LAZY)
     List<SysAggregation> aggregationToList;//(из листа в текущий класс)
 
     /**
      * Ассоциации
      */
-    @OneToMany(mappedBy="fromSysClass")
+    @OneToMany(mappedBy="fromSysClass", fetch=FetchType.LAZY)
     List<SysAssociation> associationFromList;
 
-    @OneToMany(mappedBy="toSysClass")
+    @OneToMany(mappedBy="toSysClass", fetch=FetchType.LAZY)
     List<SysAssociation> associationToList;
+
+    /**
+     * Композиции
+     */
+    @OneToMany(mappedBy="fromSysClass", fetch=FetchType.LAZY)
+    List<SysComposition> compositionFromList;
+
+    @OneToMany(mappedBy="toSysClass", fetch=FetchType.LAZY)
+    List<SysComposition> compositionToList;
 
     /**
      * Аттрибуты
      */
-    @OneToMany(mappedBy="ownerSysClass")
+    @OneToMany(mappedBy="ownerSysClass", fetch=FetchType.LAZY)
     List<SysAttribute> attributeList;
 
     /**
      * Объекты
      */
-    @OneToMany(mappedBy="ownerSysClass")
+    @OneToMany(mappedBy="ownerSysClass", fetch=FetchType.LAZY)
     List<SysObject> objectList;
 
     /**
      * Шаблоны
      */
-    @OneToMany(mappedBy="ownerSysClass")
+    @OneToMany(mappedBy="ownerSysClass", fetch=FetchType.LAZY)
     List<SysTemplate> templateList;
 
     /**
-     * Ресурсы (не продумано)
+     * Ресурсы
      */
-    @OneToMany(mappedBy="ownerSysClass")
+    @OneToMany(mappedBy="ownerSysClass", fetch=FetchType.LAZY)
     List<SysResource> resourceList;
 }

@@ -8,7 +8,7 @@
     <title th:text="${title}"></title>
 </head>
 <div th:replace="fragments/menu_editor :: header"></div>
-<body>
+<teacherCard>
     <div class = "inner" >
         <h2 align="center" th:text="${title}"></h2>
 
@@ -30,5 +30,5 @@
         <div class="error" id="error"></div>
         <div class="success" id="success"></div>
     </div>
-</body>
+</teacherCard>
 </html>

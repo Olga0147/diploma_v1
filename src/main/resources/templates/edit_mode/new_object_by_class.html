@@ -7,30 +7,14 @@
             <form onsubmit="sendPost(); return false;" method="post">
                 <div class="attr" th:each="attribute,iterStat : ${attributes}">
                     <div th:switch="${attribute.attributeType}">
-                        <p th:case="'1'">
-                            <label th:for="'attr'+${iterStat.index}" th:text="${attribute.name}" th:id="'label'+${iterStat.index}"></label>
-                            <input type="number" th:id="'attr'+${iterStat.index}" >
-                        </p>
-                        <p th:case="'2'">
-                            <label th:for="'attr'+${iterStat.index}" th:text="${attribute.name}" th:id="'label'+${iterStat.index}"></label>
-                            <input type="number" th:id="'attr'+${iterStat.index}" >
-                        </p>
-                        <p th:case="'3'">
-                            <label th:for="'attr'+${iterStat.index}" th:text="${attribute.name}" th:id="'label'+${iterStat.index}"></label>
-                            <input type="file" th:id="'attr'+${iterStat.index}" >
-                        </p>
-                        <p th:case="'4'">
-                            <label th:for="'attr'+${iterStat.index}" th:text="${attribute.name}" th:id="'label'+${iterStat.index}"></label>
-                            <textarea th:id="'attr'+${iterStat.index}"  cols="60" rows="4"></textarea>
-                        </p>
-                        <p th:case="'6'">
-                            <label th:for="'attr'+${iterStat.index}" th:text="${attribute.name}" th:id="'label'+${iterStat.index}"></label>
-                            <input type="number" th:id="'attr'+${iterStat.index}" >
-                        </p>
-                        <p th:case="*">
-                            <label th:for="'attr'+${iterStat.index}" th:text="${attribute.name}" th:id="'label'+${iterStat.index}"></label>
-                            <textarea th:id="'attr'+${iterStat.index}"  cols="60" rows="1"></textarea>
-                        </p>
+                        <div th:case="'1'"><div th:replace="fragments/sysTypes/float_input :: div_input"></div></div>
+                        <div th:case="'2'"><div th:replace="fragments/sysTypes/integer_input :: div_input"></div></div>
+                        <div th:case="'3'"><div th:replace="fragments/sysTypes/smallint_input :: div_input"></div></div>
+                        <div th:case="'4'"><div th:replace="fragments/sysTypes/mmedia_input :: div_input"></div></div>
+                        <div th:case="'5'"><div th:replace="fragments/sysTypes/text_input :: div_input"></div></div>
+                        <div th:case="'6'"><div th:replace="fragments/sysTypes/string_input :: div_input"></div></div>
+                        <div th:case="'7'"><div th:replace="fragments/sysTypes/xmemo_input :: div_input"></div></div>
+                        <div th:case="'8'"><div th:replace="fragments/sysTypes/time_input :: div_input"></div></div>
                     </div>
                 </div>
                 <p><input type="submit" value="Сохранить объект"></p>

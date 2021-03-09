@@ -2,7 +2,7 @@ package nsu.ru.diploma_v1.repository;
 
 import lombok.AllArgsConstructor;
 import nsu.ru.diploma_v1.model.entity.SysAttribute;
-import nsu.ru.diploma_v1.model.const_data.SystemTypes;
+import nsu.ru.diploma_v1.model.enums.SysTypes;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -12,6 +12,7 @@ import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -99,7 +100,7 @@ public class CustomRepository{
         //имя и тип атрибута
         str.append(String.format(" %s %s",
                         attribute.getName(),
-                        SystemTypes.getType(attribute.getAttributeType()))
+                        SysTypes.getDbType(attribute.getAttributeType()))
         );
 
         //размер атрибута (если есть)
@@ -116,6 +117,19 @@ public class CustomRepository{
 
         str.append(",");
         return str.toString();
+    }
+
+    /**
+     * Получить объект
+     * @param tableName имя таблицы
+     * @param id идентификатор объекта
+     * @return карта колонка - значение
+     */
+    public Map<String, Object> getObject(@NonNull String tableName, @NonNull int id){
+        Map<String,Object> param = new HashMap<>();
+        param.put("ID",id);
+        List<java.util.Map<String, Object>> list = selectFromTable(tableName,null,param);
+        return list.get(0);
     }
 
     @Transactional

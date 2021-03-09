@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import nsu.ru.diploma_v1.configuration.urls.menu.ViewMenu;
 import nsu.ru.diploma_v1.model.entity.*;
 import nsu.ru.diploma_v1.service.database.*;
+import nsu.ru.diploma_v1.service.system.CustomService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,6 +23,7 @@ public class ViewDetailInfoController {
     private final SysAssociationService sysAssociationService;
     private final SysTemplateService sysTemplateService;
     private final SysObjectService sysObjectService;
+    private final CustomService customService;
 
     private final ViewMenu menu;
 
@@ -29,7 +31,7 @@ public class ViewDetailInfoController {
     public String showInfoPage(Model model, @PathVariable String id) {
 
         //TODO: ERROR NOT FOUND
-        SysClass sysClass = sysClassService.getClass(Integer.parseInt(id));
+        SysClass sysClass = sysClassService.getClassById(Integer.parseInt(id));
 
         model.addAttribute("page", sysClass);
         model.addAttribute("attributes", sysClass.getAttributeList());
@@ -115,9 +117,9 @@ public class ViewDetailInfoController {
     public String showInfoObject(Model model, @PathVariable String id) {
 
         //TODO: ERROR NOT FOUND
-        SysObject sysObject = sysObjectService.getObjectsInfoById(Integer.parseInt(id));
-        Map<String, Object> object = sysObjectService.getObjectDetailInfo(Integer.parseInt(id));
+        SysObject sysObject = sysObjectService.getSysObjectById(Integer.parseInt(id));
         SysClass sysClass = sysObject.getOwnerSysClass();
+        Map<String, Object> object = customService.getObject(sysClass.getSystemName(),Integer.parseInt(id));
 
         model.addAttribute("object", object.entrySet());
 

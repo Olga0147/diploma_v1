@@ -5,7 +5,7 @@ import nsu.ru.diploma_v1.model.dto.NewAttributeForm;
 import nsu.ru.diploma_v1.model.dto.NewClassForm;
 import nsu.ru.diploma_v1.model.entity.SysAttribute;
 import nsu.ru.diploma_v1.model.entity.SysClass;
-import nsu.ru.diploma_v1.model.const_data.SystemTypes;
+import nsu.ru.diploma_v1.model.enums.SysTypes;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -43,8 +43,8 @@ public class FormMapper {
             SysAttribute sysAttribute = new SysAttribute();
             sysAttribute.setName(form.getName());
             sysAttribute.setOwnerClassId(classId);
-            sysAttribute.setAttributeType(SystemTypes.getIdByTypeForUser(form.getType()));
-            if(SystemTypes.checkNeedSize(form.getType())){sysAttribute.setAttributeSize(form.getSize());}
+            sysAttribute.setAttributeType(SysTypes.getIdByUserType(form.getType()));
+            if(SysTypes.checkNeedSize(form.getType())){sysAttribute.setAttributeSize(form.getSize());}
             sysAttribute.setCanBeNull(form.isNull());
             list.add(sysAttribute);
         }

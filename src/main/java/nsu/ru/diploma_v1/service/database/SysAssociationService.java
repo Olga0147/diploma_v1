@@ -12,6 +12,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class SysAssociationService {
+
     private final SysAssociationRepository sysAssociationRepository;
     private final SysAssociationImplRepository sysAssociationImplRepository;
 

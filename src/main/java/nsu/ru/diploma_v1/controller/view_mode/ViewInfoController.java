@@ -102,7 +102,7 @@ public class ViewInfoController {
     @GetMapping(Info.GET_OBJECT)
     public String showInfoObjectList(Model model) {
 
-        model.addAttribute("objects", sysObjectService.getObjectsInfo());
+        model.addAttribute("objects", sysObjectService.getSysObjects());
 
         model.addAttribute("title", "Объекты");
         model.addAttribute("detailPath", getPath(DetailInfo.GET_OBJECT));

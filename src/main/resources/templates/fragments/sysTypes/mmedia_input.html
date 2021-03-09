@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<div class = "div_input" th:fragment="div_input">
+    <label th:for="'attr'+${iterStat.index}" th:text="${attribute.name}" th:id="'label'+${iterStat.index}"></label>
+    <input type="file" th:id="'attr'+${iterStat.index}" >
+</div>
+</html>

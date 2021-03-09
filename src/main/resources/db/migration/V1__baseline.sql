@@ -20,11 +20,12 @@ CREATE TABLE AttributeType (
 INSERT INTO AttributeType (ID,NAME,IMPLEMENTATION) VALUES
 (1,'FLOAT','FLOAT'),
 (2,'INTEGER','INTEGER'),
-(3,'MEDIA','bytea'),
-(4,'TEXT','TEXT'),
-(5,'STRING','VARCHAR'),
-(6,'SMALLINT','SMALLINT'),
-(7,'TIME','DATE');
+(3,'SMALLINT','SMALLINT'),
+(4,'MMEDIA','TEXT'),
+(5,'TEXT','TEXT'),
+(6,'STRING','VARCHAR'),
+(7,'XMEMO','TEXT'),
+(8,'TIME','DATE');
 
 CREATE TABLE Attribute (
    ID             SERIAL NOT NULL PRIMARY KEY,
@@ -65,6 +66,22 @@ CREATE TABLE AggregationImplementation (
     ToObjectId   INTEGER NOT NULL REFERENCES Object(ID)
 );
 
+CREATE TABLE Composition (
+     ID            SERIAL NOT NULL PRIMARY KEY,
+     NAME          VARCHAR(128) NOT NULL,
+     SystemName   VARCHAR(128) NOT NULL,
+     FromClassId INTEGER NOT NULL REFERENCES Class(ID),
+     ToClassId   INTEGER NOT NULL REFERENCES Class(ID)
+);
+
+CREATE TABLE CompositionImplementation (
+       ID             SERIAL NOT NULL PRIMARY KEY,
+       FRAGMENT          VARCHAR(128) NOT NULL,
+       CompositionId INTEGER NOT NULL REFERENCES Composition(ID),
+       FromObjectId INTEGER NOT NULL REFERENCES Object(ID),
+       ToObjectId   INTEGER NOT NULL REFERENCES Object(ID)
+);
+
 CREATE TABLE Template (
     ID           SERIAL NOT NULL PRIMARY KEY,
     NAME         VARCHAR(128) NOT NULL,
@@ -77,9 +94,8 @@ CREATE TABLE Template (
 CREATE TABLE Resource (
     ID             SERIAL NOT NULL PRIMARY KEY,
     NAME           VARCHAR(128) NOT NULL,
-    BODY           TEXT NOT NULL,
-    OwnerClassId INTEGER NOT NULL REFERENCES Class(ID),
-    OwnerObjectId INTEGER NOT NULL REFERENCES Object(ID)
+    PATH           VARCHAR(128) NOT NULL,
+    OwnerClassId INTEGER NOT NULL REFERENCES Class(ID)
 );
 
 INSERT INTO Class (ID,NAME,SystemName,DESCRIPTION,IsPage) VALUES

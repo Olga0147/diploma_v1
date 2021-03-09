@@ -2,8 +2,8 @@ package nsu.ru.diploma_v1.controller.edit_mode;
 
 import lombok.RequiredArgsConstructor;
 import nsu.ru.diploma_v1.model.entity.SysAttribute;
-import nsu.ru.diploma_v1.service.database.*;
-import nsu.ru.diploma_v1.model.const_data.SystemTypes;
+import nsu.ru.diploma_v1.model.enums.SysTypes;
+import nsu.ru.diploma_v1.service.database.SysClassService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,7 +21,7 @@ public class PartFormController {
     @GetMapping(PartForm.ATTRIBUTE_FORM)
     public String editNewPage(Model model,@PathVariable String length) {
 
-        model.addAttribute("attributeTypes", SystemTypes.getTypes());
+        model.addAttribute("attributeTypes", SysTypes.getSysTypes());
         model.addAttribute("id",Integer.parseInt(length)+1);
 
         return "/edit_mode/new_attribute";

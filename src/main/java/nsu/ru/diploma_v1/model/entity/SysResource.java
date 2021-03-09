@@ -17,20 +17,13 @@ public class SysResource {
     @Column(nullable = false)
     private String name;
 
-    private Integer ownerClassId;
+    @Column(nullable = false)
+    private String path;
 
-    private Integer ownerObjectId;
+    private Integer ownerClassId;
 
     @ManyToOne
     @JoinColumn(name="ownerClassId", nullable=false, insertable = false,updatable = false)
     private SysClass ownerSysClass;
 
-    @ManyToOne
-    @JoinColumn(name="ownerObjectId", nullable=false, insertable = false,updatable = false)
-    private SysObject ownerSysObject;
-
-    /**
-     * Ссылка на файл
-     */
-    private String body;
 }

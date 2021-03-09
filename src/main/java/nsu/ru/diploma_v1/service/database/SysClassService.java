@@ -3,8 +3,6 @@ package nsu.ru.diploma_v1.service.database;
 import lombok.RequiredArgsConstructor;
 import nsu.ru.diploma_v1.model.entity.SysAttribute;
 import nsu.ru.diploma_v1.model.entity.SysClass;
-import nsu.ru.diploma_v1.model.entity.SysObject;
-import nsu.ru.diploma_v1.model.entity.SysTemplate;
 import nsu.ru.diploma_v1.repository.SysAttributeRepository;
 import nsu.ru.diploma_v1.repository.SysClassRepository;
 import org.springframework.stereotype.Service;
@@ -22,6 +20,10 @@ public class SysClassService {
     private final SysClassRepository sysClassRepository;
     private final SysAttributeRepository sysAttributeRepository;
 
+    /**
+     * Работа с классом
+     */
+
     public List<SysClass> getPages(){
         return sysClassRepository.getSysClassesByIsPageIsTrue();
     }
@@ -30,28 +32,12 @@ public class SysClassService {
         return sysClassRepository.getSysClassesByIsPageIsFalse();
     }
 
-    public SysClass getClass(int classId){
+    public SysClass getClassById(int classId){
         return sysClassRepository.getSysClassById(classId);
     }
 
-    public List<SysAttribute> getAttributes(int classId){ return sysClassRepository.getSysClassById(classId).getAttributeList();}
-
     public SysClass saveClass(SysClass sysClass){
         return sysClassRepository.save(sysClass);
-    }
-
-    public List<SysTemplate> getTemplate(int classId){ return sysClassRepository.getSysClassById(classId).getTemplateList();}
-
-    public List<SysObject> getObject(int classId){ return sysClassRepository.getSysClassById(classId).getObjectList();}
-
-    public List<SysAttribute> saveAttributes(List<SysAttribute> list){
-        List<SysAttribute> newList = new LinkedList<>();
-        for (SysAttribute attribute : list) {
-            //TODO ERROR
-            SysAttribute current = sysAttributeRepository.save(attribute);
-            newList.add(current);
-        }
-        return newList;
     }
 
     public List<String> getAllPagesIds(){
@@ -70,5 +56,21 @@ public class SysClassService {
             str.add(sysClass.getId()+"-"+sysClass.getName());
         }
         return str;
+    }
+
+    /**
+     * Работа с атрибутами
+     */
+
+    public List<SysAttribute> getAttributes(int classId){ return sysClassRepository.getSysClassById(classId).getAttributeList();}
+
+    public List<SysAttribute> saveAttributes(List<SysAttribute> list){
+        List<SysAttribute> newList = new LinkedList<>();
+        for (SysAttribute attribute : list) {
+            //TODO ERROR
+            SysAttribute current = sysAttributeRepository.save(attribute);
+            newList.add(current);
+        }
+        return newList;
     }
 }

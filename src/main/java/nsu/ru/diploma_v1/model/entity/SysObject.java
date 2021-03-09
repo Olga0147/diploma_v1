@@ -25,24 +25,30 @@ public class SysObject {
     @JoinColumn(name="ownerClassId", nullable=false, insertable = false,updatable = false)
     private SysClass ownerSysClass;
 
-    @OneToMany(mappedBy="ownerSysObject")
-    List<SysResource> resourceList;
-
     /**
      * Агрегации
      */
-    @OneToMany(mappedBy="fromSysObject")
+    @OneToMany(mappedBy="fromSysObject", fetch=FetchType.LAZY)
     List<SysAggregationImpl> aggregationImplFromList;//(от текущего класса в лист)
 
-    @OneToMany(mappedBy="toSysObject")
+    @OneToMany(mappedBy="toSysObject", fetch=FetchType.LAZY)
     List<SysAggregationImpl> aggregationImplToList;//(из листа в текущий класс)
 
     /**
      * Ассоциации
      */
-    @OneToMany(mappedBy="fromSysObject")
+    @OneToMany(mappedBy="fromSysObject", fetch=FetchType.LAZY)
     List<SysAssociationImpl> associationImplFromList;
 
-    @OneToMany(mappedBy="toSysObject")
+    @OneToMany(mappedBy="toSysObject", fetch=FetchType.LAZY)
     List<SysAssociationImpl> associationImplToList;
+
+    /**
+     * Композиции
+     */
+    @OneToMany(mappedBy="fromSysObject", fetch=FetchType.LAZY)
+    List<SysCompositionImpl> compositionImplFromList;
+
+    @OneToMany(mappedBy="toSysObject", fetch=FetchType.LAZY)
+    List<SysCompositionImpl> compositionImplToList;
 }

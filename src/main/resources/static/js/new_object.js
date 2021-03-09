@@ -59,7 +59,7 @@ function addClassForm() {
     let arr = classId.split('-');
     console.log(arr[0]);
     let request = new XMLHttpRequest();
-    let url = '/edit-mode/new/object/'+arr[0];
+    let url = '/edit-mode/part-form/object/'+arr[0];
     request.open('GET', url, false);
     request.send();
     let str = request.responseText;
