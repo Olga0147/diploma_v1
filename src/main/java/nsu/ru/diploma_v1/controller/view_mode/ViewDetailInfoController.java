@@ -107,7 +107,7 @@ public class ViewDetailInfoController {
         model.addAttribute("composition", composition);
         model.addAttribute("compositionsImpl", composition.getSysCompositionList());
 
-        model.addAttribute("title", "Ассоциация: детально");
+        model.addAttribute("title", "Композиция: детально");
         model.addAttribute("detailObjectPath", getPath(DetailInfo.GET_OBJECT));
         model.addAttribute("detailClassPath", getPath(DetailInfo.GET_CLASS));
         model.addAttribute("detailCompositionImplPath", getPath(DetailInfo.GET_COMPOSITION_IMPL));

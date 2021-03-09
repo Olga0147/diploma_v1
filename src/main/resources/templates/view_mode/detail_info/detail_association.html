@@ -14,7 +14,6 @@
             <tr>
                 <th>Идентификатор</th>
                 <th>Имя</th>
-                <th>Системное Имя</th>
                 <th>Начало</th>
                 <th>Конец</th>
             </tr>
@@ -23,7 +22,6 @@
             <tr>
                 <td th:text="${association.id}"></td>
                 <td th:text="${association.name}"></td>
-                <td th:text="${association.systemName}"></td>
                 <td ><a th:href="@{${detailClassPath}+${association.fromClassId}}" th:text="${association.fromClassId}"></a></td>
                 <td ><a th:href="@{${detailClassPath}+${association.toClassId}}" th:text="${association.toClassId}"></a></td>
             </tr>

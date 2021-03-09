@@ -14,7 +14,6 @@
         <tr>
             <th>Идентификатор</th>
             <th>Имя</th>
-            <th>Системное Имя</th>
             <th>Начало</th>
             <th>Конец</th>
         </tr>
@@ -23,7 +22,6 @@
         <tr>
             <td th:text="${aggregation.id}"></td>
             <td th:text="${aggregation.name}"></td>
-            <td th:text="${aggregation.systemName}"></td>
             <td ><a th:href="@{${detailClassPath}+${aggregation.toClassId}}" th:text="${aggregation.fromClassId}"></a></td>
             <td ><a th:href="@{${detailClassPath}+${aggregation.toClassId}}" th:text="${aggregation.toClassId}"></a></td>
         </tr>
