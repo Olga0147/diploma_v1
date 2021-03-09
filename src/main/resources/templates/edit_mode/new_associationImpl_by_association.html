@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <div class = "inner" id = "toDelete">
+        <h2 align="center" th:text="${title}"></h2>
+        <h2 align="center" th:text="${associationId}" th:id="'associationId'" style="color: #BABABA"></h2>
+
+            <form onsubmit="sendPost(); return false;" method="post">
+                <p><label for="AssFromChoise">Объект Источник</label>
+                    <select th:id="'AssFromChoise'" id="AssFromChoise">
+                        <option th:each="fromObject : ${fromObjects}" th:text="${fromObject}"></option>
+                    </select>
+                <p><label for="AssToChoise">Объект Приемник</label>
+                    <select th:id="'AssToChoise'" id="AssToChoise">
+                        <option th:each="toObject : ${toObjects}" th:text="${toObject}"></option>
+                    </select>
+                <p><input type="submit" value="Сохранить ассоциацию"></p>
+            </form>
+    </div>
+</html>

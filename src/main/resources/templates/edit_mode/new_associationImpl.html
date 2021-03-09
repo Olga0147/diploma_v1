@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="fragments/menu_editor :: header-css"></div>
+    <script async src="/js/new_associationImpl.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <meta charset="UTF-8">
+    <title th:text="${title}"></title>
+</head>
+<div th:replace="fragments/menu_editor :: header"></div>
+<teacherCard>
+    <div class = "inner" >
+        <h2 align="center" th:text="${title}"></h2>
+
+        <div class="attribute">
+            <select th:id="'AssFirstChoise'">
+                <option th:each="assIdent : ${assIdents}" th:text="${assIdent}"></option>
+            </select>
+            <button type="button" class="btn" onclick="addAssForm()">Загрузить форму для Ассоциации между Объектами</button>
+        </div>
+
+        <div class="innerForm"></div>
+
+        <div class="error" id="error"></div>
+        <div class="success" id="success"></div>
+    </div>
+</teacherCard>
+</html>

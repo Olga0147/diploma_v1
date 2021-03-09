@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import nsu.ru.diploma_v1.configuration.urls.menu.EditMenu;
 import nsu.ru.diploma_v1.model.enums.sysTypes.SysTypes;
 import nsu.ru.diploma_v1.service.database.SysAggregationService;
+import nsu.ru.diploma_v1.service.database.SysAssociationService;
 import nsu.ru.diploma_v1.service.database.SysClassService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,6 +22,7 @@ public class GetFormController {
     private final EditMenu menu;
     private final SysClassService sysClassService;
     private final SysAggregationService sysAggregationService;
+    private final SysAssociationService sysAssociationService;
 
     @GetMapping(EDIT_MODE)
     public String editStart(Model model) {
@@ -119,6 +121,31 @@ public class GetFormController {
         model.addAttribute("m", menu);
 
         return "/edit_mode/new_aggregationImpl";
+    }
+
+    @GetMapping(GetForm.GET_ASSOCIATION_IMPL)
+    public String editNewAssociationImpl(Model model) {
+
+        model.addAttribute("assIdents", sysAssociationService.getSysAssociationsIdsAndNames());
+
+        model.addAttribute("title", "Создать Ассоциацию между Объектами");
+
+        model.addAttribute("m", menu);
+
+        return "/edit_mode/new_associationImpl";
+    }
+
+    @GetMapping(GetForm.GET_TEMPLATE)
+    public String editNewTemplate(Model model) {
+
+        model.addAttribute("classIdents", sysClassService.getAllClassesIds());
+        model.addAttribute("pageIdents", sysClassService.getAllPagesIds());
+
+        model.addAttribute("title", "Создать Шаблон");
+
+        model.addAttribute("m", menu);
+
+        return "/edit_mode/new_template";
     }
 
     private String getPath(String str){

@@ -83,7 +83,6 @@ CREATE TABLE CompositionImplementation (
 CREATE TABLE Template (
     ID           SERIAL NOT NULL PRIMARY KEY,
     NAME         VARCHAR(128) NOT NULL,
-    SystemName   VARCHAR(128) NOT NULL,
     BODY         TEXT NOT NULL,
     OwnerClassId INTEGER NOT NULL REFERENCES Class(ID),
     DESCRIPTION  TEXT
@@ -152,6 +151,6 @@ INSERT INTO Composition (ID,NAME,SystemName,FromClassId,ToClassId) VALUES
 (1,'включает в себя','включает в себя123',1,2),
 (2,'включен в','включен в123',2,1);
 
-INSERT INTO Template (ID,NAME,SystemName,BODY,OwnerClassId,DESCRIPTION) VALUES
-(1,'v1','template_v11','Hello world!',1,'non var template'),
-(2,'v1','template_v12','<h2>Some lecture</h2>',2,'non var template');
+INSERT INTO Template (ID,NAME,BODY,OwnerClassId,DESCRIPTION) VALUES
+(1,'v1','Hello world!',1,'non var template'),
+(2,'v1','<h2>Some lecture</h2>',2,'non var template');

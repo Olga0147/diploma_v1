@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <div class = "inner" id = "toDelete">
+        <h2 align="center" th:text="${title}"></h2>
+        <h2 align="center" th:text="${classId}" th:id="'classId'" style="color: #BABABA"></h2>
+
+            <form onsubmit="sendPost(); return false;" method="post">
+                <p><label for="name">Название</label><textarea id="name" placeholder="Class_name" cols="60" rows="1"></textarea></p>
+                <p><label for="description">Описание</label><textarea id="description" placeholder="for page Home" cols="60" rows="2"></textarea></p>
+                <p><label for="body">Тело</label><textarea id="body" placeholder="<div>Hello</div>" cols="60" rows="5"></textarea></p>
+                <p><input type="submit" value="Сохранить шаблон"></p>
+            </form>
+    </div>
+</html>

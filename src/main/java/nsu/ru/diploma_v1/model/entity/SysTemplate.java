@@ -2,6 +2,7 @@ package nsu.ru.diploma_v1.model.entity;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
@@ -12,14 +13,12 @@ import javax.persistence.*;
 @Table(name = "Template")
 public class SysTemplate {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GenericGenerator(name="keygen_temp" , strategy="increment")
+    @GeneratedValue(generator="keygen_temp")
     private Integer id;
 
     @Column(nullable = false)
     private String name;
-
-    @Column(nullable = false, unique = true)
-    private String systemName;
 
     @Lob
     @Type(type = "org.hibernate.type.TextType")
