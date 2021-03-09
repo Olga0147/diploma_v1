@@ -7,6 +7,7 @@ import nsu.ru.diploma_v1.repository.SysAggregationImplRepository;
 import nsu.ru.diploma_v1.repository.SysAggregationRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.LinkedList;
 import java.util.List;
 
 @Service
@@ -20,19 +21,36 @@ public class SysAggregationService {
         return sysAggregationRepository.findAll();
     }
 
-    public List<SysAggregationImpl> getSysAggregationsImpl(){
-        return sysAggregationImplRepository.findAll();
+    public List<String> getSysAggregationsIdsAndNames(){
+        List<String> result = new LinkedList<>();
+
+        List<SysAggregation> list = sysAggregationRepository.findAll();
+        for (SysAggregation sysAggregation : list) {
+            result.add(String.format("%d-%s",sysAggregation.getId(),sysAggregation.getName()));
+        }
+        return result;
     }
 
     public SysAggregation getSysAggregation(int id){
         return sysAggregationRepository.getSysAggregationById(id);
     }
 
+    public void saveSysAggregation(SysAggregation sysAggregation){
+        sysAggregationRepository.save(sysAggregation);
+    }
+
+    //----
+
+    public List<SysAggregationImpl> getSysAggregationsImpl(){
+        return sysAggregationImplRepository.findAll();
+    }
+
     public SysAggregationImpl getSysAggregationImpl(int id){
         return sysAggregationImplRepository.getSysAggregationImplById(id);
     }
 
-    public void saveSysAggregation(SysAggregation sysAggregation){
-        sysAggregationRepository.save(sysAggregation);
+    public void saveSysAggregationImpl(SysAggregationImpl sysAggregation){
+        sysAggregationImplRepository.save(sysAggregation);
     }
+
 }

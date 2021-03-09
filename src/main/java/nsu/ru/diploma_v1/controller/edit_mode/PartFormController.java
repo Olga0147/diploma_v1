@@ -1,14 +1,19 @@
 package nsu.ru.diploma_v1.controller.edit_mode;
 
 import lombok.RequiredArgsConstructor;
+import nsu.ru.diploma_v1.model.entity.SysAggregation;
 import nsu.ru.diploma_v1.model.entity.SysAttribute;
+import nsu.ru.diploma_v1.model.entity.SysClass;
+import nsu.ru.diploma_v1.model.entity.SysObject;
 import nsu.ru.diploma_v1.model.enums.sysTypes.SysTypes;
+import nsu.ru.diploma_v1.service.database.SysAggregationService;
 import nsu.ru.diploma_v1.service.database.SysClassService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import static nsu.ru.diploma_v1.configuration.urls.mode.EditMode.PartForm;
@@ -17,6 +22,7 @@ import static nsu.ru.diploma_v1.configuration.urls.mode.EditMode.PartForm;
 @RequiredArgsConstructor
 public class PartFormController {
     private final SysClassService sysClassService;
+    private final SysAggregationService sysAggregationService;
 
     @GetMapping(PartForm.ATTRIBUTE_FORM)
     public String editNewPage(Model model,@PathVariable String length) {
@@ -40,5 +46,37 @@ public class PartFormController {
         model.addAttribute("title", "Создать Объект");
 
         return "/edit_mode/new_object_by_class";
+    }
+
+    @GetMapping(PartForm.AGGREGATION_IMPL_FORM)
+    public String editNewAggregationImpl(Model model, @PathVariable Integer aggregationId) {
+
+        SysAggregation sysAggregation = sysAggregationService.getSysAggregation(aggregationId);
+        int fromClassId = sysAggregation.getFromClassId();
+        int toClassId  = sysAggregation.getToClassId();
+
+        SysClass fromClass = sysClassService.getClassById(fromClassId);
+        SysClass toClass = sysClassService.getClassById(toClassId);
+
+        List<SysObject> fromObject = fromClass.getObjectList();
+        List<SysObject> toObject = toClass.getObjectList();
+
+        List<String> idAndNameFromObject = new LinkedList<>();
+        for (SysObject sysObject : fromObject) {
+            idAndNameFromObject.add(String.format("%d",sysObject.getId()));
+        }
+
+        List<String> idAndNameToObject = new LinkedList<>();
+        for (SysObject sysObject : toObject) {
+            idAndNameToObject.add(String.format("%d",sysObject.getId()));
+        }
+
+        model.addAttribute("aggregationId", aggregationId);
+        model.addAttribute("fromObjects", idAndNameFromObject);
+        model.addAttribute("toObjects", idAndNameToObject);
+
+        model.addAttribute("title", "Выбрать из доступных Объектов");
+
+        return "/edit_mode/new_aggregationImpl_by_aggregation";
     }
 }

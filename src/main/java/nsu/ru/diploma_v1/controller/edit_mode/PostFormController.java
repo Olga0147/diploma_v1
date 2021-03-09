@@ -5,6 +5,7 @@ import nsu.ru.diploma_v1.model.dto.AnswerMessage;
 import nsu.ru.diploma_v1.model.dto.NewClassForm;
 import nsu.ru.diploma_v1.model.dto.NewObjectForm;
 import nsu.ru.diploma_v1.model.entity.SysAggregation;
+import nsu.ru.diploma_v1.model.entity.SysAggregationImpl;
 import nsu.ru.diploma_v1.model.entity.SysAssociation;
 import nsu.ru.diploma_v1.model.entity.SysComposition;
 import nsu.ru.diploma_v1.service.database.SysAggregationService;
@@ -65,6 +66,13 @@ public class PostFormController {
     public AnswerMessage postNewComposition(@RequestBody SysComposition sysComposition) {
         //TODO ERROR : unsuccessful
         sysCompositionService.saveSysComposition(sysComposition);
+        return new AnswerMessage("Удачно!");
+    }
+
+    @PostMapping(PostForm.POST_AGGREGATION_IMPL)
+    public AnswerMessage postNewAggregationImpl(@RequestBody SysAggregationImpl sysAggregation, @PathVariable Integer aggregationId) {
+        //TODO ERROR : unsuccessful
+        sysAggregationService.saveSysAggregationImpl(sysAggregation);
         return new AnswerMessage("Удачно!");
     }
 }
