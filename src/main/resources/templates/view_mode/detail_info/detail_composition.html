@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="fragments/menu :: header-css"/>
+    <meta charset="UTF-8">
+    <title th:text="${title}"></title>
+</head>
+<div th:replace="fragments/menu :: header"/>
+
+<div class = "inner" >
+    <h2 th:text="${title}"></h2>
+    <table>
+        <thead>
+        <tr>
+            <th>Идентификатор</th>
+            <th>Имя</th>
+            <th>Системное Имя</th>
+            <th>Начало</th>
+            <th>Конец</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td th:text="${composition.id}"></td>
+            <td th:text="${composition.name}"></td>
+            <td th:text="${composition.systemName}"></td>
+            <td ><a th:href="@{${detailClassPath}+${composition.toClassId}}" th:text="${composition.fromClassId}"></a></td>
+            <td ><a th:href="@{${detailClassPath}+${composition.toClassId}}" th:text="${composition.toClassId}"></a></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<div class = "inner" th:switch="${compositionsImpl.size()}">
+    <h2>Реализации композиции</h2>
+    <h3 th:case="0">Не было найдено ни одной композиции!</h3>
+    <div th:case="*">
+        <table>
+            <thead>
+            <tr>
+                <th>Идентификатор</th>
+                <th>Начало</th>
+                <th>Конец</th>
+                <th>Детально</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="compositionI : ${compositionsImpl}">
+                <td th:text="${compositionI.id}"></td>
+                <td ><a th:href="@{${detailObjectPath}+${compositionI.fromObjectId}}" th:text="${compositionI.fromObjectId}"></a></td>
+                <td><a th:href="@{${detailObjectPath}+${compositionI.toObjectId}}" th:text="${compositionI.toObjectId}"></a></td>
+                <td ><a th:href="@{${detailCompositionImplPath}+${compositionI.id}}">(---)</a></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</html>

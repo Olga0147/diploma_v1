@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="fragments/menu :: header-css"/>
+    <meta charset="UTF-8">
+    <title th:text="${title}"></title>
+</head>
+<div th:replace="fragments/menu :: header"/>
+<div class = "inner" th:switch="${compositionsImpl.size()}">
+    <h2 th:case="0">Не было найдено ни одной композиции!</h2>
+    <div th:case="*">
+        <h2 th:text="${title}"></h2>
+        <table>
+            <thead>
+            <tr>
+                <th>Идентификатор</th>
+                <th>Якорь</th>
+                <th>Начало</th>
+                <th>Конец</th>
+                <th>Детали</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="composition : ${compositionsImpl}">
+                <td th:text="${composition.id}"></td>
+                <td th:text="${composition.fragment}"></td>
+                <td th:text="${composition.fromObjectId}"></td>
+                <td th:text="${composition.toObjectId}"></td>
+                <td ><a th:href="@{${detailPath}+${composition.id}}" >(---)</a></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</html>

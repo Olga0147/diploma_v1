@@ -23,5 +23,7 @@ public class ViewMenu extends EntityPath {
     public final String associationPath =     action + ASSOCIATION;
     public final String associationImplPath = action + ASSOCIATION_IMPL;
     public final String templatePath =        action + TEMPLATE;
+    public final String compositionPath =     action + COMPOSITION;
+    public final String compositionImplPath =     action + COMPOSITION_IMPL;
 
 }

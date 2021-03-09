@@ -1,6 +1,4 @@
-package nsu.ru.diploma_v1.model.enums;
-
-import lombok.NoArgsConstructor;
+package nsu.ru.diploma_v1.model.enums.sysTypes;
 
 import java.util.HashMap;
 import java.util.LinkedList;

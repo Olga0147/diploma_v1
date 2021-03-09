@@ -17,6 +17,8 @@ public class ViewMode extends EntityPath {
         public static final String GET_ASSOCIATION =      PREF + ASSOCIATION;
         public static final String GET_ASSOCIATION_IMPL = PREF + ASSOCIATION_IMPL;
         public static final String GET_TEMPLATE =         PREF + TEMPLATE;
+        public static final String GET_COMPOSITION =      PREF + COMPOSITION;
+        public static final String GET_COMPOSITION_IMPL = PREF + COMPOSITION_IMPL;
     }
 
     public static class DetailInfo{
@@ -30,6 +32,8 @@ public class ViewMode extends EntityPath {
         public static final String GET_ASSOCIATION =      PREF +      ASSOCIATION + "/{id}";
         public static final String GET_ASSOCIATION_IMPL = PREF + ASSOCIATION_IMPL + "/{id}";
         public static final String GET_TEMPLATE =         PREF +         TEMPLATE + "/{id}";
+        public static final String GET_COMPOSITION =      PREF +      COMPOSITION + "/{id}";
+        public static final String GET_COMPOSITION_IMPL = PREF + COMPOSITION_IMPL + "/{id}";
 
     }
 }

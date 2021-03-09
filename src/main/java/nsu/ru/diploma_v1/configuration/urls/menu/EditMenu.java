@@ -23,4 +23,5 @@ public class EditMenu extends EntityPath {
     public final String associationPath =     action + ASSOCIATION;
     public final String associationImplPath = action + ASSOCIATION_IMPL;
     public final String templatePath =        action + TEMPLATE;
+    public final String compositionPath =     action + COMPOSITION;
 }

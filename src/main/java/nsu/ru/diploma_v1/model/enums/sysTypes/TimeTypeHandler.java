@@ -1,21 +1,19 @@
-package nsu.ru.diploma_v1.model.sysTypes;
+package nsu.ru.diploma_v1.model.enums.sysTypes;
 
 import nsu.ru.diploma_v1.model.entity.SysAttribute;
-import nsu.ru.diploma_v1.model.enums.SysTypes;
 import org.springframework.stereotype.Component;
 
 @Component
-public class FloatTypeHandler implements AttributeTypeHandler {
+public class TimeTypeHandler implements AttributeTypeHandler {
 
     @Override
     public SysTypes getType() {
-        return SysTypes.FLOAT;
+        return SysTypes.TIME;
     }
 
     @Override
     public Object handle(SysAttribute attribute, Object value) {
-        return Float.parseFloat((String) value);
+        //TODO DATE : convert and check for bd
+        return null;
     }
-
-
 }
