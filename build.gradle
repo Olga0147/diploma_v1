@@ -33,6 +33,7 @@ dependencies {
 
 	runtimeOnly "org.postgresql:postgresql"
 	implementation "org.hibernate:hibernate-core:5.4.10.Final"
+	implementation 'org.jsoup:jsoup:1.13.1'
 }
 
 test {

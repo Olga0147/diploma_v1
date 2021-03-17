@@ -53,15 +53,6 @@ public class SysClass {
     List<SysAssociation> associationToList;
 
     /**
-     * Композиции
-     */
-    @OneToMany(mappedBy="fromSysClass", fetch=FetchType.LAZY)
-    List<SysComposition> compositionFromList;
-
-    @OneToMany(mappedBy="toSysClass", fetch=FetchType.LAZY)
-    List<SysComposition> compositionToList;
-
-    /**
      * Аттрибуты
      */
     @OneToMany(mappedBy="ownerSysClass", fetch=FetchType.LAZY)

@@ -97,20 +97,6 @@ public class GetFormController {
         return "/edit_mode/new_association";
     }
 
-    @GetMapping(GetForm.GET_COMPOSITION)
-    public String editNewComposition(Model model) {
-
-        List<String> list = sysClassService.getAllClassesIds();
-        list.addAll(sysClassService.getAllPagesIds());
-        model.addAttribute("classIdents", list);
-
-        model.addAttribute("title", "Создать Композицию");
-
-        model.addAttribute("m", menu);
-
-        return "/edit_mode/new_composition";
-    }
-
     @GetMapping(GetForm.GET_AGGREGATION_IMPL)
     public String editNewAggregationImpl(Model model) {
 

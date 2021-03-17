@@ -19,7 +19,6 @@ public class ViewInfoController {
 
     private final SysAggregationService sysAggregationService;
     private final SysAssociationService sysAssociationService;
-    private final SysCompositionService sysCompositionService;
 
     private final SysTemplateService sysTemplateService;
 
@@ -88,18 +87,6 @@ public class ViewInfoController {
         return "/view_mode/info/associations";
     }
 
-    @GetMapping(Info.GET_COMPOSITION)
-    public String showInfoCompositionList(Model model) {
-
-        model.addAttribute("compositions", sysCompositionService.getSysCompositions());
-
-        model.addAttribute("title", "Композиции");
-        model.addAttribute("detailPath", getPath(DetailInfo.GET_COMPOSITION));
-
-        model.addAttribute("m", menu);
-        return "/view_mode/info/compositions";
-    }
-
     @GetMapping(Info.GET_TEMPLATE)
     public String showInfoTemplatesList(Model model) {
 
@@ -148,19 +135,6 @@ public class ViewInfoController {
         model.addAttribute("m", menu);
 
         return "/view_mode/info/associations_impl";
-    }
-
-    @GetMapping(Info.GET_COMPOSITION_IMPL)
-    public String showInfoCompositionImplList(Model model) {
-
-        model.addAttribute("compositionsImpl", sysCompositionService.getSysCompositionsImpl());
-
-        model.addAttribute("title", "Композиции Объектов");
-        model.addAttribute("detailPath", getPath(DetailInfo.GET_COMPOSITION_IMPL));
-
-        model.addAttribute("m", menu);
-
-        return "/view_mode/info/compositions_impl";
     }
 
     private String getPath(String str){

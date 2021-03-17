@@ -21,7 +21,6 @@ public class ViewDetailInfoController {
     private final SysClassService sysClassService;
     private final SysAggregationService sysAggregationService;
     private final SysAssociationService sysAssociationService;
-    private final SysCompositionService sysCompositionService;
     private final SysTemplateService sysTemplateService;
     private final SysObjectService sysObjectService;
     private final CustomService customService;
@@ -98,30 +97,11 @@ public class ViewDetailInfoController {
         return "/view_mode/detail_info/detail_association";
     }
 
-    @GetMapping(DetailInfo.GET_COMPOSITION)
-    public String showInfoComposition(Model model, @PathVariable String id) {
-
-        //TODO: ERROR NOT FOUND
-        SysComposition composition = sysCompositionService.getSysComposition(Integer.parseInt(id));
-
-        model.addAttribute("composition", composition);
-        model.addAttribute("compositionsImpl", composition.getSysCompositionList());
-
-        model.addAttribute("title", "Композиция: детально");
-        model.addAttribute("detailObjectPath", getPath(DetailInfo.GET_OBJECT));
-        model.addAttribute("detailClassPath", getPath(DetailInfo.GET_CLASS));
-        model.addAttribute("detailCompositionImplPath", getPath(DetailInfo.GET_COMPOSITION_IMPL));
-
-        model.addAttribute("m", menu);
-
-        return "/view_mode/detail_info/detail_composition";
-    }
-
     @GetMapping(DetailInfo.GET_TEMPLATE)
-    public String showInfoTemplate(Model model, @PathVariable String id) {
+    public String showInfoTemplate(Model model, @PathVariable Integer id) {
 
         //TODO: ERROR NOT FOUND
-        SysTemplate template = sysTemplateService.getSysTemplate(Integer.parseInt(id));
+        SysTemplate template = sysTemplateService.getSysTemplate(id);
 
         model.addAttribute("template", template);
 
@@ -134,12 +114,12 @@ public class ViewDetailInfoController {
     }
 
     @GetMapping(DetailInfo.GET_OBJECT)
-    public String showInfoObject(Model model, @PathVariable String id) {
+    public String showInfoObject(Model model, @PathVariable Integer id) {
 
         //TODO: ERROR NOT FOUND
-        SysObject sysObject = sysObjectService.getSysObjectById(Integer.parseInt(id));
+        SysObject sysObject = sysObjectService.getSysObjectById(id);
         SysClass sysClass = sysObject.getOwnerSysClass();
-        Map<String, Object> object = customService.getObject(sysClass.getSystemName(),Integer.parseInt(id));
+        Map<String, Object> object = customService.getObject(sysClass.getSystemName(),id);
 
         model.addAttribute("object", object.entrySet());
 
@@ -198,25 +178,6 @@ public class ViewDetailInfoController {
         model.addAttribute("m", menu);
 
         return "/view_mode/detail_info/detail_association_impl";
-    }
-
-    @GetMapping(DetailInfo.GET_COMPOSITION_IMPL)
-    public String showInfoCompositionImpl(Model model, @PathVariable Integer id) {
-
-        //TODO: ERROR NOT FOUND
-        //TODO: JUST DO IT
-//        SysAssociationImpl associationImpl = sysAssociationService.getSysAssociationImpl(id);
-//
-//        model.addAttribute("associationImpl", associationImpl);
-//
-//        model.addAttribute("title", " Гиперсвязь: детально");
-//        model.addAttribute("detailObjectPath", getPath(DetailInfo.GET_OBJECT));
-//        model.addAttribute("detailAssociationPath", getPath(DetailInfo.GET_ASSOCIATION));
-//
-//        model.addAttribute("m", menu);
-//
-//        return "/view_mode/detail_info/detail_association_impl";
-        return null;
     }
 
         private String getPath(String str){

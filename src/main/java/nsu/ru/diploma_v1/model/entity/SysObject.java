@@ -42,13 +42,4 @@ public class SysObject {
 
     @OneToMany(mappedBy="toSysObject", fetch=FetchType.LAZY)
     List<SysAssociationImpl> associationImplToList;
-
-    /**
-     * Композиции
-     */
-    @OneToMany(mappedBy="fromSysObject", fetch=FetchType.LAZY)
-    List<SysCompositionImpl> compositionImplFromList;
-
-    @OneToMany(mappedBy="toSysObject", fetch=FetchType.LAZY)
-    List<SysCompositionImpl> compositionImplToList;
 }

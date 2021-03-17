@@ -7,7 +7,6 @@ import nsu.ru.diploma_v1.model.dto.NewObjectForm;
 import nsu.ru.diploma_v1.model.entity.*;
 import nsu.ru.diploma_v1.service.database.SysAggregationService;
 import nsu.ru.diploma_v1.service.database.SysAssociationService;
-import nsu.ru.diploma_v1.service.database.SysCompositionService;
 import nsu.ru.diploma_v1.service.database.SysTemplateService;
 import nsu.ru.diploma_v1.service.system.CustomService;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,7 +22,6 @@ public class PostFormController {
     private final CustomService customService;
     private final SysAggregationService sysAggregationService;
     private final SysAssociationService sysAssociationService;
-    private final SysCompositionService sysCompositionService;
     private final SysTemplateService sysTemplateService;
 
     @PostMapping(PostForm.POST_PAGE)
@@ -58,13 +56,6 @@ public class PostFormController {
     public AnswerMessage postNewAssociation(@RequestBody SysAssociation sysAssociation) {
         //TODO ERROR : unsuccessful
         sysAssociationService.saveSysAssociation(sysAssociation);
-        return new AnswerMessage("Удачно!");
-    }
-
-    @PostMapping(PostForm.POST_COMPOSITION)
-    public AnswerMessage postNewComposition(@RequestBody SysComposition sysComposition) {
-        //TODO ERROR : unsuccessful
-        sysCompositionService.saveSysComposition(sysComposition);
         return new AnswerMessage("Удачно!");
     }
 

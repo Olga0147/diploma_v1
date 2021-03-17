@@ -64,22 +64,6 @@ CREATE TABLE AggregationImplementation (
     ToObjectId   INTEGER NOT NULL REFERENCES Object(ID)
 );
 
-CREATE TABLE Composition (
-     ID            SERIAL NOT NULL PRIMARY KEY,
-     NAME          VARCHAR(128) NOT NULL,
-     SystemName   VARCHAR(128) NOT NULL,
-     FromClassId INTEGER NOT NULL REFERENCES Class(ID),
-     ToClassId   INTEGER NOT NULL REFERENCES Class(ID)
-);
-
-CREATE TABLE CompositionImplementation (
-       ID             SERIAL NOT NULL PRIMARY KEY,
-       FRAGMENT          VARCHAR(128) NOT NULL,
-       CompositionId INTEGER NOT NULL REFERENCES Composition(ID),
-       FromObjectId INTEGER NOT NULL REFERENCES Object(ID),
-       ToObjectId   INTEGER NOT NULL REFERENCES Object(ID)
-);
-
 CREATE TABLE Template (
     ID           SERIAL NOT NULL PRIMARY KEY,
     NAME         VARCHAR(128) NOT NULL,
@@ -146,10 +130,6 @@ INSERT INTO Association (ID,NAME,FromClassId,ToClassId) VALUES
 INSERT INTO AssociationImplementation (ID,AssociationId,FromObjectId,ToObjectId) VALUES
 (1,1,1,2),
 (2,2,2,1);
-
-INSERT INTO Composition (ID,NAME,SystemName,FromClassId,ToClassId) VALUES
-(1,'включает в себя','включает в себя123',1,2),
-(2,'включен в','включен в123',2,1);
 
 INSERT INTO Template (ID,NAME,BODY,OwnerClassId,DESCRIPTION) VALUES
 (1,'v1','Hello world!',1,'non var template'),
