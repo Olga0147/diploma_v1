@@ -47,4 +47,8 @@ public class SysAggregationImpl {
     @ManyToOne
     @JoinColumn(name="aggregationId", nullable=false, insertable = false,updatable = false)
     private SysAggregation sysAggregation;
+
+    @ManyToOne
+    @JoinColumn(name="AttributeId", nullable=false, insertable = false,updatable = false)
+    private SysAttribute sysAttribute;
 }

@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -31,6 +32,9 @@ public class SysAttribute {
     @ManyToOne
     @JoinColumn(name="ownerClassId", nullable=false, insertable = false,updatable = false)
     private SysClass ownerSysClass;
+
+    @OneToMany(mappedBy="sysAttribute", fetch=FetchType.LAZY)
+    List<SysAggregationImpl> notNeedAtAll;//TODO : understand and delete
 
     public SysAttribute(Integer id, String name, Integer ownerClassId, Integer attributeType, Integer attributeSize, boolean canBeNull) {
         this.id = id;
