@@ -9,7 +9,6 @@ public class ViewMode extends EntityPath {
     public static class Info {
         public static final String PREF = VIEW_MODE +"/info";
 
-        public static final String GET_PAGE =             PREF + PAGE;
         public static final String GET_CLASS =            PREF + CLASS;
         public static final String GET_OBJECT =           PREF + OBJECT;
         public static final String GET_AGGREGATION =      PREF + AGGREGATION;
@@ -22,7 +21,6 @@ public class ViewMode extends EntityPath {
     public static class DetailInfo{
         public static final String PREF = VIEW_MODE +"/detail-info";
 
-        public static final String GET_PAGE =             PREF +             PAGE + "/{id}";
         public static final String GET_CLASS =            PREF +            CLASS + "/{id}";
         public static final String GET_OBJECT =           PREF +           OBJECT + "/{id}";
         public static final String GET_AGGREGATION =      PREF +      AGGREGATION + "/{id}";

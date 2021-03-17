@@ -2,7 +2,6 @@ CREATE TABLE Class (
     ID          SERIAL NOT NULL PRIMARY KEY,
     NAME        VARCHAR(128) NOT NULL,
     SystemName VARCHAR(128),
-    IsPage     BOOLEAN NOT NULL,
     DESCRIPTION TEXT
 );
 
@@ -79,9 +78,9 @@ CREATE TABLE Resource (
     OwnerClassId INTEGER NOT NULL REFERENCES Class(ID)
 );
 
-INSERT INTO Class (ID,NAME,SystemName,DESCRIPTION,IsPage) VALUES
-(1,'Home','Class_1','Начальная страница',true),
-(2,'Лекция','Class_2','Обычная',false);
+INSERT INTO Class (ID,NAME,SystemName,DESCRIPTION) VALUES
+(1,'Home','Class_1','Начальная страница'),
+(2,'Лекция','Class_2','Обычная');
 
 INSERT INTO Attribute (ID,NAME,OwnerClassId,AttributeType,AttributeSize, CanBeNull)VALUES
 (1,'name',1,5,64,false),

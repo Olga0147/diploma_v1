@@ -24,12 +24,8 @@ public class SysClassService {
      * Работа с классом
      */
 
-    public List<SysClass> getPages(){
-        return sysClassRepository.getSysClassesByIsPageIsTrue();
-    }
-
     public List<SysClass> getClasses(){
-        return sysClassRepository.getSysClassesByIsPageIsFalse();
+        return sysClassRepository.findAll();
     }
 
     public SysClass getClassById(int classId){
@@ -40,17 +36,8 @@ public class SysClassService {
         return sysClassRepository.save(sysClass);
     }
 
-    public List<String> getAllPagesIds(){
-        List<SysClass> pages = sysClassRepository.getSysClassesByIsPageIsTrue();
-        List<String> str = new LinkedList<>();
-        for (SysClass page : pages) {
-            str.add(page.getId()+"-"+page.getName());
-        }
-        return str;
-    }
-
     public List<String> getAllClassesIds(){
-        List<SysClass> classes = sysClassRepository.getSysClassesByIsPageIsFalse();
+        List<SysClass> classes = sysClassRepository.findAll();
         List<String> str = new LinkedList<>();
         for (SysClass sysClass : classes) {
             str.add(sysClass.getId()+"-"+sysClass.getName());

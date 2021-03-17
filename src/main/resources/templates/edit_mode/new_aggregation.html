@@ -15,11 +15,11 @@
         <form id = "toDelete" onsubmit="sendPost(); return false;" method="post">
             <p><label for="name">Название</label><textarea id="name" placeholder="Aggregation_name" cols="60" rows="1"></textarea></p>
 
-            <p align="center">Выбор Страницы:</p>
+            <p align="center">Выбор Источника отношения:</p>
             <select id="pageStartChoise">
-                <option th:each="pageIdent : ${pageIdents}" th:text="${pageIdent}"></option>
+                <option th:each="classIdent : ${classIdents}" th:text="${classIdent}"></option>
             </select>
-            <p align="center">Выбор Класса (который будет включен в страницу):</p>
+            <p align="center">Выбор Цели отношения:</p>
             <select id="pageEndChoise">
                 <option th:each="classIdent : ${classIdents}" th:text="${classIdent}"></option>
             </select>

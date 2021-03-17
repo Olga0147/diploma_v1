@@ -9,9 +9,8 @@ import java.util.List;
 @Repository
 public interface SysClassRepository extends JpaRepository<SysClass, Long> {
 
-    List<SysClass> getSysClassesByIsPageIsTrue();
 
-    List<SysClass> getSysClassesByIsPageIsFalse();
+    List<SysClass> findAll();
 
     SysClass getSysClassById(Integer id);
 

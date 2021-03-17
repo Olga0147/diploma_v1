@@ -12,7 +12,5 @@ public class NewClassForm {
     @NotNull
     private String name;
     private String description;
-    @NotNull
-    private boolean isPage;
     private List<NewAttributeForm> attributes;
 }

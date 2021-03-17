@@ -17,11 +17,6 @@
                 <option th:each="classIdent : ${classIdents}" th:text="${classIdent}"></option>
             </select>
             <button type="button" class="btn" onclick="addClassForm()">Загрузить форму для Класса</button>
-            <p align="center" th:text="' ИЛИ '"></p>
-            <select th:id="'pageFirstChoise'">
-                <option th:each="pageIdent : ${pageIdents}" th:text="${pageIdent}"></option>
-            </select>
-            <button type="button" class="btn" onclick="addPageForm()">Загрузить форму для Страницы</button>
         </div>
 
 

@@ -15,7 +15,6 @@ public class EditMenu extends EntityPath {
     public final String edit_mode = EDIT_MODE;
     public final String action = EditMode.GetForm.PREF;
 
-    public final String pagePath =            action + PAGE;
     public final String classPath =           action + CLASS;
     public final String objectPath =          action + OBJECT;
     public final String aggregationPath =     action + AGGREGATION;

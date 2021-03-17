@@ -27,8 +27,8 @@ public class ViewDetailInfoController {
 
     private final ViewMenu menu;
 
-    @GetMapping(DetailInfo.GET_PAGE)
-    public String showInfoPage(Model model, @PathVariable String id) {
+    @GetMapping(DetailInfo.GET_CLASS)
+    public String showInfoClass(Model model, @PathVariable String id) {
 
         //TODO: ERROR NOT FOUND
         SysClass sysClass = sysClassService.getClassById(Integer.parseInt(id));
@@ -41,7 +41,7 @@ public class ViewDetailInfoController {
         model.addAttribute("associationsT", sysClass.getAssociationToList());
         model.addAttribute("templates", sysClass.getTemplateList());
         model.addAttribute("objects", sysClass.getObjectList());
-        model.addAttribute("title", sysClass.isPage() ? "Страница: детально" : "Класс: детально");
+        model.addAttribute("title", "Класс: детально");
 
         model.addAttribute("detailClassPath", getPath(DetailInfo.GET_CLASS));
         model.addAttribute("detailAssociationPath", getPath(DetailInfo.GET_ASSOCIATION));
@@ -51,12 +51,7 @@ public class ViewDetailInfoController {
 
         model.addAttribute("m", menu);
 
-        return "/view_mode/detail_info/detail_pages";
-    }
-
-    @GetMapping(DetailInfo.GET_CLASS)
-    public String showInfoClass(Model model, @PathVariable String id) {
-        return showInfoPage(model,id);
+        return "/view_mode/detail_info/detail_class";
     }
 
     @GetMapping(DetailInfo.GET_AGGREGATION)
@@ -180,7 +175,7 @@ public class ViewDetailInfoController {
         return "/view_mode/detail_info/detail_association_impl";
     }
 
-        private String getPath(String str){
+    private String getPath(String str){
         return str.substring(0, str.length() - 4);
         }
 }

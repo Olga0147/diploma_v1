@@ -7,7 +7,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class EntityPath {
 
-    public static final String PAGE = "/page";
     public static final String CLASS = "/class";
     public static final String OBJECT = "/object";
     public static final String AGGREGATION = "/aggregation";

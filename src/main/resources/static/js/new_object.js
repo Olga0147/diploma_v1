@@ -66,17 +66,3 @@ function addClassForm() {
     $(".innerForm").empty();
     $(".innerForm").append(str);
 }
-
-function addPageForm() {
-    let classId = document.getElementById('pageFirstChoise').value;
-    console.log(classId);
-    let arr = classId.split('-');
-    console.log(arr[0]);
-    let request = new XMLHttpRequest();
-    let url = '/edit-mode/part-form/object/'+arr[0];
-    request.open('GET', url, false);
-    request.send();
-    let str = request.responseText;
-    $(".innerForm").empty();
-    $(".innerForm").append(str);
-}

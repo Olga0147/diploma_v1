@@ -33,18 +33,6 @@ public class GetFormController {
         return "start_edit";
     }
 
-    @GetMapping(GetForm.GET_PAGE)
-    public String editNewPage(Model model) {
-        model.addAttribute("attributeTypes", SysTypes.getSysTypes());
-
-        model.addAttribute("title", "Создать Страницу");
-        model.addAttribute("id",1);
-
-        model.addAttribute("m", menu);
-
-        return "/edit_mode/new_page";
-    }
-
     @GetMapping(GetForm.GET_CLASS)
     public String editNewClass(Model model) {
         model.addAttribute("attributeTypes", SysTypes.getSysTypes());
@@ -61,7 +49,6 @@ public class GetFormController {
     public String editNewObject(Model model) {
 
         model.addAttribute("classIdents", sysClassService.getAllClassesIds());
-        model.addAttribute("pageIdents", sysClassService.getAllPagesIds());
 
         model.addAttribute("title", "Создать Объект");
 
@@ -74,7 +61,6 @@ public class GetFormController {
     public String editNewAggregation(Model model) {
 
         model.addAttribute("classIdents", sysClassService.getAllClassesIds());
-        model.addAttribute("pageIdents", sysClassService.getAllPagesIds());
 
         model.addAttribute("title", "Создать Агрегацию");
 
@@ -87,7 +73,6 @@ public class GetFormController {
     public String editNewAssociation(Model model) {
 
         List<String> list = sysClassService.getAllClassesIds();
-        list.addAll(sysClassService.getAllPagesIds());
         model.addAttribute("classIdents", list);
 
         model.addAttribute("title", "Создать Агрегацию");
@@ -125,7 +110,6 @@ public class GetFormController {
     public String editNewTemplate(Model model) {
 
         model.addAttribute("classIdents", sysClassService.getAllClassesIds());
-        model.addAttribute("pageIdents", sysClassService.getAllPagesIds());
 
         model.addAttribute("title", "Создать Шаблон");
 

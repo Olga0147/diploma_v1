@@ -24,13 +24,6 @@ public class PostFormController {
     private final SysAssociationService sysAssociationService;
     private final SysTemplateService sysTemplateService;
 
-    @PostMapping(PostForm.POST_PAGE)
-    public AnswerMessage postNewPage(@RequestBody NewClassForm newClassForm) {
-        //TODO ERROR : unsuccessful
-        customService.saveClass(newClassForm,true);
-        return new AnswerMessage("Удачно!");
-    }
-
     @PostMapping(PostForm.POST_CLASS)
     public AnswerMessage postNewClass(@RequestBody NewClassForm newClassForm) {
         //TODO ERROR : unsuccessful

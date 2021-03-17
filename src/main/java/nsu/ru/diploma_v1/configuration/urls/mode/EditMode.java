@@ -9,7 +9,6 @@ public class EditMode extends EntityPath {
     public static class GetForm{
         public static final String PREF = EDIT_MODE +"/new";
 
-        public static final String GET_PAGE =             PREF + PAGE;
         public static final String GET_CLASS =            PREF + CLASS;
         public static final String GET_OBJECT =           PREF + OBJECT;
         public static final String GET_AGGREGATION =      PREF + AGGREGATION;
@@ -22,7 +21,6 @@ public class EditMode extends EntityPath {
     public static class PostForm{
         public static final String PREF = EDIT_MODE +"/check";
 
-        public static final String POST_PAGE =             PREF + PAGE;
         public static final String POST_CLASS =            PREF + CLASS;
         public static final String POST_OBJECT =           PREF + OBJECT + "/{classId}";
         public static final String POST_AGGREGATION =      PREF + AGGREGATION;

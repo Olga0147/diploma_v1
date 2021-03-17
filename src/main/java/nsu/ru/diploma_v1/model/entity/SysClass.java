@@ -27,9 +27,6 @@ public class SysClass {
     @Column(unique = true)
     private String systemName;
 
-    @Column(nullable = false)
-    private boolean isPage;
-
     @Lob
     @Type(type = "org.hibernate.type.TextType")
     private String description;

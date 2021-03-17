@@ -46,7 +46,6 @@ public class CustomService {
 
         //зарегистрировали класс
         SysClass sysClass = formMapper.convertToSysClass(newClassForm);
-        sysClass.setPage(isPage);
         sysClass = sysClassService.saveClass(sysClass);
 
         //сгенерировали системное имя и обновили

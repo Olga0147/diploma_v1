@@ -37,18 +37,6 @@ public class ViewInfoController {
         return showStart(model);
     }
 
-    @GetMapping(Info.GET_PAGE)
-    public String showInfoPageList(Model model) {
-
-        model.addAttribute("pages", sysClassService.getPages());
-
-        model.addAttribute("title", "Страницы");
-        model.addAttribute("detailPath", getPath(DetailInfo.GET_PAGE));
-
-        model.addAttribute("m", menu);
-        return "/view_mode/info/pages";
-    }
-
     @GetMapping(Info.GET_CLASS)
     public String showInfoClassList(Model model) {
 
