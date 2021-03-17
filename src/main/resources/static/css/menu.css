@@ -65,3 +65,17 @@ body {
     padding: 10px;
 }
 
+.inner_text th , .inner_text td {
+    border: 1px solid #BABABA;
+    border-collapse: collapse;
+    padding: 10px;
+}
+
+
+.inner_text {
+    text-align: left;
+    margin:0 10% 0 10%;
+    width:80%;
+    padding: 10px;
+}
+
