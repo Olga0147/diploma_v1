@@ -2,6 +2,7 @@ package nsu.ru.diploma_v1.model.entity;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import nsu.ru.diploma_v1.model.enums.relation.AggregationTypes;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -24,6 +25,13 @@ public class SysAggregationImpl {
 
     private Integer toObjectId;
 
+    private Integer toTemplateId;
+
+    private Integer AttributeId;
+
+    @Enumerated(EnumType.ORDINAL)
+    private AggregationTypes type;
+
     @ManyToOne
     @JoinColumn(name="fromObjectId", nullable=false, insertable = false,updatable = false)
     private SysObject fromSysObject;
@@ -31,6 +39,10 @@ public class SysAggregationImpl {
     @ManyToOne
     @JoinColumn(name="toObjectId", nullable=false, insertable = false,updatable = false)
     private SysObject toSysObject;
+
+    @ManyToOne
+    @JoinColumn(name="toTemplateId", nullable=false, insertable = false,updatable = false)
+    private SysTemplate toSysTemplate;
 
     @ManyToOne
     @JoinColumn(name="aggregationId", nullable=false, insertable = false,updatable = false)

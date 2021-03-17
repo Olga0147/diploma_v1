@@ -2,8 +2,7 @@ package nsu.ru.diploma_v1.controller.edit_mode;
 
 import lombok.RequiredArgsConstructor;
 import nsu.ru.diploma_v1.configuration.urls.menu.EditMenu;
-import nsu.ru.diploma_v1.model.enums.sysTypes.SysTypes;
-import nsu.ru.diploma_v1.service.database.SysAggregationService;
+import nsu.ru.diploma_v1.model.enums.database.SysTypes;
 import nsu.ru.diploma_v1.service.database.SysAssociationService;
 import nsu.ru.diploma_v1.service.database.SysClassService;
 import org.springframework.stereotype.Controller;
@@ -21,7 +20,6 @@ public class GetFormController {
 
     private final EditMenu menu;
     private final SysClassService sysClassService;
-    private final SysAggregationService sysAggregationService;
     private final SysAssociationService sysAssociationService;
 
     @GetMapping(EDIT_MODE)
@@ -80,18 +78,6 @@ public class GetFormController {
         model.addAttribute("m", menu);
 
         return "/edit_mode/new_association";
-    }
-
-    @GetMapping(GetForm.GET_AGGREGATION_IMPL)
-    public String editNewAggregationImpl(Model model) {
-
-        model.addAttribute("aggrIdents", sysAggregationService.getSysAggregationsIdsAndNames());
-
-        model.addAttribute("title", "Создать Агрегацию между Объектами");
-
-        model.addAttribute("m", menu);
-
-        return "/edit_mode/new_aggregationImpl";
     }
 
     @GetMapping(GetForm.GET_ASSOCIATION_IMPL)

@@ -6,6 +6,7 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -29,6 +30,9 @@ public class SysTemplate {
     @ManyToOne
     @JoinColumn(name="ownerClassId", nullable=false, insertable = false,updatable = false)
     private SysClass ownerSysClass;
+
+    @OneToMany(mappedBy="toSysTemplate", fetch=FetchType.LAZY)
+    List<SysAggregationImpl> notNeedAtAll;//TODO : understand and delete
 
     @Lob
     @Type(type = "org.hibernate.type.TextType")

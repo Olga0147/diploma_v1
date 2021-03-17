@@ -52,14 +52,6 @@ public class PostFormController {
         return new AnswerMessage("Удачно!");
     }
 
-    @PostMapping(PostForm.POST_AGGREGATION_IMPL)
-    public AnswerMessage postNewAggregationImpl(@RequestBody SysAggregationImpl sysAggregation, @PathVariable Integer aggregationId) {
-        //TODO ERROR : unsuccessful
-        sysAggregation.setAggregationId(aggregationId);
-        sysAggregationService.saveSysAggregationImpl(sysAggregation);
-        return new AnswerMessage("Удачно!");
-    }
-
     @PostMapping(PostForm.POST_ASSOCIATION_IMPL)
     public AnswerMessage postNewAssociationImpl(@RequestBody SysAssociationImpl sysAssociation, @PathVariable Integer associationId) {
         //TODO ERROR : unsuccessful

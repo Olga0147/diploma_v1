@@ -8,7 +8,7 @@ import nsu.ru.diploma_v1.model.dto.ObjectAttribute;
 import nsu.ru.diploma_v1.model.entity.SysAttribute;
 import nsu.ru.diploma_v1.model.entity.SysClass;
 import nsu.ru.diploma_v1.model.entity.SysObject;
-import nsu.ru.diploma_v1.model.enums.sysTypes.AttributeTypeHandler;
+import nsu.ru.diploma_v1.model.enums.database.AttributeTypeHandler;
 import nsu.ru.diploma_v1.repository.CustomRepository;
 import nsu.ru.diploma_v1.service.database.SysClassService;
 import nsu.ru.diploma_v1.service.database.SysObjectService;

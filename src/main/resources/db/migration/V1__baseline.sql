@@ -35,6 +35,14 @@ CREATE TABLE Attribute (
    CanBeNull        BOOLEAN NOT NULL
 );
 
+CREATE TABLE Template (
+   ID           SERIAL NOT NULL PRIMARY KEY,
+   NAME         VARCHAR(128) NOT NULL,
+   BODY         TEXT NOT NULL,
+   OwnerClassId INTEGER NOT NULL REFERENCES Class(ID),
+   DESCRIPTION  TEXT
+);
+
 CREATE TABLE Association (
      ID            SERIAL NOT NULL PRIMARY KEY,
      NAME          VARCHAR(128) NOT NULL,
@@ -60,15 +68,10 @@ CREATE TABLE AggregationImplementation (
     ID             SERIAL NOT NULL PRIMARY KEY,
     AggregationId INTEGER NOT NULL REFERENCES Aggregation(ID),
     FromObjectId INTEGER NOT NULL REFERENCES Object(ID),
-    ToObjectId   INTEGER NOT NULL REFERENCES Object(ID)
-);
-
-CREATE TABLE Template (
-    ID           SERIAL NOT NULL PRIMARY KEY,
-    NAME         VARCHAR(128) NOT NULL,
-    BODY         TEXT NOT NULL,
-    OwnerClassId INTEGER NOT NULL REFERENCES Class(ID),
-    DESCRIPTION  TEXT
+    ToObjectId   INTEGER NOT NULL REFERENCES Object(ID),
+    ToTemplateId   INTEGER NOT NULL REFERENCES Template(ID),
+    AttributeId  INTEGER NOT NULL REFERENCES Attribute(ID),
+    Type         INTEGER NOT NULL
 );
 
 CREATE TABLE Resource (
@@ -117,10 +120,6 @@ INSERT INTO Class_2 (ID,TITLE,AUTHOR) VALUES
 INSERT INTO Aggregation (ID,NAME,FromClassId,ToClassId) VALUES
 (1,'включает в себя',1,2),
 (2,'включен в',2,1);
-
-INSERT INTO AggregationImplementation (ID,AggregationId,FromObjectId,ToObjectId) VALUES
-(1,1,1,2),
-(2,2,2,1);
 
 INSERT INTO Association (ID,NAME,FromClassId,ToClassId) VALUES
 (1,'включает в себя',1,2),

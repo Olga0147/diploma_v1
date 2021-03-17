@@ -1,4 +1,4 @@
-package nsu.ru.diploma_v1.model.enums.sysTypes;
+package nsu.ru.diploma_v1.model.enums.database;
 
 import java.util.HashMap;
 import java.util.LinkedList;
