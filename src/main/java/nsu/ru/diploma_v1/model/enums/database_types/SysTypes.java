@@ -1,4 +1,4 @@
-package nsu.ru.diploma_v1.model.enums.database;
+package nsu.ru.diploma_v1.model.enums.database_types;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -52,6 +52,10 @@ public enum SysTypes {
     public static String getDbType(int id){
         SysTypes type = (SysTypes)map.get(id);
         return type.dbType;
+    }
+
+    public static SysTypes getType(int id){
+        return (SysTypes)map.get(id);
     }
 
     public static boolean checkNeedSize(String type){

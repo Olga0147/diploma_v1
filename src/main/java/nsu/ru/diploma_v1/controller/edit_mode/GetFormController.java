@@ -2,7 +2,7 @@ package nsu.ru.diploma_v1.controller.edit_mode;
 
 import lombok.RequiredArgsConstructor;
 import nsu.ru.diploma_v1.configuration.urls.menu.EditMenu;
-import nsu.ru.diploma_v1.model.enums.database.SysTypes;
+import nsu.ru.diploma_v1.model.enums.database_types.SysTypes;
 import nsu.ru.diploma_v1.service.database.SysAssociationService;
 import nsu.ru.diploma_v1.service.database.SysClassService;
 import org.springframework.stereotype.Controller;

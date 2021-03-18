@@ -68,7 +68,6 @@
             <tr>
                 <th>Идентификатор</th>
                 <th>Имя</th>
-                <th>Системное Имя</th>
                 <th>Конец</th>
                 <th>Детально</th>
             </tr>
@@ -77,7 +76,6 @@
             <tr th:each="aggregation : ${aggregationsF}">
                 <td th:text="${aggregation.id}"></td>
                 <td th:text="${aggregation.name}"></td>
-                <td th:text="${aggregation.systemName}"></td>
                 <td><a th:href="@{${detailClassPath}+${aggregation.toClassId}}" th:text="${aggregation.toClassId}"></a></td>
                 <td><a th:href="@{${detailAggregationPath}+${aggregation.id}}">(---)</a></td>
             </tr>
@@ -95,7 +93,6 @@
             <tr>
                 <th>Идентификатор</th>
                 <th>Имя</th>
-                <th>Системное Имя</th>
                 <th>Начало</th>
                 <th>Детально</th>
             </tr>
@@ -104,7 +101,6 @@
             <tr th:each="aggregation : ${aggregationsT}">
                 <td th:text="${aggregation.id}"></td>
                 <td th:text="${aggregation.name}"></td>
-                <td th:text="${aggregation.systemName}"></td>
                 <td ><a th:href="@{${detailClassPath}+${aggregation.fromClassId}}" th:text="${aggregation.fromClassId}"></a></td>
                 <td><a th:href="@{${detailAggregationPath}+${aggregation.id}}">(---)</a></td>
             </tr>
@@ -122,7 +118,6 @@
             <tr>
                 <th>Идентификатор</th>
                 <th>Имя</th>
-                <th>Системное Имя</th>
                 <th>Конец</th>
                 <th>Детально</th>
             </tr>
@@ -131,7 +126,6 @@
             <tr th:each="assosiation : ${associationsF}">
                 <td th:text="${assosiation.id}"></td>
                 <td th:text="${assosiation.name}"></td>
-                <td th:text="${assosiation.systemName}"></td>
                 <td><a th:href="@{${detailClassPath}+${assosiation.toClassId}}" th:text="${assosiation.toClassId}"></a></td>
                 <td><a th:href="@{${detailAssociationPath}+${assosiation.id}}">(---)</a></td>
             </tr>
@@ -149,7 +143,6 @@
             <tr>
                 <th>Идентификатор</th>
                 <th>Имя</th>
-                <th>Системное Имя</th>
                 <th>Начало</th>
                 <th>Детально</th>
             </tr>
@@ -158,7 +151,6 @@
             <tr th:each="assosiation : ${associationsT}">
                 <td th:text="${assosiation.id}"></td>
                 <td th:text="${assosiation.name}"></td>
-                <td th:text="${assosiation.systemName}"></td>
                 <td><a th:href="@{${detailClassPath}+${assosiation.fromClassId}}" th:text="${assosiation.fromClassId}"></a></td>
                 <td><a th:href="@{${detailAssociationPath}+${assosiation.id}}">(---)</a></td>
             </tr>
@@ -176,7 +168,6 @@
             <tr>
                 <th>Идентификатор</th>
                 <th>Имя</th>
-                <th>Системное Имя</th>
                 <th>Описание</th>
                 <th>Детально</th>
             </tr>
@@ -185,7 +176,6 @@
             <tr th:each="template : ${templates}">
                 <td th:text="${template.id}"></td>
                 <td th:text="${template.name}"></td>
-                <td th:text="${template.systemName}"></td>
                 <td th:text="${template.description}"></td>
                 <td><a th:href="@{${detailTemplatePath}+${template.id}}">(---)</a></td>
             </tr>

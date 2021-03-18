@@ -14,7 +14,6 @@
             <tr>
                 <th>Идентификатор</th>
                 <th>Имя</th>
-                <th>Системное Имя</th>
                 <th>Класс - владелец</th>
             </tr>
             </thead>
@@ -22,7 +21,6 @@
             <tr>
                 <td th:text="${template.id}"></td>
                 <td th:text="${template.name}"></td>
-                <td th:text="${template.systemName}"></td>
                 <td ><a th:href="@{${detailClassPath}+${template.ownerClassId}}" th:text="${template.ownerClassId}"></a></td>
             </tr>
             </tbody>
@@ -34,7 +32,7 @@
     <table>
         <tbody>
         <tr>
-            <td th:text="${template.teacherCard}"></td>
+            <td th:text="${template.body}"></td>
         </tr>
         </tbody>
     </table>

@@ -2,7 +2,7 @@ package nsu.ru.diploma_v1.repository;
 
 import lombok.AllArgsConstructor;
 import nsu.ru.diploma_v1.model.entity.SysAttribute;
-import nsu.ru.diploma_v1.model.enums.database.SysTypes;
+import nsu.ru.diploma_v1.model.enums.database_types.SysTypes;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
