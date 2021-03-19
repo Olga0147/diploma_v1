@@ -125,7 +125,7 @@ INSERT INTO Class_1 (ID,FloatField,IntegerField,SmallIntField,StringField,TextFi
 (2, 1.23, 555555555, 66,'Tom','He is not my friend',
         'XMEMO STARTS HERE:
         <div>He reads: <aggregation aggregationId="1" templateId="2" objectId="4" type="hyperlink">Bad Book</aggregation></div>
-        <div><aggregation aggregationId="1" templateId="2" objectId="4" type="object"></aggregation></div>
+        <div style="border:1px solid black"><aggregation aggregationId="1" templateId="2" objectId="4" type="object"></aggregation></div>
         <div><aggregation aggregationId="1" templateId="2" type="objects"></aggregation></div> :XMEMO ENDS HERE');
 
 CREATE TABLE Class_2 (
