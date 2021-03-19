@@ -36,7 +36,7 @@ public class HyperlinkTypeHandler implements AggregationTypeHandler {
         Integer templateId = Integer.parseInt(template.getTextContent());
         Integer objectId = Integer.parseInt(object.getTextContent());
 
-        //make new aggregation impl
+        //todo make new aggregation impl
 
 
         return String.format("<a href=\"%s/%d/%d\"> %s </a>",ModePath.USER_MODE,objectId,templateId,innerText);

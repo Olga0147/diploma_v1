@@ -5,13 +5,13 @@ import nsu.ru.diploma_v1.exception.ValidationException;
 import nsu.ru.diploma_v1.mapper.FormMapper;
 import nsu.ru.diploma_v1.model.dto.NewClassForm;
 import nsu.ru.diploma_v1.model.dto.ObjectAttribute;
-import nsu.ru.diploma_v1.model.entity.SysAttribute;
-import nsu.ru.diploma_v1.model.entity.SysClass;
-import nsu.ru.diploma_v1.model.entity.SysObject;
+import nsu.ru.diploma_v1.model.entity.*;
 import nsu.ru.diploma_v1.model.enums.database_types.AttributeTypeHandler;
+import nsu.ru.diploma_v1.model.enums.database_types.SysTypes;
 import nsu.ru.diploma_v1.repository.CustomRepository;
 import nsu.ru.diploma_v1.service.database.SysClassService;
 import nsu.ru.diploma_v1.service.database.SysObjectService;
+import nsu.ru.diploma_v1.service.database.SysTemplateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
@@ -103,6 +103,48 @@ public class CustomService {
     public Map<String, Object> getObject(@NonNull String tableName, @NonNull int id){
         //TODO: исключение что не нашли
         return customRepository.getObject(tableName, id);
+    }
+
+    public Map<String, AttributeAndValue> getObjectForTemplate(Integer objectId){
+        SysObject sysObject = sysObjectService.getSysObjectById(objectId);
+        SysClass sysClass = sysObject.getOwnerSysClass();
+        Map<String, Object> object = getObject(sysClass.getSystemName(),objectId);
+
+        Map<String, AttributeAndValue> nameValueFields = new HashMap<>();
+
+        List<SysAttribute> sysAttributes = sysClass.getAttributeList();
+        for (SysAttribute attr : sysAttributes) {
+
+            Integer type = attr.getAttributeType();
+
+            AttributeTypeHandler attributeTypeHandler = attributeTypeMap.get(type);
+            String notParsedValue = attributeTypeHandler.toString(object.get(attr.getName()));
+
+            Integer t = attr.getAttributeType();
+            int t1 = SysTypes.XMEMO.getId();
+
+            String parsedValue = notParsedValue;//;
+
+//            if(t.equals(t1)){
+//                parsedValue = templateService.parseXmemo(sysObject,notParsedValue);
+//            }else{
+//                parsedValue = notParsedValue;
+//            }
+
+            AttributeAndValue attributeAndValue = new AttributeAndValue(
+                    attr.getName(),
+                    parsedValue,
+                    SysTypes.getType(attr.getAttributeType())
+            );
+
+            nameValueFields.put(attr.getName(),attributeAndValue);
+        }
+
+        //TODO: сравнить что шаблон принадлежит классу
+
+        //SysTemplate template = sysTemplateService.getSysTemplate(templateId);
+
+        return nameValueFields;
     }
 
 }

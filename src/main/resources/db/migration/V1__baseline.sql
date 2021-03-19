@@ -123,10 +123,10 @@ INSERT INTO Class_1 (ID,FloatField,IntegerField,SmallIntField,StringField,TextFi
         <div><aggregation aggregationId="1" templateId="2" objectId="3" type="object"></aggregation></div>
         <div><aggregation aggregationId="1" templateId="2" type="objects"></aggregation></div>'),
 (2, 1.23, 555555555, 66,'Tom','He is not my friend',
-        '<div style="border:1px solid black">Round Square</div>
+        'XMEMO STARTS HERE:
         <div>He reads: <aggregation aggregationId="1" templateId="2" objectId="4" type="hyperlink">Bad Book</aggregation></div>
         <div><aggregation aggregationId="1" templateId="2" objectId="4" type="object"></aggregation></div>
-        <div><aggregation aggregationId="1" templateId="2" type="objects"></aggregation></div>');
+        <div><aggregation aggregationId="1" templateId="2" type="objects"></aggregation></div> :XMEMO ENDS HERE');
 
 CREATE TABLE Class_2 (
  ID             INTEGER NOT NULL PRIMARY KEY,
