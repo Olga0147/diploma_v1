@@ -11,4 +11,6 @@ public class AttributeAndValue {
     private final String value;
 
     private final SysTypes type;
+
+    private final Integer attributeId;
 }

@@ -121,12 +121,12 @@ INSERT INTO Class_1 (ID,FloatField,IntegerField,SmallIntField,StringField,TextFi
         '<div style="border:1px solid black">Left Right</div>
         <div>She reads: <aggregation aggregationId="1" templateId="2" objectId="3" type="hyperlink">Book</aggregation></div>
         <div><aggregation aggregationId="1" templateId="2" objectId="3" type="object"></aggregation></div>
-        <div><aggregation aggregationId="1" templateId="2" type="objects"></aggregation></div>'),
+        '),
 (2, 1.23, 555555555, 66,'Tom','He is not my friend',
         'XMEMO STARTS HERE:
         <div>He reads: <aggregation aggregationId="1" templateId="2" objectId="4" type="hyperlink">Bad Book</aggregation></div>
         <div style="border:1px solid black"><aggregation aggregationId="1" templateId="2" objectId="4" type="object"></aggregation></div>
-        <div><aggregation aggregationId="1" templateId="2" type="objects"></aggregation></div> :XMEMO ENDS HERE');
+        :XMEMO ENDS HERE');
 
 CREATE TABLE Class_2 (
  ID             INTEGER NOT NULL PRIMARY KEY,
@@ -142,10 +142,13 @@ INSERT INTO Aggregation (ID,NAME,FromClassId,ToClassId) VALUES
 (1,'читает',1,2);
 
 INSERT INTO Association (ID,NAME,FromClassId,ToClassId) VALUES
-(1,'зачем я существую?',1,2);
+(1,'читают',1,2);
 
 INSERT INTO AssociationImplementation (ID,AssociationId,FromObjectId,ToObjectId) VALUES
-(1,1,1,2);
+(1,1,1,3),
+(2,1,1,4),
+(3,1,2,3),
+(4,1,2,4);
 
 INSERT INTO Template (ID,NAME,BODY,OwnerClassId,DESCRIPTION) VALUES
 (1,'v1',
@@ -156,7 +159,8 @@ INSERT INTO Template (ID,NAME,BODY,OwnerClassId,DESCRIPTION) VALUES
         <div style="color:#42aaff"><field>TextField</field></div>
         <div style="color:blue"><field>XMEMOField</field></div>
 
-        <div><association associationId="2" templateId="5">Link</association></div>'
+        <div style="border:1px solid red"><association associationId="1" templateId="2" delimiter="&lt;hr&gt;&lt;/hr&gt;" type="object"></association></div>
+        <div><association associationId="1" templateId="2" delimiter="&lt;br&gt;&lt;/br&gt;" type="hyperlink">TITLE AUTHOR</association></div>'
 ,1,'all var template'),
 (2,'v1','<h2>Книга</h2>
         <div style="color:red">Название: <field>TITLE</field></div>

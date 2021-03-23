@@ -46,4 +46,14 @@ flyway {
 	password = 'admin'
 }
 
+jar {
+	manifest {
+		attributes "Main-Class": "nsu.ru.diploma_v1.DiplomaV1Application"
+	}
+
+	from {
+		configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+	}
+}
+
 

@@ -135,7 +135,12 @@
             </li>
             <li>Вставить результаты конкретного Шаблона (id = 5) каждого Объекта, имеющего Экземпляр Ассоциации конкретной Ассоциации (id = 2).
                 <br>
-                <div style="background-color: antiquewhite">&lt;association associationId="2" templateId="5"&gt;&lt;/association&gt;</div>
+                <div style="background-color: antiquewhite">&lt;association associationId="2" templateId="5" type="object"&gt;&lt;/association&gt;</div>
+                <br>
+            </li>
+            <li>Вставить гиперссылку на конкретный Шаблон (id = 5) каждого Объекта, имеющего Экземпляр Ассоциации конкретной Ассоциации (id = 2).
+                <br>
+                <div style="background-color: antiquewhite">&lt;association associationId="2" templateId="5" type="hyperlink" &gt;filed1 filed2 field3&lt;/association&gt;</div>
                 <br>
             </li>
         </ul>
@@ -168,10 +173,6 @@
                 <br>
                 <div style="background-color: antiquewhite">&lt;aggregation aggregationId="2" templateId="5" objectId="7" type="object"&gt;&lt;/aggregation&gt;</div>
                 <br>
-            </li>
-            <li>Вставить все Объекты (type = "objectInTemplateAll") Класса - источника, который связан Агрегацией (id = 2)
-                <br>
-                <div style="background-color: antiquewhite">&lt;aggregation aggregationId="2" templateId="5" type="objects"&gt;&lt;/aggregation&gt;</div>
             </li>
         </ul>
     </div>

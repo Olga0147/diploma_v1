@@ -27,7 +27,7 @@ public class PostFormController {
     @PostMapping(PostForm.POST_CLASS)
     public AnswerMessage postNewClass(@RequestBody NewClassForm newClassForm) {
         //TODO ERROR : unsuccessful
-        customService.saveClass(newClassForm,false);
+        customService.saveClass(newClassForm);
         return new AnswerMessage("Удачно!");
     }
 
@@ -35,6 +35,7 @@ public class PostFormController {
     public AnswerMessage postNewObject(@RequestBody NewObjectForm newObjectForm, @PathVariable Integer classId) {
         //TODO ERROR : unsuccessful
         customService.saveObject(newObjectForm.getAttributes(),classId);
+        //TODO check all aggregatioins : use  parseXMemoToSaveObject
         return new AnswerMessage("Удачно!");
     }
 

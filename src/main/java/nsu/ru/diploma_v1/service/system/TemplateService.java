@@ -3,17 +3,21 @@ package nsu.ru.diploma_v1.service.system;
 import lombok.RequiredArgsConstructor;
 import nsu.ru.diploma_v1.exception.TemplateException;
 import nsu.ru.diploma_v1.model.entity.AttributeAndValue;
-import nsu.ru.diploma_v1.model.entity.SysObject;
+import nsu.ru.diploma_v1.model.entity.SysAggregationImpl;
 import nsu.ru.diploma_v1.model.entity.SysTemplate;
+import nsu.ru.diploma_v1.model.enums.associations.AssociationTypeHandler;
+import nsu.ru.diploma_v1.model.enums.associations.AssociationTypes;
 import nsu.ru.diploma_v1.model.enums.database_types.SysTypes;
-import nsu.ru.diploma_v1.model.enums.relation.AggregationTypeHandler;
-import nsu.ru.diploma_v1.model.enums.relation.AggregationTypes;
+import nsu.ru.diploma_v1.model.enums.aggregations.AggregationTypeHandler;
+import nsu.ru.diploma_v1.model.enums.aggregations.AggregationTypes;
+import nsu.ru.diploma_v1.service.database.SysAggregationService;
 import nsu.ru.diploma_v1.service.database.SysTemplateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.w3c.dom.*;
 import org.xml.sax.SAXException;
 
+import javax.annotation.PostConstruct;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -36,58 +40,73 @@ public class TemplateService {
 
     private final CustomService customService;
     private final SysTemplateService sysTemplateService;
+    private final SysAggregationService sysAggregationService;
 
     private final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-    private final Map<AggregationTypes, AggregationTypeHandler> attributeTypeMap = new HashMap<>();
 
+    private final Map<AggregationTypes, AggregationTypeHandler> aggregationHandlerMap = new HashMap<>();
     @Autowired
-    public void setAttributeTypes(List<AggregationTypeHandler> types) {
-        types.forEach(type -> attributeTypeMap.put(type.getType(), type));
+    public void setAggregationTypes(List<AggregationTypeHandler> types) {
+        types.forEach(type -> aggregationHandlerMap.put(type.getType(), type));
+    }
+
+    private final Map<AssociationTypes, AssociationTypeHandler> associationHandlerMap = new HashMap<>();
+    @Autowired
+    public void setAssociationTypes(List<AssociationTypeHandler> types) {
+        types.forEach(type -> associationHandlerMap.put(type.getType(), type));
+    }
+
+    @PostConstruct
+    void setLink(){
+        customService.setTemplateService(this);
     }
 
     public String getObjectInTemplate(Integer objectId, Integer templateId){
-
         Map<String, AttributeAndValue> object = customService.getObjectForTemplate(objectId);
         SysTemplate template = sysTemplateService.getSysTemplate(templateId);
 
-        return parseTemplate(object,template.getBody());
+        return parseTemplate(object,template.getBody(),objectId);
     }
 
-
-    public String parseTemplate(Map<String, AttributeAndValue> object, String template){
-
+    private String parseTemplate(Map<String, AttributeAndValue> object, String template,Integer objectId){
         Document doc = parseXML(template);
 
+        //1) вставляем метки <field>fieldName</field>
         NodeList fields = doc.getElementsByTagName("field");
         List<NodesToReplace> nodesToReplaceList = new LinkedList<>();
-
         for (int i = 0; i < fields.getLength(); i++) {
-
             Node field = fields.item(i);
             String name = field.getTextContent();
             String value = object.get(name).getValue();
-
-            Node newNode;
-
-            if(object.get(name).getType() == SysTypes.XMEMO){
-
-                String parsedValue = parseXMemo(null,value);
-                Document docXMemo = parseXML(parsedValue);
-
-                NodeList nodeList = docXMemo.getChildNodes();
-                DocumentFragment documentFragment = docXMemo.createDocumentFragment();
-
-                for (int j = 0; j < nodeList.getLength(); j++) {
-                    Node n = nodeList.item(j);
-                    documentFragment.appendChild(n);
-                }
-                newNode = documentFragment;
-            }
-            else{
-                newNode = doc.createTextNode(value);
-            }
+            Integer attributeId = object.get(name).getAttributeId();
+            Node newNode = object.get(name).getType() == SysTypes.XMEMO ?
+                    parseXMemo(value, attributeId, objectId) : doc.createTextNode(value);
 
             NodesToReplace nodesToReplace = new NodesToReplace(field.getParentNode(), newNode, field);
+            nodesToReplaceList.add(nodesToReplace);
+        }
+
+        //2)вставляем метки <association></association>
+        NodeList associations = doc.getElementsByTagName("association");
+        for (int i = 0; i < associations.getLength(); i++) {
+            Node association = associations.item(i);
+            NamedNodeMap map = association.getAttributes();
+
+            Node type = map.getNamedItem("type");
+            AssociationTypes associationType = AssociationTypes.valueOf(type.getTextContent().toUpperCase(Locale.ROOT));
+            AssociationTypeHandler handler = associationHandlerMap.get(associationType);
+
+            String value = handler.handle(objectId,map,association.getTextContent());
+            Document docAssociation = parseXML(value);
+
+            NodeList nodeList = docAssociation.getChildNodes();
+            DocumentFragment documentFragment = docAssociation.createDocumentFragment();
+            for (int j = 0; j < nodeList.getLength(); j++) {
+                Node n = nodeList.item(j);
+                documentFragment.appendChild(n);
+            }
+
+            NodesToReplace nodesToReplace = new NodesToReplace(association.getParentNode(), documentFragment, association);
             nodesToReplaceList.add(nodesToReplace);
         }
 
@@ -95,12 +114,11 @@ public class TemplateService {
             Node firstDocImportedNode = doc.importNode(nodesToReplace.newNode, true);
             nodesToReplace.parent.replaceChild(firstDocImportedNode,nodesToReplace.oldNode);
         }
-
         String result = clearXMLMeta(toString(doc));
         return result;
     }
 
-    public String toString(Node node) {
+    private String toString(Node node) {
         try {
             StringWriter sw = new StringWriter();
             TransformerFactory tf = TransformerFactory.newInstance();
@@ -113,9 +131,8 @@ public class TemplateService {
         }
     }
 
-    //результат : без root
-    public String parseXMemo(SysObject sysObject, String XMemoValue) {
-
+    //так как тут новая нода - это root, то далее задействован костыль по очистке от root
+    private Node parseXMemo(String XMemoValue, Integer attributeId, Integer objectId) {
         Document doc = parseXML(XMemoValue);
 
         NodeList aggregations = doc.getElementsByTagName("aggregation");
@@ -129,11 +146,11 @@ public class TemplateService {
             Node type = map.getNamedItem("type");
             AggregationTypes aggregationType = AggregationTypes.valueOf(type.getTextContent().toUpperCase(Locale.ROOT));
 
-            AggregationTypeHandler handler = attributeTypeMap.get(aggregationType);
-            String value = handler.handle(sysObject,map,aggregation.getTextContent());
+            AggregationTypeHandler handler = aggregationHandlerMap.get(aggregationType);
+            String value = handler.handle(map,aggregation.getTextContent(),attributeId,objectId);
 
             Document docXMemo = parseXML(value);
-            Node newNode = docXMemo.getFirstChild();// с root
+            Node newNode = docXMemo.getFirstChild();
 
             NodeList nodeList = newNode.getChildNodes();
             DocumentFragment documentFragment = docXMemo.createDocumentFragment();
@@ -153,9 +170,34 @@ public class TemplateService {
         }
 
         Node node = doc.getFirstChild();
-        String withoutXMLInfo = clearXMLMeta(toString(node));
-        return withoutXMLInfo;
+        return node;
     }
+
+
+    public void parseXMemoToSaveObject(String XMemoValue, Integer attributeId, Integer objectId) {
+
+        Map<Integer, SysAggregationImpl> aggregationMap = sysAggregationService.getXMemoAggregationList(attributeId,objectId);
+
+        Document doc = parseXML(XMemoValue);
+        NodeList aggregations = doc.getElementsByTagName("aggregation");
+
+        for (int i = 0; i < aggregations.getLength(); i++) {
+
+            Node aggregation = aggregations.item(i);
+            NamedNodeMap map = aggregation.getAttributes();
+
+            Node type = map.getNamedItem("type");
+            AggregationTypes aggregationType = AggregationTypes.valueOf(type.getTextContent().toUpperCase(Locale.ROOT));
+            AggregationTypeHandler handler = aggregationHandlerMap.get(aggregationType);
+
+            Integer check = handler.checkExist(map,attributeId,objectId);
+            if(check != null){
+                aggregationMap.remove(check);
+            }
+        }
+        sysAggregationService.deleteAll(aggregationMap);
+    }
+
 
 
     private Document parseXML(String text){
@@ -176,7 +218,6 @@ public class TemplateService {
         return doc;
     }
 
-
     static class NodesToReplace {
         public Node parent;
         public Node newNode;
@@ -195,6 +236,19 @@ public class TemplateService {
                 replace(ROOT_1,"").
                 replace(ROOT_2,"").
                 replaceAll(XML_REGEX,"");
+    }
+
+    public String getObjectFields(String[] fields,int objectId){
+        Map<String, AttributeAndValue> object = customService.getObjectForTemplate(objectId);
+        StringBuilder result = new StringBuilder();
+
+        for (String field : fields) {
+            AttributeAndValue value = object.get(field);
+            if(value.getType()!= SysTypes.XMEMO && value.getType()!= SysTypes.MMEDIA){
+                result.append(" ").append(value.getValue());
+            }
+        }
+        return result.toString();
     }
 
 }

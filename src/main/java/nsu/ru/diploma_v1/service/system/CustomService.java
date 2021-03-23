@@ -17,9 +17,11 @@ import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.PostConstruct;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Отвечает за основную логику системы
@@ -30,6 +32,7 @@ public class CustomService {
 
     private final SysClassService sysClassService;
     private final SysObjectService sysObjectService;
+    private TemplateService templateService;
 
     private final CustomRepository customRepository;
     private final FormMapper formMapper;
@@ -41,8 +44,13 @@ public class CustomService {
         types.forEach(type -> attributeTypeMap.put(type.getType().getId(), type));
     }
 
+
+    public void setTemplateService(TemplateService templateService) {
+        this.templateService = templateService;
+    }
+
     @Transactional
-    public void saveClass(NewClassForm newClassForm, boolean isPage){
+    public void saveClass(NewClassForm newClassForm){
 
         //зарегистрировали класс
         SysClass sysClass = formMapper.convertToSysClass(newClassForm);
@@ -89,6 +97,10 @@ public class CustomService {
             Object value = null;
             try{
                 value = attributeTypeHandler.handle(attr,dataNameValue.get(attr.getName()));
+                //сохранить агрегации
+                if(attr.getAttributeType() == SysTypes.XMEMO.getId()){
+                    templateService.parseXMemoToSaveObject( (String)value,attr.getId(),objectId);
+                }
             }catch (ValidationException e){
                 //TODO: error handler
             }
@@ -118,23 +130,13 @@ public class CustomService {
             Integer type = attr.getAttributeType();
 
             AttributeTypeHandler attributeTypeHandler = attributeTypeMap.get(type);
-            String notParsedValue = attributeTypeHandler.toString(object.get(attr.getName()));
-
-            Integer t = attr.getAttributeType();
-            int t1 = SysTypes.XMEMO.getId();
-
-            String parsedValue = notParsedValue;//;
-
-//            if(t.equals(t1)){
-//                parsedValue = templateService.parseXmemo(sysObject,notParsedValue);
-//            }else{
-//                parsedValue = notParsedValue;
-//            }
+            String value = attributeTypeHandler.toString(object.get(attr.getName()));
 
             AttributeAndValue attributeAndValue = new AttributeAndValue(
                     attr.getName(),
-                    parsedValue,
-                    SysTypes.getType(attr.getAttributeType())
+                    value,
+                    SysTypes.getType(attr.getAttributeType()),
+                    attr.getId()
             );
 
             nameValueFields.put(attr.getName(),attributeAndValue);
