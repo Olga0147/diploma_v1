@@ -6,9 +6,152 @@
     <title th:text="${title}"></title>
 </head>
 <div th:replace="fragments/menu_editor :: header"/>
-<div >
-    Создать Класс - это.
-    Создать Объект - это.
-    ...
+<div class = "inner_text">
+    <h1>Создание сущностей в Системе (Версия 1.1)</h1>
+    <div>
+        <h4>Класс</h4>
+        Обязательно для заполнения:
+        <ul>
+            <li>имя Класса</li>
+            <li>один атрибут</li>
+        </ul>
+        Необязательно для заполнения:
+        <ul>
+            <li>описание Класса</li>
+            <li>больше одного атрибута</li>
+        </ul>
+        <br>
+    </div>
+    <div>
+        <h4>Ресурс</h4>
+        Обязательно для заполнения:
+        <ul>
+            <li>идентификатор Класса</li>
+            <li>имя ресурса</li>
+        </ul>
+
+        <br>
+    </div>
+    <div>
+        <h4>Объект</h4>
+        Обязательно для заполнения:
+        <ul>
+            <li>идентификатор Класса</li>
+            <li>Атрибуты Класса, указанные как "NOT NULL"</li>
+        </ul>
+        Необязательно для заполнения:
+        <ul>
+            <li>Атрибуты Класса, без указания "NOT NULL"</li>
+        </ul>
+        <br>
+    </div>
+    <div>
+        <h4>Отношения</h4>
+        <ul>
+            <li>
+                <div>
+                    <h4>Ассоциации между Классами</h4>
+                    Обязательно для заполнения:
+                    <ul>
+                        <li>имя Ассоциации</li>
+                        <li>идентификатор Класса - источника</li>
+                        <li>идентификатор Класса - цели</li>
+                    </ul>
+                    <h4>Ассоциации между Объектами</h4>
+                    Обязательно для заполнения:
+                    <ul>
+                        <li>идентификатор Ассоциации между Классами</li>
+                        <li>идентификатор Объекта - источника, который реализует Класс - источник</li>
+                        <li>идентификатор Объекта - цели, который реализует Класс - цель</li>
+                    </ul>
+                    <br><br>
+                </div>
+            </li>
+            <li>
+                <div>
+                    <h4>Агрегации между Классами</h4>
+                    Обязательно для заполнения:
+                    <ul>
+                        <li>имя Агрегации</li>
+                        <li>идентификатор Класса - источника</li>
+                        <li>идентификатор Класса - цели</li>
+                    </ul>
+                    <h4>Агрегации между Объектами</h4>
+                    Создаются системой автоматически при обновлении или сохранении поля типа XMEMO.
+                    <br><br>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <div>
+        <h4>Шаблон</h4>
+        Шаблон - это XML текст.
+        <br>
+        Шаблон может содержать:
+        <ul>
+            <li>
+                HTML разметку (важно! необходимо использовать всегда парные метки, например &lt;br&gt;&lt;/br&gt; вместо &lt;br&gt;)
+            </li>
+            <li>
+                теги Системы для Шаблона:
+                <ul>
+                    <li>Вставить данные из конкретного поля Объекта
+                        <br>
+                        <div style="background-color: antiquewhite">&lt;field&gt;fieldName&lt;/field&gt;</div>
+                        <br>
+                    </li>
+                    <li>Вставить результаты конкретного Шаблона (id = 5) каждого Объекта, имеющего Экземпляр Ассоциации конкретной Ассоциации (id = 2).
+                        <br>
+                        <div style="background-color: antiquewhite">&lt;association associationId="2" templateId="5" type="object"&gt;&lt;/association&gt;</div>
+                        <br>
+                    </li>
+                    <li>Вставить гиперссылку на конкретный Шаблон (id = 5) каждого Объекта, имеющего Экземпляр Ассоциации конкретной Ассоциации (id = 2).
+                        <br>
+                        <div style="background-color: antiquewhite">&lt;association associationId="2" templateId="5" type="hyperlink" &gt;filed1 filed2 field3&lt;/association&gt;</div>
+                        <br>
+                    </li>
+                    <li>Вставить Ресурс(id = 2) принадлежащий Классу этого Шаблона.
+                        <br>
+                        <div style="background-color: antiquewhite">&lt;resource resourceId="2" type="hyperlink" &gt;&lt;/resource&gt;</div>
+                        <br>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+        Шаблон не может содержать:
+        <ul>
+            <li>не парные HTML теги ( например вместо &lt;br&gt; нужно использовать &lt;br&gt;&lt;/br&gt;)</li>
+            <li>тег &lt;root&gt;&lt;/root&gt;</li>
+        </ul>
+    </div>
+    <div>
+        <h4>Атрибут типа XMEMO</h4>
+        Атрибут типа XMEMO  - это XML текст. <br>
+        Атрибут типа XMEMO может содержать теги Системы для XMEMO:
+        <ul>
+            <li>
+                HTML разметку (важно! необходимо использовать всегда парные метки, например &lt;br&gt;&lt;/br&gt; вместо &lt;br&gt;)
+            </li>
+            <li>теги Системы для XMEMO:
+                <ul>
+                    <li>Вставить гиперссылку (type = "hyperlink") на Объект (id = 7), связанный Агрегацией (id = 2)
+                        <br>
+                        <div style="background-color: antiquewhite">Он жил в &lt;aggregation aggregationId="2" templateId="5" objectId="7" type="hyperlink"&gt;Новосибирске.&lt;/aggregation&gt;</div>
+                        <br>
+                    </li>
+                    <li>Вставить Объект (type = "objectInTemplate", id = 7) связанный Агрегацией (id = 2)
+                        <br>
+                        <div style="background-color: antiquewhite">&lt;aggregation aggregationId="2" templateId="5" objectId="7" type="object"&gt;&lt;/aggregation&gt;</div>
+                        <br>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+        Атрибут типа XMEMO не может содержать:
+        <ul>
+            <li>не парные HTML теги ( например вместо &lt;br&gt; нужно использовать &lt;br&gt;&lt;/br&gt;)</li>
+            <li>тег &lt;root&gt;&lt;/root&gt;</li>
+        </ul>
+    </div>
 </div>
 </html>

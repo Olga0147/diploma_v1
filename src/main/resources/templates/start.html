@@ -154,7 +154,7 @@
             <li>Строка длины N (STRING sizeof(N))</li>
             <li>Текст (TEXT)</li>
             <li>Текст с специальными вставками (XMEMO)</li>
-            <li>Набор байт (MMEDIA) -  содержит некоторые файлы Объекта, такой как фото, видео или др. Атрибут должен обязательно одержать непосредственный тип контента (jpg, wmv ...).</li>
+            <li>Набор байт (MMEDIA)</li>
             <li>Время (TIME)</li>
         </ul>
 
@@ -176,11 +176,92 @@
             </li>
         </ul>
     </div>
+    <div>
+        <h4>Атрибут типа MMEDIA</h4>
+        Атрибут типа MMEDIA содержит некоторый файл Объекта, для него обязательным является указание типа контента:
+        <ul>
+            <li>IMAGE - графический файл (jpeg, jpg, gif, bmp...)</li>
+            <li>VIDEO - видеофайл (avi, mpeg...)</li>
+            <li>SOUND - звуковой файл (mp3, wav...)</li>
+            <li>TEXT_FILE - текстовый файл (txt, rtf, doc...)</li>
+            <li>FILE - файл, который не относиться ни к какой из выше перечисленных категорий (zip, exe, xcl...)</li>
+        </ul>
+        <br>
+        Атрибут типа MMEDIA в Шаблон будет вставлен в зависимости от типа контента, а именно:
+        <ul>
+            <li>IMAGE - в виде
+                <div style="background-color: antiquewhite">&lt;img src="/user-mode/resource/1"&gt;&lt;/img&gt;</div>
+            </li>
+            <li>VIDEO  - в виде
+                <div style="background-color: antiquewhite">&lt;video src="/user-mode/resource/1"&gt;&lt;/video&gt;</div>
+            </li>
+            <li>AUDIO  - в виде
+                <div style="background-color: antiquewhite">&lt;audio src="/user-mode/resource/1"&gt;&lt;/audio&gt;</div>
+            </li>
+            <li>TEXT_FILE  - в виде
+                <div style="background-color: antiquewhite">&lt;a href="/user-mode/resource/1" download=""&gt;&lt;/a&gt;</div>
+            </li>
+            <li>FILE  - в виде
+                <div style="background-color: antiquewhite">&lt;a href="/user-mode/resource/1" download=""&gt;&lt;/a&gt;</div>
+            </li>
+        </ul>
     </div>
-    </div>
-        <div>
+    <div>
         <h4>Ресурсы</h4>
-        Ресурсы - это статические поля Класса, которые содержат файлы (фото, видео или др.), которые могут быть использованы Объектами Класса - владельца Ресурса.<br><div style="background-color: antiquewhite">Например, есть несколько Объектов Класса "Меню", но все они нуждаются в одном и том же картинке - логотипе (Ресурсе Класса "Меню").</div>
+        Ресурс - это статическое поле Класса, которое может быть использовано Объектами Класса.
+        Например, есть несколько Объектов Класса "Магазин", и все они нуждаются в одной и той же картинке - логотипе (Ресурсе Класса "Меню").
+        <br>
+        Ресурс содержит некоторый файл, для которого обязательным является указание типа контента:
+        <ul>
+            <li>IMAGE - графический файл (jpeg, jpg, gif, bmp...)</li>
+            <li>VIDEO - видеофайл (avi, mpeg...)</li>
+            <li>SOUND - звуковой файл (mp3, wav...)</li>
+            <li>TEXT_FILE - текстовый файл (txt, rtf, doc...)</li>
+            <li>FILE - файл, который не относиться ни к какой из выше перечисленных категорий (zip, exe, xcl...)</li>
+        </ul>
+        Ресурс в Шаблон будет вставлен в зависимости от типа контента и Системного тэга, а именно:
+        <ul>
+            <li>Вставить Ресурс(id = 2) принадлежащий Классу этого Шаблона.
+            <br>
+            <div style="background-color: antiquewhite">&lt;resource resourceId="2" type="whole" &gt;&lt;/resource&gt;</div>
+                <br>
+                <ul>
+                    <li>IMAGE - в виде
+                        <div style="background-color: antiquewhite">&lt;img src="/user-mode/resource/1"&gt;&lt;/img&gt;</div>
+                    </li>
+                    <li>VIDEO  - в виде
+                        <div style="background-color: antiquewhite">&lt;video src="/user-mode/resource/1"&gt;&lt;/video&gt;</div>
+                    </li>
+                    <li>AUDIO  - в виде
+                        <div style="background-color: antiquewhite">&lt;audio src="/user-mode/resource/1"&gt;&lt;/audio&gt;</div>
+                    </li>
+                    <li>TEXT_FILE  - в виде
+                        <div style="background-color: antiquewhite">&lt;a href="/user-mode/resource/1" download=""&gt;&lt;/a&gt;</div>
+                    </li>
+                    <li>FILE  - в виде
+                        <div style="background-color: antiquewhite">&lt;a href="/user-mode/resource/1" download=""&gt;&lt;/a&gt;</div>
+                    </li>
+                </ul>
+            </li>
+            <br>
+            <li>Вставить Ресурс(id = 2) принадлежащий Классу этого Шаблона для скачивания.
+                <div style="background-color: antiquewhite">&lt;resource resourceId="2" type="download" &gt;&lt;/resource&gt;</div>
+                <br>
+                <ul>
+                    <li>Для любого типа - в виде
+                        <div style="background-color: antiquewhite">&lt;a href="/user-mode/resource/1" download=""&gt;&lt;/a&gt;</div>
+                    </li>
+                </ul>
+            </li>
+            <br>
+            <li>Получить ссылку на Ресурс(id = 2) принадлежащий Классу этого Шаблона для самостоятельного конфигурирования.
+                <div style="background-color: antiquewhite">&lt;тэг-редактора href="" атрибуты-редактора&gt;&lt;resource resourceId="2" type="hyperlink" &gt;&lt;/resource&gt;&lt;/тэг-редактора&gt;</div>
+                <div style="background-color: antiquewhite">&lt;тэг-редактора src="" атрибуты-редактора&gt;&lt;resource resourceId="2" type="hyperlink" &gt;&lt;/resource&gt;&lt;/тэг-редактора&gt;</div>
+                <br>
+                При обработке Шаблона <span style="background-color: antiquewhite">&lt;resource resourceId="2" type="hyperlink" &gt;&lt;/resource&gt; </span>
+                будет удалена и в родительском тэге в атрибуте href/src подставиться ссылка на получение файла.
+            </li>
+        </ul>
     </div>
 </div>
 </html>
