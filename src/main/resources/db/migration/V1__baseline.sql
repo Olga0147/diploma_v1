@@ -26,12 +26,25 @@ INSERT INTO AttributeType (ID,NAME,IMPLEMENTATION) VALUES
 (7,'XMEMO','TEXT'),
 (8,'TIME','DATE');
 
+CREATE TABLE ResourceType (
+   ID             SERIAL NOT NULL PRIMARY KEY,
+   NAME           VARCHAR(128) NOT NULL
+);
+
+INSERT INTO ResourceType (ID,NAME) VALUES
+(0,'IMAGE'),
+(1,'VIDEO'),
+(2,'AUDIO'),
+(3,'TEXT_FILE'),
+(4,'FILE');
+
 CREATE TABLE Attribute (
    ID             SERIAL NOT NULL PRIMARY KEY,
    NAME           VARCHAR(128) NOT NULL,
    OwnerClassId INTEGER NOT NULL REFERENCES Class(ID),
    AttributeType INTEGER NOT NULL REFERENCES AttributeType(ID),
    AttributeSize INTEGER,
+   ResourceType INTEGER REFERENCES ResourceType(ID),
    CanBeNull        BOOLEAN NOT NULL
 );
 

@@ -23,13 +23,24 @@
         <br>
     </div>
     <div>
+        <h4>Атрибут</h4>
+        Обязательно для заполнения:
+        <ul>
+            <li>имя Атрибута</li>
+            <li>тип Атрибут</li>
+            <li>длина Атрибута (для STRING)</li>
+            <li>тип контента Атрибута (для MMEDIA)</li>
+        </ul>
+        <br>
+    </div>
+    <div>
         <h4>Ресурс</h4>
         Обязательно для заполнения:
         <ul>
             <li>идентификатор Класса</li>
-            <li>имя ресурса</li>
+            <li>имя Ресурса</li>
+            <li>тип контента Ресурса </li>
         </ul>
-
         <br>
     </div>
     <div>
@@ -105,14 +116,26 @@
                         <div style="background-color: antiquewhite">&lt;association associationId="2" templateId="5" type="object"&gt;&lt;/association&gt;</div>
                         <br>
                     </li>
-                    <li>Вставить гиперссылку на конкретный Шаблон (id = 5) каждого Объекта, имеющего Экземпляр Ассоциации конкретной Ассоциации (id = 2).
+                    <li>Вставить гиперссылку на конкретный Шаблон (id = 5) каждого Объекта, имеющего Экземпляр Ассоциации конкретной Ассоциации (id = 2)
+                        и использовать сформировать строку из значений полей .filed1 … filedN, которая станет названием гиперссылки.
                         <br>
-                        <div style="background-color: antiquewhite">&lt;association associationId="2" templateId="5" type="hyperlink" &gt;filed1 filed2 field3&lt;/association&gt;</div>
+                        <div style="background-color: antiquewhite">&lt;association associationId="2" templateId="5" type="hyperlink" &gt;filed1 … filedN&lt;/association&gt;</div>
                         <br>
                     </li>
                     <li>Вставить Ресурс(id = 2) принадлежащий Классу этого Шаблона.
                         <br>
-                        <div style="background-color: antiquewhite">&lt;resource resourceId="2" type="hyperlink" &gt;&lt;/resource&gt;</div>
+                        <div style="background-color: antiquewhite">&lt;resource resourceId="2" type="whole" &gt;&lt;/resource&gt;</div>
+                        <br>
+                    </li>
+                    <li>Вставить Ресурс(id = 2) принадлежащий Классу этого Шаблона для скачивания Ресурса
+                        <br>
+                        <div style="background-color: antiquewhite">&lt;resource resourceId="2" type="download" &gt;&lt;/resource&gt;</div>
+                        <br>
+                    </li>
+                    <li>Получить ссылку на Ресурс(id = 2) принадлежащий Классу этого Шаблона для самостоятельного конфигурирования.
+                        <br>
+                        <div style="background-color: antiquewhite">&lt;тэг-редактора href="" атрибуты-редактора&gt;&lt;resource resourceId="2" type="hyperlink" &gt;&lt;/resource&gt;&lt;/тэг-редактора&gt;</div>
+                        <div style="background-color: antiquewhite">&lt;тэг-редактора src="" атрибуты-редактора&gt;&lt;resource resourceId="2" type="hyperlink" &gt;&lt;/resource&gt;&lt;/тэг-редактора&gt;</div>
                         <br>
                     </li>
                 </ul>
@@ -120,7 +143,7 @@
         </ul>
         Шаблон не может содержать:
         <ul>
-            <li>не парные HTML теги ( например вместо &lt;br&gt; нужно использовать &lt;br&gt;&lt;/br&gt;)</li>
+            <li>непарные HTML теги ( например вместо &lt;br&gt; нужно использовать &lt;br&gt;&lt;/br&gt;)</li>
             <li>тег &lt;root&gt;&lt;/root&gt;</li>
         </ul>
     </div>
@@ -149,7 +172,7 @@
         </ul>
         Атрибут типа XMEMO не может содержать:
         <ul>
-            <li>не парные HTML теги ( например вместо &lt;br&gt; нужно использовать &lt;br&gt;&lt;/br&gt;)</li>
+            <li>непарные HTML теги ( например вместо &lt;br&gt; нужно использовать &lt;br&gt;&lt;/br&gt;)</li>
             <li>тег &lt;root&gt;&lt;/root&gt;</li>
         </ul>
     </div>

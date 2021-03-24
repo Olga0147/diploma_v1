@@ -8,8 +8,17 @@ function sendPost() {
     for (var i = 1; i <= length; i++) {
         let singleObj = {};
         singleObj['name'] = document.getElementById('attribute_name_'+i).value;
+        console.log(document.getElementById('attribute_name_'+i).value);
+
         singleObj['type'] = document.getElementById('attribute_type_'+i).value;
+        console.log(document.getElementById('attribute_type_'+i).value);
+
         singleObj['size'] = document.getElementById('attribute_size_'+i).value;
+        console.log(document.getElementById('attribute_size_'+i).value);
+
+        singleObj['content'] = document.getElementById('attribute_content_type_'+i).value;
+        console.log(document.getElementById('attribute_content_type_'+i).value);
+
         singleObj['isNull'] = document.getElementById('attribute_is_null_'+i).value;
         class_attributes.push(singleObj);
     }
@@ -52,7 +61,6 @@ function sendPost() {
 }
 
 function addAttributeForm() {
-
     let length = $(".attribute").length;
     console.log(length);
     let request = new XMLHttpRequest();

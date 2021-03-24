@@ -59,8 +59,11 @@ public enum SysTypes {
     }
 
     public static boolean checkNeedSize(String type){
-        return type.equals("VARCHAR");
+        return type.equals("STRING");
     }
 
+    public static boolean checkNeedContentType(String type){
+        return type.equals("XMEMO");
+    }
 
 }

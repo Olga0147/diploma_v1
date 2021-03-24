@@ -42,6 +42,7 @@
                 <th>Идентификатор Класса</th>
                 <th>Тип</th>
                 <th>Размер</th>
+                <th>Тип контента</th>
                 <th>Может быть 0?</th>
             </tr>
             </thead>
@@ -52,6 +53,7 @@
                 <td th:text="${attribute.ownerClassId}"></td>
                 <td th:text="${attribute.attributeType}"></td>
                 <td th:text="${attribute.attributeSize}"></td>
+                <td th:text="${attribute.resourceType}"></td>
                 <td th:text="${attribute.canBeNull}"></td>
             </tr>
             </tbody>

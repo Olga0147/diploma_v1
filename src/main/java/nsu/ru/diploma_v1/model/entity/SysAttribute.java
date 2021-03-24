@@ -2,6 +2,7 @@ package nsu.ru.diploma_v1.model.entity;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import nsu.ru.diploma_v1.model.enums.resource_types.SysResourceType;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -25,6 +26,9 @@ public class SysAttribute {
     private Integer attributeType;
 
     private Integer attributeSize;
+
+    @Enumerated(EnumType.ORDINAL)
+    private SysResourceType resourceType;
 
     @Column(nullable = false)
     private boolean canBeNull;

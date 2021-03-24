@@ -17,8 +17,14 @@
         </select>
     </p>
     <p>
-        <label th:for="'attribute_size_'+${id}">Размер (для строкового типа)</label>
+        <label th:for="'attribute_size_'+${id}">Длина (обязательно для типа STRING)</label>
         <textarea th:id="'attribute_size_'+${id}" placeholder="10" cols="60" rows="1"></textarea>
+    </p>
+    <p>
+        <label th:for="'attribute_content_type_'+${id}">Тип контента (обязательно для типа MMEDIA)</label>
+        <select th:id="'attribute_content_type_'+${id}">
+            <option th:each="content : ${contentTypes}" th:text="${content}"></option>
+        </select>
     </p>
     <p>
         <label th:for="'attribute_is_null_'+${id}">Может равняться нулю?</label>

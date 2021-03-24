@@ -12,6 +12,7 @@ public class NewAttributeForm {
     @NotNull
     private String type;
     private Integer size;
+    private String content;
     @NotNull
     private boolean isNull;
 }
