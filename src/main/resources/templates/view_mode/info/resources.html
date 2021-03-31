@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="fragments/menu :: header-css"/>
+    <meta charset="UTF-8">
+    <title th:text="${title}"></title>
+</head>
+<div th:replace="fragments/menu :: header"/>
+<div class = "inner" th:switch="${resources.size()}">
+    <h2 th:case="0">Не было найдено ни одного ресурса!</h2>
+    <div th:case="*">
+        <h2 th:text="${title}"></h2>
+        <table>
+            <thead>
+            <tr>
+                <th>Имя</th>
+                <th>Класс - владелец</th>
+                <th>Тип</th>
+                <th>Детали</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="resource : ${resources}">
+                <td th:text="${resource.name}"></td>
+                <td th:text="${resource.ownerClassId}"></td>
+                <td th:text="${resource.resourceType}"></td>
+                <td ><a th:href="@{${detailPath}+${resource.id}}">(---)</a></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</html>

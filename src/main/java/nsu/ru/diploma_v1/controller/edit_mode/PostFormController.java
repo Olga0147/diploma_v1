@@ -81,7 +81,7 @@ public class PostFormController {
             @RequestPart(name = "file", required = false) MultipartFile file) {
         //TODO ERROR : unsuccessful
         SysResource resource = new SysResource();
-        resource.setName(file.getName());
+        resource.setName(file.getOriginalFilename());
         try {
             resource.setData(file.getBytes());
         } catch (IOException e) {

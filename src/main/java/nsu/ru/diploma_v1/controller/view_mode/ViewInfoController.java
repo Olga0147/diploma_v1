@@ -21,6 +21,7 @@ public class ViewInfoController {
     private final SysAssociationService sysAssociationService;
 
     private final SysTemplateService sysTemplateService;
+    private final SysResourceService sysResourceService;
 
     private final ViewMenu menu;
 
@@ -123,6 +124,19 @@ public class ViewInfoController {
         model.addAttribute("m", menu);
 
         return "/view_mode/info/associations_impl";
+    }
+
+    @GetMapping(Info.GET_RESOURCE)
+    public String showInfoResourcesList(Model model) {
+
+        model.addAttribute("resources", sysResourceService.getSysResources());
+
+        model.addAttribute("title", "Ресурсы");
+        model.addAttribute("detailPath", getPath(DetailInfo.GET_RESOURCE));
+
+        model.addAttribute("m", menu);
+
+        return "/view_mode/info/resources";
     }
 
     private String getPath(String str){

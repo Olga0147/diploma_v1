@@ -2,6 +2,7 @@ package nsu.ru.diploma_v1.controller.view_mode;
 
 import lombok.RequiredArgsConstructor;
 import nsu.ru.diploma_v1.configuration.urls.menu.ViewMenu;
+import nsu.ru.diploma_v1.configuration.urls.mode.DownloadMode;
 import nsu.ru.diploma_v1.model.entity.*;
 import nsu.ru.diploma_v1.service.database.*;
 import nsu.ru.diploma_v1.service.system.CustomService;
@@ -24,6 +25,7 @@ public class ViewDetailInfoController {
     private final SysTemplateService sysTemplateService;
     private final SysObjectService sysObjectService;
     private final CustomService customService;
+    private final SysResourceService sysResourceService;
 
     private final ViewMenu menu;
 
@@ -173,6 +175,23 @@ public class ViewDetailInfoController {
         model.addAttribute("m", menu);
 
         return "/view_mode/detail_info/detail_association_impl";
+    }
+
+    @GetMapping(DetailInfo.GET_RESOURCE)
+    public String showInfoResource(Model model, @PathVariable Integer id) {
+
+        //TODO: ERROR NOT FOUND
+        SysResource template = sysResourceService.getSysResourcesByResourceId(id);
+
+        model.addAttribute("resource", template);
+
+        model.addAttribute("title", "Ресурс: детально");
+        model.addAttribute("detailClassPath", getPath(DetailInfo.GET_CLASS));
+        model.addAttribute("downloadPath", getPath(DownloadMode.GetFile.GET_RESOURCE));
+
+        model.addAttribute("m", menu);
+
+        return "/view_mode/detail_info/detail_resource";
     }
 
     private String getPath(String str){
