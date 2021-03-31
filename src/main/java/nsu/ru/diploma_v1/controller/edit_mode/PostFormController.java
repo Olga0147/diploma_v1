@@ -5,8 +5,10 @@ import nsu.ru.diploma_v1.model.dto.AnswerMessage;
 import nsu.ru.diploma_v1.model.dto.NewClassForm;
 import nsu.ru.diploma_v1.model.dto.NewObjectForm;
 import nsu.ru.diploma_v1.model.entity.*;
+import nsu.ru.diploma_v1.model.enums.resource_types.SysResourceType;
 import nsu.ru.diploma_v1.service.database.SysAggregationService;
 import nsu.ru.diploma_v1.service.database.SysAssociationService;
+import nsu.ru.diploma_v1.service.database.SysResourceService;
 import nsu.ru.diploma_v1.service.database.SysTemplateService;
 import nsu.ru.diploma_v1.service.system.CustomService;
 import org.springframework.http.MediaType;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.io.IOException;
 
 import static nsu.ru.diploma_v1.configuration.urls.mode.EditMode.PostForm;
 
@@ -25,6 +28,7 @@ public class PostFormController {
     private final SysAggregationService sysAggregationService;
     private final SysAssociationService sysAssociationService;
     private final SysTemplateService sysTemplateService;
+    private final SysResourceService sysResourceService;
 
     @PostMapping(PostForm.POST_CLASS)
     public AnswerMessage postNewClass(@RequestBody NewClassForm newClassForm) {
@@ -76,6 +80,20 @@ public class PostFormController {
             @PathVariable Integer classId,
             @RequestPart(name = "file", required = false) MultipartFile file) {
         //TODO ERROR : unsuccessful
+        SysResource resource = new SysResource();
+        resource.setName(file.getName());
+        try {
+            resource.setData(file.getBytes());
+        } catch (IOException e) {
+            return new AnswerMessage("Ошибка!");
+        }
+        String  mime = file.getContentType();
+        resource.setResourceType(SysResourceType.getByMime(mime));
+        resource.setOwnerClassId(classId);
+
+        //TODO : error
+        sysResourceService.saveSysResource(resource);
+
         return new AnswerMessage("Удачно!");
     }
 

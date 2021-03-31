@@ -91,6 +91,7 @@ CREATE TABLE Resource (
     ID             SERIAL NOT NULL PRIMARY KEY,
     NAME           VARCHAR(128) NOT NULL,
     data              bytea NOT NULL,
+    ResourceType INTEGER REFERENCES ResourceType(ID),
     OwnerClassId INTEGER NOT NULL REFERENCES Class(ID)
 );
 

@@ -106,6 +106,18 @@ public class GetFormController {
         return "/edit_mode/new_template";
     }
 
+    @GetMapping(GetForm.GET_RESOURCE)
+    public String editNewResource(Model model) {
+
+        model.addAttribute("classIdents", sysClassService.getAllClassesIds());
+
+        model.addAttribute("title", "Добавить Ресурс");
+
+        model.addAttribute("m", menu);
+
+        return "/edit_mode/new_resource";
+    }
+
     private String getPath(String str){
         return str.substring(0, str.length() - 4);
         }
