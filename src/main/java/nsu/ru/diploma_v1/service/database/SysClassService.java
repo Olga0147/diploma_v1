@@ -3,6 +3,7 @@ package nsu.ru.diploma_v1.service.database;
 import lombok.RequiredArgsConstructor;
 import nsu.ru.diploma_v1.model.entity.SysAttribute;
 import nsu.ru.diploma_v1.model.entity.SysClass;
+import nsu.ru.diploma_v1.model.enums.database_types.SysTypes;
 import nsu.ru.diploma_v1.repository.SysAttributeRepository;
 import nsu.ru.diploma_v1.repository.SysClassRepository;
 import org.springframework.stereotype.Service;
@@ -50,6 +51,17 @@ public class SysClassService {
      */
 
     public List<SysAttribute> getAttributes(int classId){ return sysClassRepository.getSysClassById(classId).getAttributeList();}
+
+    public List<SysAttribute> getAttributesNotMMedia(int classId){
+        List<SysAttribute> list = sysClassRepository.getSysClassById(classId).getAttributeList();
+        List<SysAttribute> notMMedia = new LinkedList<>();
+        for (SysAttribute sysAttribute : list) {
+            if(sysAttribute.getAttributeType() != SysTypes.MMEDIA.getId()){
+                notMMedia.add(sysAttribute);
+            }
+        }
+        return notMMedia;
+    }
 
     public List<SysAttribute> saveAttributes(List<SysAttribute> list){
         List<SysAttribute> newList = new LinkedList<>();

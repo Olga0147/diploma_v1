@@ -9,8 +9,8 @@ import javax.persistence.*;
 @Data
 @NoArgsConstructor
 @Entity
-@Table(name = "Resource")
-public class SysResource {
+@Table(name = "Mmedia")
+public class SysMmedia {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
@@ -22,10 +22,10 @@ public class SysResource {
     @Type(type="org.hibernate.type.BinaryType")
     private byte[] data;
 
-    private Integer ownerClassId;
+    private Integer ownerObjectId;
 
     @ManyToOne
-    @JoinColumn(name="ownerClassId", nullable=false, insertable = false,updatable = false)
-    private SysClass ownerSysClass;
+    @JoinColumn(name="ownerObjectId", nullable=false, insertable = false,updatable = false)
+    private SysObject ownerSysObject;
 
 }

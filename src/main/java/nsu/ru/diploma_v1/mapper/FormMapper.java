@@ -49,7 +49,10 @@ public class FormMapper {
             if(SysTypes.checkNeedContentType(form.getType())){sysAttribute.setResourceType(SysResourceType.valueOf(form.getContent()));}
             if(SysTypes.checkNeedSize(form.getType())){sysAttribute.setAttributeSize(form.getSize());}
 
-            sysAttribute.setCanBeNull(form.isNull());
+            //ставим, что поля файлы могут быть нулю
+            if(SysTypes.checkNeedContentType(form.getType())){sysAttribute.setCanBeNull(false);}
+            else{sysAttribute.setCanBeNull(form.isNull());}
+
             list.add(sysAttribute);
         }
 

@@ -90,8 +90,15 @@ CREATE TABLE AggregationImplementation (
 CREATE TABLE Resource (
     ID             SERIAL NOT NULL PRIMARY KEY,
     NAME           VARCHAR(128) NOT NULL,
-    PATH           VARCHAR(128) NOT NULL,
+    data              bytea NOT NULL,
     OwnerClassId INTEGER NOT NULL REFERENCES Class(ID)
+);
+
+CREATE TABLE Mmedia (
+      ID             SERIAL NOT NULL PRIMARY KEY,
+      NAME           VARCHAR(128) NOT NULL,
+      data              bytea NOT NULL,
+      OwnerObjectId INTEGER NOT NULL REFERENCES Object(ID)
 );
 
 INSERT INTO Class (ID,NAME,SystemName,DESCRIPTION) VALUES
@@ -102,7 +109,7 @@ INSERT INTO Attribute (ID,NAME,OwnerClassId,AttributeType,AttributeSize, CanBeNu
 (1,'FloatField',1,1,0,false),
 (2,'IntegerField',1,2,0,false),
 (3,'SmallIntField',1,3,0,false),
---(4,'MMEDIAField',1,4,0,false),--
+(4,'MMEDIAField',1,4,0,true),
 (5,'StringField',1,6,64,false),
 (6,'TextField',1,5,0,false),
 (7,'XMEMOField',1,7,0,false),
@@ -123,6 +130,7 @@ ID             INTEGER NOT NULL PRIMARY KEY,
 FloatField     FLOAT NOT NULL,
 IntegerField   INTEGER NOT NULL,
 SmallIntField  SMALLINT NOT NULL,
+MMEDIAField    bytea,
 StringField    VARCHAR(64) NOT NULL,
 TextField      TEXT NOT NULL,
 XMEMOField     TEXT NOT NULL

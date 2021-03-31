@@ -9,10 +9,12 @@ import nsu.ru.diploma_v1.service.database.SysAggregationService;
 import nsu.ru.diploma_v1.service.database.SysAssociationService;
 import nsu.ru.diploma_v1.service.database.SysTemplateService;
 import nsu.ru.diploma_v1.service.system.CustomService;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.MediaType;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.File;
 
 import static nsu.ru.diploma_v1.configuration.urls.mode.EditMode.PostForm;
 
@@ -68,4 +70,13 @@ public class PostFormController {
         sysTemplateService.saveSysTemplate(sysTemplate);
         return new AnswerMessage("Удачно!");
     }
+
+    @PostMapping(path = PostForm.POST_RESOURCE, consumes = {"multipart/form-data"})
+    public AnswerMessage postNewResource(
+            @PathVariable Integer classId,
+            @RequestPart(name = "file", required = false) MultipartFile file) {
+        //TODO ERROR : unsuccessful
+        return new AnswerMessage("Удачно!");
+    }
+
 }

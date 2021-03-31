@@ -33,7 +33,7 @@ public class PartFormController {
     @GetMapping(PartForm.OBJECT_FORM)
     public String editNewObject(Model model, @PathVariable Integer classId) {
 
-        List<SysAttribute> list = sysClassService.getAttributes(classId);
+        List<SysAttribute> list = sysClassService.getAttributesNotMMedia(classId);
         for (SysAttribute sysAttribute : list) {
             sysAttribute.setOwnerSysClass(null);
         }

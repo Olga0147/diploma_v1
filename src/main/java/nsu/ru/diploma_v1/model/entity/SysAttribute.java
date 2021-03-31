@@ -33,12 +33,24 @@ public class SysAttribute {
     @Column(nullable = false)
     private boolean canBeNull;
 
+    /**
+     * Класс Объекта
+     */
     @ManyToOne
     @JoinColumn(name="ownerClassId", nullable=false, insertable = false,updatable = false)
     private SysClass ownerSysClass;
 
+    /**
+     * Реализации Агрегаций Объекта
+     */
     @OneToMany(mappedBy="sysAttribute", fetch=FetchType.LAZY)
     List<SysAggregationImpl> notNeedAtAll;//TODO : understand and delete
+
+    /**
+     * Поля MMedia
+     */
+    @OneToMany(mappedBy="id", fetch=FetchType.LAZY)
+    List<SysMmedia> contentList;
 
     public SysAttribute(Integer id, String name, Integer ownerClassId, Integer attributeType, Integer attributeSize, boolean canBeNull) {
         this.id = id;
