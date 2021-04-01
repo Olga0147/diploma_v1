@@ -34,7 +34,7 @@ public class SysResourceService {
 
     public Node getTag(String resourceId, Document doc){
         SysResource resource = sysResourceRepository.getSysResourceById(Integer.parseInt(resourceId));
-        return SysResourceType.getTag(resource.getResourceType(), doc, resourceId);
+        return SysResourceType.getTagForResource(resource.getResourceType(), doc, resourceId);
     }
 
 }

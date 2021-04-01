@@ -141,14 +141,16 @@ XMEMOField     TEXT NOT NULL
 
 INSERT INTO Class_1 (ID,FloatField,IntegerField,SmallIntField,StringField,TextField,XMEMOField) VALUES
 (1, 1.2, 123, 12,'Sara','She is my friend',
-        '<div style="border:1px solid black">Left Right</div>
-        <div>She reads: <aggregation aggregationId="1" templateId="2" objectId="3" type="hyperlink">Book</aggregation></div>
-        <div><aggregation aggregationId="1" templateId="2" objectId="3" type="object"></aggregation></div>
+        'XMEMO STARTS HERE:
+        <div>Left Right</div>
+        <div>Агрегация hyperlink = <aggregation aggregationId="1" templateId="2" objectId="3" type="hyperlink">Book</aggregation></div>
+        <div>Агрегация object = <br/><div style="border:1px solid black"><aggregation aggregationId="1" templateId="2" objectId="3" type="object"></aggregation></div></div>
+        :XMEMO ENDS HERE
         '),
 (2, 1.23, 555555555, 66,'Tom','He is not my friend',
         'XMEMO STARTS HERE:
-        <div>He reads: <aggregation aggregationId="1" templateId="2" objectId="4" type="hyperlink">Bad Book</aggregation></div>
-        <div style="border:1px solid black"><aggregation aggregationId="1" templateId="2" objectId="4" type="object"></aggregation></div>
+        <div>Агрегация hyperlink = <aggregation aggregationId="1" templateId="2" objectId="4" type="hyperlink">Bad Book</aggregation></div>
+        <div>Агрегация object = <br/><div style="border:1px solid black"><aggregation aggregationId="1" templateId="2" objectId="4" type="object"></aggregation></div></div>
         :XMEMO ENDS HERE');
 
 CREATE TABLE Class_2 (
@@ -175,36 +177,42 @@ INSERT INTO AssociationImplementation (ID,AssociationId,FromObjectId,ToObjectId)
 
 INSERT INTO Template (ID,NAME,BODY,OwnerClassId,DESCRIPTION) VALUES
 (1,'v1',
-        '<div style="color:red"><field>FloatField</field></div>
-        <div style="color:orange"><field>IntegerField</field></div>
-        <div style="color:yellow"><field>SmallIntField</field></div>
-        <div style="color:green"><field>StringField</field></div>
-        <div style="color:#42aaff"><field>TextField</field></div>
-        <div style="color:blue"><field>XMEMOField</field></div>
+        '<div><h2>Тест полей Объекта:</h2>
+        <div >FloatField = <field>FloatField</field></div>
+        <div >IntegerField = <field>IntegerField</field></div>
+        <div >SmallIntField = <field>SmallIntField</field></div>
+        <div >StringField = <field>StringField</field></div>
+        <div >TextField = <field>TextField</field></div>
+        <div >XMEMOField = <br/> <div style="border:1px solid red"><field>XMEMOField</field></div></div>
+        <div >MMEDIAField = <br/><field>MMEDIAField</field></div>
+        </div><br/><hr/>
 
-        <div style="border:1px solid red"><association associationId="1" templateId="2" delimiter="&lt;hr&gt;&lt;/hr&gt;" type="object"></association></div>
-        <div><association associationId="1" templateId="2" delimiter="&lt;br&gt;&lt;/br&gt;" type="hyperlink">TITLE AUTHOR</association></div>
+        <div><h2>Тест Ассоциаций Объекта:</h2>
+        <div style="border:1px solid red">Ассоциация object = <association associationId="1" templateId="2" delimiter="&lt;hr&gt;&lt;/hr&gt;" type="object"></association></div>
+        <div>Ассоциация hyperlink = <br/><association associationId="1" templateId="2" delimiter="&lt;br&gt;&lt;/br&gt;" type="hyperlink">TITLE AUTHOR</association></div>
+        </div><br/><hr/>
 
-        <hr/>
+        <div><h2>Тест ресурсов Класса:</h2>
         <div style="color:black">Должны быть добавлены тестовые файлы: 1- IMAGE, 2- AUDIO, 3 - VIDEO, 4 - FILE,5 - TEXT_FILE!!!</div>
-        <hr/><div>Вставить полностью:</div>
+        <br/><h3>Вставить полностью:</h3>
         <div><resource resourceId="1" type="whole"></resource></div>
         <div><resource resourceId="2" type="whole"></resource></div>
         <div><resource resourceId="3" type="whole"></resource></div>
         <div><resource resourceId="4" type="whole"></resource></div>
         <div><resource resourceId="5" type="whole"></resource></div>
-        <hr/><div>Получить ссылку и вставить в пользовательский тег:</div>
+        <br/><h3>Получить ссылку и вставить в пользовательский тег:</h3>
         <a href="" style="color:red"> Скачать картинку-уточку<resource resourceId="1" type="hyperlink"></resource></a><br/>
         <a href="" style="color:orange"> Скачать аудио-пианино<resource resourceId="2" type="hyperlink"></resource></a><br/>
         <a href="" style="color:green"> Скачать видео-кота<resource resourceId="3" type="hyperlink"></resource></a><br/>
         <a href="" style="color:#42aaff"> Скачать файл-приложение<resource resourceId="4" type="hyperlink"></resource></a><br/>
         <a href="" style="color:blue"> Скачать файл-текст<resource resourceId="5" type="hyperlink"></resource></a><br/>
-        <hr/><div>Вставить ссылку на скачивание</div>
+        <br/><h3>Вставить ссылку на скачивание</h3>
         <div>Картинка <resource resourceId="1" type="download"></resource></div>
         <div>Аудио <resource resourceId="2" type="download"></resource></div>
         <div>Видео <resource resourceId="3" type="download"></resource></div>
         <div>Файл <resource resourceId="4" type="download"></resource></div>
-        <div>Текст <resource resourceId="5" type="download"></resource></div>'
+        <div>Текст <resource resourceId="5" type="download"></resource></div>
+        </div><br/><hr/>'
 ,1,'all var template'),
 (2,'v1','<h2>Книга</h2>
         <div style="color:red">Название: <field>TITLE</field></div>

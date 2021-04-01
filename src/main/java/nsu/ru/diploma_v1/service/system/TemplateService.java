@@ -88,7 +88,8 @@ public class TemplateService {
             String name = field.getTextContent();
             String value = object.get(name).getValue();
             Integer attributeId = object.get(name).getAttributeId();
-            Node newNode = object.get(name).getType() == SysTypes.XMEMO ?
+            Node newNode = (object.get(name).getType() == SysTypes.XMEMO ||
+                            object.get(name).getType() == SysTypes.MMEDIA) ?
                     parseXMemo(value, attributeId, objectId) : doc.createTextNode(value);
 
             NodesToReplace nodesToReplace = new NodesToReplace(field.getParentNode(), newNode, field);

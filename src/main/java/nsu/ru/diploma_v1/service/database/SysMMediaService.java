@@ -2,7 +2,6 @@ package nsu.ru.diploma_v1.service.database;
 
 import lombok.RequiredArgsConstructor;
 import nsu.ru.diploma_v1.model.entity.SysMmedia;
-import nsu.ru.diploma_v1.model.entity.SysResource;
 import nsu.ru.diploma_v1.model.enums.resource_types.SysResourceType;
 import nsu.ru.diploma_v1.repository.SysMMediaRepository;
 import org.springframework.stereotype.Service;
@@ -35,7 +34,7 @@ public class SysMMediaService {
 
     public Node getTag(String resourceId, Document doc){
         SysMmedia resource = sysMMediaRepository.getSysMmediaById(Integer.parseInt(resourceId));
-        return SysResourceType.getTag(resource.getResourceType(), doc, resourceId);
+        return SysResourceType.getTagForResource(resource.getResourceType(), doc, resourceId);
     }
 
 }

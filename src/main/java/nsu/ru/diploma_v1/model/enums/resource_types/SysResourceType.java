@@ -1,6 +1,7 @@
 package nsu.ru.diploma_v1.model.enums.resource_types;
 
 import nsu.ru.diploma_v1.configuration.urls.mode.UserMode;
+import nsu.ru.diploma_v1.model.entity.SysMmedia;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -32,8 +33,7 @@ public enum SysResourceType {
         else  {return FILE;}
     }
 
-    public static Node getTag(SysResourceType type, Document doc, String id){
-
+    public static Node getTagForResource(SysResourceType type, Document doc, String id){
         Element tag;
 
         switch (type){
@@ -68,5 +68,27 @@ public enum SysResourceType {
             }
         }
         return tag;
+    }
+
+    public static String getTagForMMedia(Integer id,SysResourceType type){
+
+        switch (type){
+            case IMAGE:{
+                return  String.format("<img src=\"%s\" alt=\"картинка %d\"></img>",
+                        UserMode.GetFile.GET_MMEDIA.replace("{id}",String.valueOf(id)),id);
+            }
+            case AUDIO:{
+                return String.format("<audio src=\"%s\" controls=\"\" alt=\"аудио %d\"></audio>",
+                        UserMode.GetFile.GET_MMEDIA.replace("{id}",String.valueOf(id)),id);
+            }
+            case VIDEO:{
+                return  String.format("<video controls=\"\" ><source src=\"%s\" alt=\"видео %d\"></source></video>",
+                        UserMode.GetFile.GET_MMEDIA.replace("{id}",String.valueOf(id)),id);
+            }
+            default:{
+                return  String.format("<a href=\"%s\" download=\"\" alt=\"аудио %d\">Файл : %d</a>",
+                        UserMode.GetFile.GET_MMEDIA.replace("{id}",String.valueOf(id)),id,id);
+            }
+        }
     }
 }
