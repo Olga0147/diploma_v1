@@ -1,11 +1,12 @@
 function sendPost(objectId,attributeName) {
-    const error = document.getElementById(attributeName);
-    const success = document.getElementById(attributeName);
-    console.log(attributeName);
-    console.log(success);
+    const success = document.getElementById('div_'+attributeName);
+    console.log('div_'+attributeName);
+    const error = success;
+    const toDelete = document.getElementById('form_'+attributeName);
+    console.log('form_'+attributeName);
+
     let formData = new FormData();
-    formData.append("file", success.files[0]);
-    console.log("/edit-mode/check/mmedia/"+objectId+"/"+attributeName);
+    formData.append("file", document.getElementById(attributeName).files[0]);
 
     return $.ajax({
         type: "POST",
@@ -17,14 +18,16 @@ function sendPost(objectId,attributeName) {
         processData: false,
         success: function(data){
             console.log('200');
-            let rez = data.message;
-            $("#toDelete").remove();
-            success.innerHTML =`<div><span>${rez}</span></div>`
+            let rez = data.id;
+            toDelete.remove();
+            success.innerHTML =`<a href="/download-mode/mmedia/${rez}">${rez}</a>`
         },
         error: function(jqXHR, exception){
             if (jqXHR.status === 400) {
                 let rez = JSON.parse(jqXHR.response);
-                error.innerHTML =`<div><span>${rez}</span></div>`
+                toDelete.remove();
+                error.innerHTML =`<div><span>${rez}</span></div>`;
+                console.log('400');
                 console.log(rez.errorMessage);
             } else if (jqXHR.status === 401) {
                 console.log('401');

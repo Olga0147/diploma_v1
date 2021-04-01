@@ -172,18 +172,23 @@ public class CustomService {
         for (SysAttribute attribute : attributeList) {
             if(attribute.getAttributeType()==SysTypes.MMEDIA.getId()){
                 if(obj.get(attribute.getName()) == null){
-                    obj.put(attribute.getName(),
-                            "        <form onsubmit=\"sendPost('" +
-                                    obj.get("id")+
-                                    "','"+
-                                    attribute.getName() +
-                                    "'); return false;\" method=\"post\" class=\"attribute\">\n" +
-                                    "            <input type=\"file\" id=\"" +
-                                    attribute.getName() +
-                                    "\" >\n" +
-                                    "            <p><input type=\"submit\" value=\"Сохранить\"></p>\n" +
-                                    "        </form>"
-                    );
+                    String replace = String.format(
+                            "<div  id=\"div_%s\">" +
+                                    "<form id=\"form_%s\" onsubmit=\"sendPost('%s','%s'); " +
+                                    "return false;\" method=\"post\" class=\"attribute\">" +
+                                        "<input type=\"file\" id=\"%s\">" +
+                                        "<p><input type=\"submit\" value=\"Сохранить\"></p>" +
+                                    "</form>" +
+                            " </div>",
+                            attribute.getName(),
+                            attribute.getName(),
+                            obj.get("id"),
+                            attribute.getName(),
+                            attribute.getName()
+                            );
+
+
+                    obj.put(attribute.getName(),replace);
                 }else{
                     obj.put(attribute.getName(), String.format("<a href=\"%s\">%s</a>",
                                                     UserMode.GetFile.GET_MMEDIA.replace("{id}",obj.get(attribute.getName()).toString()),
