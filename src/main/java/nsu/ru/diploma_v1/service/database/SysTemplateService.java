@@ -22,8 +22,8 @@ public class SysTemplateService {
         return sysTemplateRepository.getSysTemplateById(templateId);
     }
 
-    public void saveSysTemplate(SysTemplate sysTemplate){
-        sysTemplateRepository.save(sysTemplate);
+    public SysTemplate saveSysTemplate(SysTemplate sysTemplate){
+        return sysTemplateRepository.save(sysTemplate);
     }
 
 }

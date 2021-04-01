@@ -7,4 +7,6 @@ import lombok.Data;
 @AllArgsConstructor
 public class AnswerMessage {
     private String message;
+
+    private String id;
 }

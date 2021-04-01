@@ -2,6 +2,8 @@ package nsu.ru.diploma_v1.model.entity;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import nsu.ru.diploma_v1.model.enums.resource_types.SysResourceType;
+import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
@@ -12,7 +14,8 @@ import javax.persistence.*;
 @Table(name = "Mmedia")
 public class SysMmedia {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GenericGenerator(name="keygen_mme" , strategy="increment")
+    @GeneratedValue(generator="keygen_mme")
     private Integer id;
 
     @Column(nullable = false)
@@ -21,6 +24,9 @@ public class SysMmedia {
     @Lob
     @Type(type="org.hibernate.type.BinaryType")
     private byte[] data;
+
+    @Enumerated(EnumType.ORDINAL)
+    private SysResourceType resourceType;
 
     private Integer ownerObjectId;
 

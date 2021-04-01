@@ -15,4 +15,5 @@ public class EntityPath {
     public static final String ASSOCIATION_IMPL = "/association-impl";
     public static final String TEMPLATE = "/template";
     public static final String RESOURCE = "/resource";
+    public static final String MMEDIA = "/mmedia";
 }

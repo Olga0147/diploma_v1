@@ -1,28 +1,28 @@
 package nsu.ru.diploma_v1.model.enums.aggregations.handlers;
 
 import lombok.RequiredArgsConstructor;
+import nsu.ru.diploma_v1.configuration.urls.ModePath;
 import nsu.ru.diploma_v1.model.entity.SysAggregationImpl;
 import nsu.ru.diploma_v1.model.enums.aggregations.AggregationTypeHandler;
 import nsu.ru.diploma_v1.model.enums.aggregations.AggregationTypes;
 import nsu.ru.diploma_v1.service.database.SysAggregationService;
-import nsu.ru.diploma_v1.service.system.TemplateService;
 import org.springframework.stereotype.Component;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
 @Component
 @RequiredArgsConstructor
-public class ObjectTypeHandler implements AggregationTypeHandler {
+public class HyperlinkTypeAggregationHandler implements AggregationTypeHandler {
 
-    private final TemplateService templateService;
     private final SysAggregationService sysAggregationService;
 
-    //<div><aggregation aggregationId="1" templateId="2" objectId="3" type="object"></aggregation></div>
-    //div><aggregation aggregationId="1" templateId="2" objectId="4" type="object"></aggregation></div>
+    //<div>She reads: <aggregation aggregationId="1" templateId="2" objectId="3" type="hyperlink">Book</aggregation></div>
+
+    //<div>He reads: <aggregation aggregationId="1" templateId="2" objectId="4" type="hyperlink">Bad Book</aggregation></div>
 
     @Override
     public AggregationTypes getType(){
-        return AggregationTypes.OBJECT;
+        return AggregationTypes.HYPERLINK;
     }
 
     @Override
@@ -39,9 +39,7 @@ public class ObjectTypeHandler implements AggregationTypeHandler {
         Integer toTemplateId = Integer.parseInt(template.getTextContent());
         Integer toObjectId = Integer.parseInt(object.getTextContent());
 
-        String result = templateService.getObjectInTemplate(toObjectId,toTemplateId);
-        String resultWithoutRoot = templateService.clearXMLMeta(result);
-        return resultWithoutRoot;
+        return String.format("<a href=\"%s/%d/%d\"> %s </a>",ModePath.USER_MODE,toObjectId,toTemplateId,innerText);
     }
 
     @Override
@@ -69,6 +67,6 @@ public class ObjectTypeHandler implements AggregationTypeHandler {
                 toObjectId,
                 toTemplateId,
                 attributeId,
-                AggregationTypes.OBJECT);
+                AggregationTypes.HYPERLINK);
     }
 }

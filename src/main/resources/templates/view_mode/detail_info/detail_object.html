@@ -2,6 +2,8 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <div th:replace="fragments/menu :: header-css"/>
+    <script async src="/js/new_mmedia.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
     <meta charset="UTF-8">
     <title th:text="${title}"></title>
 </head>
@@ -10,7 +12,7 @@
 
 <div class = "inner">
     <h2 th:text="${title}"></h2>
-
+    <h2 th:text="${id}" id = "objectId"></h2>
     <table>
         <thead>
         <tr >
@@ -22,6 +24,22 @@
         <tr th:each="instance : ${object}">
             <td th:text="${instance.key}">keyvalue</td>
             <td th:text="${instance.value}">num</td>
+        </tr>
+        </tbody>
+    </table>
+    <br>
+    <h2>Атрибуты MMedia и XMemo детально</h2>
+    <table>
+        <thead>
+        <tr >
+            <th>Атрибуты</th>
+            <th>Данные</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="instance1 : ${objectMMediaAndXMemo}">
+            <td th:text="${instance1.key}">keyvalue</td>
+            <td th:utext="${instance1.value}">num</td>
         </tr>
         </tbody>
     </table>

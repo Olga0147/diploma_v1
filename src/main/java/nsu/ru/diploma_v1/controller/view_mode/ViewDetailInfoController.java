@@ -2,7 +2,7 @@ package nsu.ru.diploma_v1.controller.view_mode;
 
 import lombok.RequiredArgsConstructor;
 import nsu.ru.diploma_v1.configuration.urls.menu.ViewMenu;
-import nsu.ru.diploma_v1.configuration.urls.mode.DownloadMode;
+import nsu.ru.diploma_v1.configuration.urls.mode.UserMode;
 import nsu.ru.diploma_v1.model.entity.*;
 import nsu.ru.diploma_v1.service.database.*;
 import nsu.ru.diploma_v1.service.system.CustomService;
@@ -116,9 +116,13 @@ public class ViewDetailInfoController {
         //TODO: ERROR NOT FOUND
         SysObject sysObject = sysObjectService.getSysObjectById(id);
         SysClass sysClass = sysObject.getOwnerSysClass();
-        Map<String, Object> object = customService.getObject(sysClass.getSystemName(),id);
+        Map<String, Object> object = customService.getObject(sysClass,id);
 
+        Map<String, Object> objectMMediaAndXMemo = customService.getObjectMMediaAndXMemo(sysClass,id);
+
+        model.addAttribute("id", String.valueOf(sysObject.getId()));
         model.addAttribute("object", object.entrySet());
+        model.addAttribute("objectMMediaAndXMemo", objectMMediaAndXMemo);
 
         model.addAttribute("aggregationsImplF", sysObject.getAggregationImplFromList());
         model.addAttribute("aggregationsImplT", sysObject.getAggregationImplToList());
@@ -187,7 +191,7 @@ public class ViewDetailInfoController {
 
         model.addAttribute("title", "Ресурс: детально");
         model.addAttribute("detailClassPath", getPath(DetailInfo.GET_CLASS));
-        model.addAttribute("downloadPath", getPath(DownloadMode.GetFile.GET_RESOURCE));
+        model.addAttribute("downloadPath", getPath(UserMode.GetFile.GET_RESOURCE));
 
         model.addAttribute("m", menu);
 

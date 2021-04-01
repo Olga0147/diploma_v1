@@ -20,7 +20,7 @@ INSERT INTO AttributeType (ID,NAME,IMPLEMENTATION) VALUES
 (1,'FLOAT','FLOAT'),
 (2,'INTEGER','INTEGER'),
 (3,'SMALLINT','SMALLINT'),
-(4,'MMEDIA','TEXT'),
+(4,'MMEDIA','INTEGER REFERENCES Mmedia(ID)'),
 (5,'TEXT','TEXT'),
 (6,'STRING','VARCHAR'),
 (7,'XMEMO','TEXT'),
@@ -99,6 +99,7 @@ CREATE TABLE Mmedia (
       ID             SERIAL NOT NULL PRIMARY KEY,
       NAME           VARCHAR(128) NOT NULL,
       data              bytea NOT NULL,
+      ResourceType INTEGER REFERENCES ResourceType(ID),
       OwnerObjectId INTEGER NOT NULL REFERENCES Object(ID)
 );
 
@@ -131,7 +132,7 @@ ID             INTEGER NOT NULL PRIMARY KEY,
 FloatField     FLOAT NOT NULL,
 IntegerField   INTEGER NOT NULL,
 SmallIntField  SMALLINT NOT NULL,
-MMEDIAField    bytea,
+MMEDIAField    INTEGER REFERENCES Mmedia(ID),
 StringField    VARCHAR(64) NOT NULL,
 TextField      TEXT NOT NULL,
 XMEMOField     TEXT NOT NULL
@@ -182,7 +183,28 @@ INSERT INTO Template (ID,NAME,BODY,OwnerClassId,DESCRIPTION) VALUES
         <div style="color:blue"><field>XMEMOField</field></div>
 
         <div style="border:1px solid red"><association associationId="1" templateId="2" delimiter="&lt;hr&gt;&lt;/hr&gt;" type="object"></association></div>
-        <div><association associationId="1" templateId="2" delimiter="&lt;br&gt;&lt;/br&gt;" type="hyperlink">TITLE AUTHOR</association></div>'
+        <div><association associationId="1" templateId="2" delimiter="&lt;br&gt;&lt;/br&gt;" type="hyperlink">TITLE AUTHOR</association></div>
+
+        <hr/>
+        <div style="color:black">Должны быть добавлены тестовые файлы: 1- IMAGE, 2- AUDIO, 3 - VIDEO, 4 - FILE,5 - TEXT_FILE!!!</div>
+        <hr/><div>Вставить полностью:</div>
+        <div><resource resourceId="1" type="whole"></resource></div>
+        <div><resource resourceId="2" type="whole"></resource></div>
+        <div><resource resourceId="3" type="whole"></resource></div>
+        <div><resource resourceId="4" type="whole"></resource></div>
+        <div><resource resourceId="5" type="whole"></resource></div>
+        <hr/><div>Получить ссылку и вставить в пользовательский тег:</div>
+        <a href="" style="color:red"> Скачать картинку-уточку<resource resourceId="1" type="hyperlink"></resource></a><br/>
+        <a href="" style="color:orange"> Скачать аудио-пианино<resource resourceId="2" type="hyperlink"></resource></a><br/>
+        <a href="" style="color:green"> Скачать видео-кота<resource resourceId="3" type="hyperlink"></resource></a><br/>
+        <a href="" style="color:#42aaff"> Скачать файл-приложение<resource resourceId="4" type="hyperlink"></resource></a><br/>
+        <a href="" style="color:blue"> Скачать файл-текст<resource resourceId="5" type="hyperlink"></resource></a><br/>
+        <hr/><div>Вставить ссылку на скачивание</div>
+        <div>Картинка <resource resourceId="1" type="download"></resource></div>
+        <div>Аудио <resource resourceId="2" type="download"></resource></div>
+        <div>Видео <resource resourceId="3" type="download"></resource></div>
+        <div>Файл <resource resourceId="4" type="download"></resource></div>
+        <div>Текст <resource resourceId="5" type="download"></resource></div>'
 ,1,'all var template'),
 (2,'v1','<h2>Книга</h2>
         <div style="color:red">Название: <field>TITLE</field></div>

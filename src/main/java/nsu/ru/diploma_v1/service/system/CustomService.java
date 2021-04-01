@@ -1,6 +1,8 @@
 package nsu.ru.diploma_v1.service.system;
 
 import lombok.RequiredArgsConstructor;
+import nsu.ru.diploma_v1.configuration.urls.ModePath;
+import nsu.ru.diploma_v1.configuration.urls.mode.UserMode;
 import nsu.ru.diploma_v1.exception.ValidationException;
 import nsu.ru.diploma_v1.mapper.FormMapper;
 import nsu.ru.diploma_v1.model.dto.NewClassForm;
@@ -50,7 +52,7 @@ public class CustomService {
     }
 
     @Transactional
-    public void saveClass(NewClassForm newClassForm){
+    public SysClass saveClass(NewClassForm newClassForm){
 
         //зарегистрировали класс
         SysClass sysClass = formMapper.convertToSysClass(newClassForm);
@@ -68,10 +70,11 @@ public class CustomService {
 
         //создали таблицу
         customRepository.createTable(sysName,sysAttributeList);
+        return sysClass;
     }
 
     @Transactional
-    public void saveObject(List<ObjectAttribute> list, Integer classId){
+    public SysObject saveObject(List<ObjectAttribute> list, Integer classId){
 
         Map<String,Object> dataNameValue = new HashMap<>();
         for (ObjectAttribute objectAttribute : list) {
@@ -110,17 +113,96 @@ public class CustomService {
         param.put("id",objectId);
         //сохранить объект
         customRepository.insertInTable(param,tableName);
+        return sysObject;
     }
 
-    public Map<String, Object> getObject(@NonNull String tableName, @NonNull int id){
+    @Transactional
+    public SysObject updateObject(List<ObjectAttribute> list, Integer objectId){
+
+        Map<String,Object> dataNameValue = new HashMap<>();
+        for (ObjectAttribute objectAttribute : list) {
+            dataNameValue.put(objectAttribute.getName(),objectAttribute.getValue());
+        }
+
+        SysObject sysObject = sysObjectService.getSysObjectById(objectId);
+
+        //получить название таблицы
+        SysClass sysClass =  sysObject.getOwnerSysClass();
+        String tableName = sysClass.getSystemName();
+
+
+        //получить типы атрибутов и привести к нужному типу
+        Map<String,Object> param = new HashMap<>();
+        List<SysAttribute> sysAttribute = sysClass.getAttributeList();
+        for (SysAttribute attr : sysAttribute) {
+
+            if(!dataNameValue.containsKey(attr.getName())){continue;}
+
+            AttributeTypeHandler attributeTypeHandler = attributeTypeMap.get(attr.getAttributeType());
+            Object value = null;
+            try{
+                value = attributeTypeHandler.handle(attr,dataNameValue.get(attr.getName()));
+                //сохранить агрегации
+                if(attr.getAttributeType() == SysTypes.XMEMO.getId()){
+                    templateService.parseXMemoToSaveObject( (String)value,attr.getId(),objectId);
+                }
+            }catch (ValidationException e){
+                //TODO: error handler
+            }
+            param.put(attr.getName(), value);
+        }
+
+        param.put("id",objectId);
+        //обновить объект
+        customRepository.updateRowInTable(param,tableName);
+        return sysObject;
+    }
+
+    public Map<String, Object> getObject(@NonNull SysClass sysClass, @NonNull int id){
         //TODO: исключение что не нашли
-        return customRepository.getObject(tableName, id);
+        List<SysAttribute> attributeList = sysClass.getAttributeList();
+        return customRepository.getObject(sysClass.getSystemName(), id);
+    }
+
+    public Map<String, Object> getObjectMMediaAndXMemo(@NonNull SysClass sysClass, @NonNull int id){
+        //TODO: исключение что не нашли
+        List<SysAttribute> attributeList = sysClass.getAttributeList();
+        Map<String, Object> obj = customRepository.getObject(sysClass.getSystemName(), id);
+
+        for (SysAttribute attribute : attributeList) {
+            if(attribute.getAttributeType()==SysTypes.MMEDIA.getId()){
+                if(obj.get(attribute.getName()) == null){
+                    obj.put(attribute.getName(),
+                            "        <form onsubmit=\"sendPost('" +
+                                    obj.get("id")+
+                                    "','"+
+                                    attribute.getName() +
+                                    "'); return false;\" method=\"post\" class=\"attribute\">\n" +
+                                    "            <input type=\"file\" id=\"" +
+                                    attribute.getName() +
+                                    "\" >\n" +
+                                    "            <p><input type=\"submit\" value=\"Сохранить\"></p>\n" +
+                                    "        </form>"
+                    );
+                }else{
+                    obj.put(attribute.getName(), String.format("<a href=\"%s\">%s</a>",
+                                                    UserMode.GetFile.GET_MMEDIA.replace("{id}",obj.get(attribute.getName()).toString()),
+                                                    attribute.getName()
+                                                    )
+                    );
+                }
+            }else if(attribute.getAttributeType()!=SysTypes.XMEMO.getId()){
+                obj.remove(attribute.getName());
+            }
+        }
+        obj.remove("id");
+        return obj;
     }
 
     public Map<String, AttributeAndValue> getObjectForTemplate(Integer objectId){
         SysObject sysObject = sysObjectService.getSysObjectById(objectId);
         SysClass sysClass = sysObject.getOwnerSysClass();
-        Map<String, Object> object = getObject(sysClass.getSystemName(),objectId);
+        Map<String, Object> object = customRepository.getObject(sysClass.getSystemName(),objectId);
 
         Map<String, AttributeAndValue> nameValueFields = new HashMap<>();
 

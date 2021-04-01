@@ -31,8 +31,12 @@ function sendPost() {
         if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
             console.log('200');
             let rez = JSON.parse(xhr.response).message;
+            let objId = JSON.parse(xhr.response).id;
             $("#toDelete").remove();
-            success.innerHTML =`<div><span>${rez}</span></div>`
+            success.innerHTML =`
+                    <div><span>${rez}</span></div>
+                    <div>Если Объект содержит поле для файлов, то их можно добавить на странице детального просмотра Объекта</div>
+                    <div><a href="${path}/view-mode/detail-info/object/${objId}">Перейти к Объекту</a></div>`
         } else if (xhr.status === 400) {
             let rez = JSON.parse(xhr.response);
             error.innerHTML =`<div><span>${rez}</span></div>`

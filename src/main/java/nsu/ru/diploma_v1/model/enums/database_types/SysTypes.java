@@ -12,7 +12,7 @@ public enum SysTypes {
     FLOAT(1,"FLOAT"),
     INTEGER(2, "INTEGER"),
     SMALLINT(3, "SMALLINT"),
-    MMEDIA(4,"TEXT"),
+    MMEDIA(4,"INTEGER REFERENCES Mmedia(ID)"),
     TEXT(5,"TEXT"),
     STRING(6,"VARCHAR"),
     XMEMO(7,"TEXT"),

@@ -14,10 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class PageController {
 
-    private final SysObjectService sysObjectService;
-    private final CustomService customService;
-
-    private final SysTemplateService sysTemplateService;
     private final TemplateService templateService;
 
     @GetMapping(UserMode.Show.GET_OBJECT)

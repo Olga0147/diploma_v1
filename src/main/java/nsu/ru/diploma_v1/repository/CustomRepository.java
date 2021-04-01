@@ -150,4 +150,20 @@ public class CustomRepository{
         namedParameterJdbcTemplate.update(sql, namedParameters);
     }
 
+    @Transactional
+    public void updateRowInTable(Map<String,Object> list, String tableName){
+        StringBuilder columns = new StringBuilder();
+        String vars = "id = :id";
+
+        SqlParameterSource namedParameters = new MapSqlParameterSource().addValues(list);
+
+        for (Map.Entry<String, Object> objectAttribute : list.entrySet()) {
+            if(objectAttribute.getKey().equals("id")){continue;}
+            columns.append(String.format("%s = :%s ",objectAttribute.getKey(),objectAttribute.getKey()));
+        }
+
+        String sql = String.format("UPDATE %s SET %s WHERE %s ",tableName,columns,vars);
+        namedParameterJdbcTemplate.update(sql, namedParameters);
+    }
+
 }

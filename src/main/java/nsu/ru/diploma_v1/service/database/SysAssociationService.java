@@ -37,8 +37,8 @@ public class SysAssociationService {
         return result;
     }
 
-    public void saveSysAssociation(SysAssociation sysAssociation){
-        sysAssociationRepository.save(sysAssociation);
+    public SysAssociation saveSysAssociation(SysAssociation sysAssociation){
+        return sysAssociationRepository.save(sysAssociation);
     }
 
     //------
@@ -51,7 +51,7 @@ public class SysAssociationService {
         return sysAssociationImplRepository.getSysAssociationImplById(id);
     }
 
-    public void saveSysAssociationImpl(SysAssociationImpl sysAssociation){
-        sysAssociationImplRepository.save(sysAssociation);
+    public SysAssociationImpl saveSysAssociationImpl(SysAssociationImpl sysAssociation){
+        return sysAssociationImplRepository.save(sysAssociation);
     }
 }

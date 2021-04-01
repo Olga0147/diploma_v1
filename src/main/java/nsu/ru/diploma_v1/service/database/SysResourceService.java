@@ -2,8 +2,11 @@ package nsu.ru.diploma_v1.service.database;
 
 import lombok.RequiredArgsConstructor;
 import nsu.ru.diploma_v1.model.entity.SysResource;
+import nsu.ru.diploma_v1.model.enums.resource_types.SysResourceType;
 import nsu.ru.diploma_v1.repository.SysResourceRepository;
 import org.springframework.stereotype.Service;
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
 
 import java.util.List;
 
@@ -25,8 +28,13 @@ public class SysResourceService {
         return sysResourceRepository.getSysResourceById(resourceId);
     }
 
-    public void saveSysResource(SysResource sysResource){
-        sysResourceRepository.save(sysResource);
+    public SysResource saveSysResource(SysResource sysResource){
+        return sysResourceRepository.save(sysResource);
+    }
+
+    public Node getTag(String resourceId, Document doc){
+        SysResource resource = sysResourceRepository.getSysResourceById(Integer.parseInt(resourceId));
+        return SysResourceType.getTag(resource.getResourceType(), doc, resourceId);
     }
 
 }

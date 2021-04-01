@@ -10,6 +10,8 @@ import nsu.ru.diploma_v1.model.enums.associations.AssociationTypes;
 import nsu.ru.diploma_v1.model.enums.database_types.SysTypes;
 import nsu.ru.diploma_v1.model.enums.aggregations.AggregationTypeHandler;
 import nsu.ru.diploma_v1.model.enums.aggregations.AggregationTypes;
+import nsu.ru.diploma_v1.model.enums.resource_types.ResourceTagType;
+import nsu.ru.diploma_v1.model.enums.resource_types.ResourceTypeHandler;
 import nsu.ru.diploma_v1.service.database.SysAggregationService;
 import nsu.ru.diploma_v1.service.database.SysTemplateService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,11 +58,18 @@ public class TemplateService {
         types.forEach(type -> associationHandlerMap.put(type.getType(), type));
     }
 
+    private final Map<ResourceTagType, ResourceTypeHandler> resourceHandlerMap = new HashMap<>();
+    @Autowired
+    public void setResourceTypes(List<ResourceTypeHandler> types) {
+        types.forEach(type -> resourceHandlerMap.put(type.getType(), type));
+    }
+
     @PostConstruct
     void setLink(){
         customService.setTemplateService(this);
     }
 
+    //MAIN METHOD
     public String getObjectInTemplate(Integer objectId, Integer templateId){
         Map<String, AttributeAndValue> object = customService.getObjectForTemplate(objectId);
         SysTemplate template = sysTemplateService.getSysTemplate(templateId);
@@ -110,6 +119,29 @@ public class TemplateService {
             nodesToReplaceList.add(nodesToReplace);
         }
 
+        //2)вставляем метки <resource></resource>
+        NodeList resources = doc.getElementsByTagName("resource");
+        for (int i = resources.getLength()-1; i >=0; i--) {
+
+            Node resource = resources.item(i);
+            String res = toString(resource);
+            //Node oldParent = resource.getParentNode();
+            //Node grandPa = oldParent.getParentNode();
+
+            NamedNodeMap map = resource.getAttributes();
+
+            Node type = map.getNamedItem("type");
+            ResourceTagType resourceType = ResourceTagType.valueOf(type.getTextContent().toUpperCase(Locale.ROOT));
+            ResourceTypeHandler handler = resourceHandlerMap.get(resourceType);
+            Node newParent = handler.toNewParentNode(resource);
+
+            resources = doc.getElementsByTagName("resource");
+
+           // NodesToReplace nodesToReplace = new NodesToReplace(grandPa, newParent, oldParent);
+            //nodesToReplaceList.add(nodesToReplace);
+        }
+
+        //обработка подготовленных данных
         for (NodesToReplace nodesToReplace : nodesToReplaceList) {
             Node firstDocImportedNode = doc.importNode(nodesToReplace.newNode, true);
             nodesToReplace.parent.replaceChild(firstDocImportedNode,nodesToReplace.oldNode);
@@ -172,7 +204,6 @@ public class TemplateService {
         Node node = doc.getFirstChild();
         return node;
     }
-
 
     public void parseXMemoToSaveObject(String XMemoValue, Integer attributeId, Integer objectId) {
 

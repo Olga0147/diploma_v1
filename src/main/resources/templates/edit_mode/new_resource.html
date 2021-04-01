@@ -16,7 +16,6 @@
                 <option th:each="classIdent : ${classIdents}" th:text="${classIdent}"></option>
             </select>
             <input type="file" th:id="'res'" >
-
             <p><input type="submit" value="Сохранить"></p>
         </form>
         <div class="error" id="error"></div>

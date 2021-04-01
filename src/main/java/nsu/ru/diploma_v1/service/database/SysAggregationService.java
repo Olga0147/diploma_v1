@@ -39,8 +39,8 @@ public class SysAggregationService {
         return sysAggregationRepository.getSysAggregationById(id);
     }
 
-    public void saveSysAggregation(SysAggregation sysAggregation){
-        sysAggregationRepository.save(sysAggregation);
+    public SysAggregation saveSysAggregation(SysAggregation sysAggregation){
+        return sysAggregationRepository.save(sysAggregation);
     }
 
     //----

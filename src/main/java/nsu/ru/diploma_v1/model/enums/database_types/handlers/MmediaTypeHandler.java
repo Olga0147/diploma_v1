@@ -16,7 +16,8 @@ public class MmediaTypeHandler implements AttributeTypeHandler {
     @Override
     public Object handle(SysAttribute attribute, Object value) {
         //TODO: MMEDIA : сохранить файл и сохранить к нему путь
-        return null;
+        //храним айдишник на таблицу
+        return (Integer)value;
     }
 
     @Override
