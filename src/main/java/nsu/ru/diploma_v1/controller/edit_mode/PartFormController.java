@@ -1,6 +1,7 @@
 package nsu.ru.diploma_v1.controller.edit_mode;
 
 import lombok.RequiredArgsConstructor;
+import nsu.ru.diploma_v1.exception.EntityNotFoundException;
 import nsu.ru.diploma_v1.model.entity.*;
 import nsu.ru.diploma_v1.model.enums.database_types.SysTypes;
 import nsu.ru.diploma_v1.database.sys.SysAssociationService;
@@ -48,7 +49,13 @@ public class PartFormController {
     @GetMapping(PartForm.ASSOCIATION_IMPL_FORM)
     public String editNewAssociationImpl(Model model, @PathVariable Integer associationId) {
 
-        SysAssociation sysAssociation = sysAssociationService.getSysAssociation(associationId);
+        SysAssociation sysAssociation;
+        try {
+            sysAssociation = sysAssociationService.getSysAssociation(associationId);//EntityNotFoundException
+        }catch (EntityNotFoundException e){
+            model.addAttribute("exception", e.getMessage());
+            return "/exception/exception_part";
+        }
         int fromClassId = sysAssociation.getFromClassId();
         int toClassId  = sysAssociation.getToClassId();
 

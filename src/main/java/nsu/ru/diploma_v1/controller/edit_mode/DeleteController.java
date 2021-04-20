@@ -31,7 +31,7 @@ public class DeleteController {
 
     @GetMapping(EditMode.Delete.DELETE_ASSOCIATION)
     public AnswerMessage deleteAssociation(@PathVariable Integer id) {
-        String message = sysAssociationService.delete(id);
+        String message = sysAssociationService.delete(id);//throws EntityNotFoundException, EditException
         return new AnswerMessage(message,String.valueOf(id));
     }
 

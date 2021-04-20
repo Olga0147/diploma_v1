@@ -84,8 +84,14 @@ public class ViewDetailInfoController {
     @GetMapping(DetailInfo.GET_ASSOCIATION)
     public String showInfoAssociation(Model model, @PathVariable String id) {
 
-        //TODO: ERROR NOT FOUND
-        SysAssociation association = sysAssociationService.getSysAssociation(Integer.parseInt(id));
+        model.addAttribute("m", menu);
+        SysAssociation association;
+        try{
+            association = sysAssociationService.getSysAssociation(Integer.parseInt(id));//throws EntityNotFoundException
+        }catch (EntityNotFoundException e){
+            model.addAttribute("exception", e.getMessage());
+            return "/exception/exception";
+        }
 
         model.addAttribute("association", association);
         model.addAttribute("associationsImpl", association.getSysAssociationList());
@@ -95,7 +101,6 @@ public class ViewDetailInfoController {
         model.addAttribute("detailClassPath", getPath(DetailInfo.GET_CLASS));
         model.addAttribute("detailAssociationImplPath", getPath(DetailInfo.GET_ASSOCIATION_IMPL));
 
-        model.addAttribute("m", menu);
 
         return "/view_mode/detail_info/detail_association";
     }
@@ -176,17 +181,21 @@ public class ViewDetailInfoController {
 
     @GetMapping(DetailInfo.GET_ASSOCIATION_IMPL)
     public String showInfoAssociationImpl(Model model, @PathVariable Integer id) {
+        model.addAttribute("m", menu);
 
-        //TODO: ERROR NOT FOUND
-        SysAssociationImpl associationImpl = sysAssociationService.getSysAssociationImpl(id);
-
+        SysAssociationImpl associationImpl;
+        try {
+            associationImpl = sysAssociationService.getSysAssociationImpl(id);//EntityNotFoundException
+        }catch (EntityNotFoundException e){
+            model.addAttribute("exception", e.getMessage());
+            return "/exception/exception";
+        }
         model.addAttribute("associationImpl", associationImpl);
 
         model.addAttribute("title", " Гиперсвязь: детально");
         model.addAttribute("detailObjectPath", getPath(DetailInfo.GET_OBJECT));
         model.addAttribute("detailAssociationPath", getPath(DetailInfo.GET_ASSOCIATION));
 
-        model.addAttribute("m", menu);
 
         return "/view_mode/detail_info/detail_association_impl";
     }
