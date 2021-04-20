@@ -34,7 +34,13 @@ public class PartFormController {
     @GetMapping(PartForm.OBJECT_FORM)
     public String editNewObject(Model model, @PathVariable Integer classId) {
 
-        List<SysAttribute> list = sysClassService.getAttributesNotMMedia(classId);
+        List<SysAttribute> list;
+        try{
+            list = sysClassService.getAttributesNotMMedia(classId);//throws EntityNotFoundException
+        }catch (EntityNotFoundException e){
+            model.addAttribute("exception", e.getMessage());
+            return "/exception/exception_part";
+        }
         for (SysAttribute sysAttribute : list) {
             sysAttribute.setOwnerSysClass(null);
         }
@@ -59,9 +65,14 @@ public class PartFormController {
         int fromClassId = sysAssociation.getFromClassId();
         int toClassId  = sysAssociation.getToClassId();
 
-        SysClass fromClass = sysClassService.getClassById(fromClassId);
-        SysClass toClass = sysClassService.getClassById(toClassId);
-
+        SysClass fromClass,toClass;
+        try {
+            fromClass = sysClassService.getClassById(fromClassId);//throws EntityNotFoundException
+            toClass = sysClassService.getClassById(toClassId);//throws EntityNotFoundException
+        }catch (EntityNotFoundException e){
+            model.addAttribute("exception", e.getMessage());
+            return "/exception/exception_part";
+        }
         List<SysObject> fromObject = fromClass.getObjectList();
         List<SysObject> toObject = toClass.getObjectList();
 

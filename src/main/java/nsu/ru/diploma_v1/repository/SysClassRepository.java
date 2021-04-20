@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface SysClassRepository extends JpaRepository<SysClass, Long> {
@@ -12,6 +13,6 @@ public interface SysClassRepository extends JpaRepository<SysClass, Long> {
 
     List<SysClass> findAll();
 
-    SysClass getSysClassById(Integer id);
+    Optional<SysClass> getSysClassById(Integer id);
 
 }

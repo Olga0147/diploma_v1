@@ -34,8 +34,15 @@ public class ViewDetailInfoController {
     @GetMapping(DetailInfo.GET_CLASS)
     public String showInfoClass(Model model, @PathVariable String id) {
 
-        //TODO: ERROR NOT FOUND
-        SysClass sysClass = sysClassService.getClassById(Integer.parseInt(id));
+        model.addAttribute("m", menu);
+
+        SysClass sysClass;
+        try{
+            sysClass = sysClassService.getClassById(Integer.parseInt(id));
+        }catch (EntityNotFoundException e){
+            model.addAttribute("exception", e.getMessage());
+            return "/exception/exception";
+        }
 
         model.addAttribute("page", sysClass);
         model.addAttribute("attributes", sysClass.getAttributeList());
@@ -53,7 +60,6 @@ public class ViewDetailInfoController {
         model.addAttribute("detailTemplatePath", getPath(DetailInfo.GET_TEMPLATE));
         model.addAttribute("detailObjectPath", getPath(DetailInfo.GET_OBJECT));
 
-        model.addAttribute("m", menu);
 
         return "/view_mode/detail_info/detail_class";
     }

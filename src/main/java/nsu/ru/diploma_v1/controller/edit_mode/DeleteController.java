@@ -30,7 +30,7 @@ public class DeleteController {
     }
 
     @GetMapping(EditMode.Delete.DELETE_ASSOCIATION)
-    public AnswerMessage deleteAssociation(@PathVariable Integer id) {
+    public AnswerMessage deleteAssociation(@PathVariable Integer id)throws EntityNotFoundException, EditException {
         String message = sysAssociationService.delete(id);//throws EntityNotFoundException, EditException
         return new AnswerMessage(message,String.valueOf(id));
     }
@@ -60,8 +60,8 @@ public class DeleteController {
     }
 
     @GetMapping(EditMode.Delete.DELETE_CLASS)
-    public AnswerMessage deleteClass(@PathVariable Integer id) throws EditException {
-        String message = sysClassService.delete(id);
+    public AnswerMessage deleteClass(@PathVariable Integer id) throws EditException,EntityNotFoundException {
+        String message = sysClassService.delete(id);//throws EditException,EntityNotFoundException
         return new AnswerMessage(message,String.valueOf(id));
     }
 

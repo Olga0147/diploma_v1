@@ -2,6 +2,7 @@ package nsu.ru.diploma_v1.controller.edit_mode;
 
 import lombok.RequiredArgsConstructor;
 import nsu.ru.diploma_v1.exception.EditException;
+import nsu.ru.diploma_v1.exception.EntityNotFoundException;
 import nsu.ru.diploma_v1.model.dto.AnswerMessage;
 import nsu.ru.diploma_v1.model.dto.NewClassForm;
 import nsu.ru.diploma_v1.model.dto.NewObjectForm;
@@ -36,9 +37,9 @@ public class PostFormController {
     }
 
     @PostMapping(PostForm.POST_OBJECT)
-    public AnswerMessage postNewObject(@RequestBody NewObjectForm newObjectForm, @PathVariable Integer classId) throws EditException {
+    public AnswerMessage postNewObject(@RequestBody NewObjectForm newObjectForm, @PathVariable Integer classId) throws EditException, EntityNotFoundException {
         //TODO check all aggregatioins : use  parseXMemoToSaveObject
-        SysObject sysObject = customService.saveObject(newObjectForm.getAttributes(),classId);// throws EditException
+        SysObject sysObject = customService.saveObject(newObjectForm.getAttributes(),classId);// throws EditException,EntityNotFoundException
         return new AnswerMessage("Удачно!",String.valueOf(sysObject.getId()));
     }
 

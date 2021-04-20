@@ -74,7 +74,7 @@ public class CustomService {
     }
 
     @Transactional
-    public SysObject saveObject(List<ObjectAttribute> list, Integer classId) throws EditException {
+    public SysObject saveObject(List<ObjectAttribute> list, Integer classId) throws EditException,EntityNotFoundException {
 
         Map<String,Object> dataNameValue = new HashMap<>();
         for (ObjectAttribute objectAttribute : list) {
@@ -82,7 +82,7 @@ public class CustomService {
         }
 
         //получить название таблицы
-        SysClass sysClass = sysClassService.getClassById(classId);
+        SysClass sysClass = sysClassService.getClassById(classId);//// throws EntityNotFoundException
         String tableName = sysClass.getSystemName();
 
         //зарегистрировать объект
