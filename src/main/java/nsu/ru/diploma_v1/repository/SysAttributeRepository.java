@@ -6,4 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface SysAttributeRepository extends JpaRepository<SysAttribute, Long> {
+
+    Integer deleteAllByOwnerClassId(int id);
 }

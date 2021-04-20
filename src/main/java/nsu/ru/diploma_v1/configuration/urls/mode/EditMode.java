@@ -39,4 +39,16 @@ public class EditMode extends EntityPath {
         public static final String ASSOCIATION_IMPL_FORM =    PREF + ASSOCIATION_IMPL+"/{associationId}";
         public static final String TEMPLATE_FORM =            PREF + TEMPLATE+"/{classId}";
     }
+
+    public static class Delete{
+        public static final String PREF = EDIT_MODE +"/delete";
+
+        public static final String DELETE_CLASS =            PREF + CLASS            + "/{id}";
+        public static final String DELETE_OBJECT =           PREF + OBJECT           + "/{id}";
+        public static final String DELETE_AGGREGATION =      PREF + AGGREGATION      + "/{id}";
+        public static final String DELETE_ASSOCIATION =      PREF + ASSOCIATION      + "/{id}";
+        public static final String DELETE_ASSOCIATION_IMPL = PREF + ASSOCIATION_IMPL + "/{id}";
+        public static final String DELETE_TEMPLATE =         PREF + TEMPLATE         + "/{id}";
+        public static final String DELETE_RESOURCE =         PREF + RESOURCE         + "/{id}";
+    }
 }

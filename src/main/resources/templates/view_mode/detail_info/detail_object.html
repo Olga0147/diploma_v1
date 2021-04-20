@@ -8,11 +8,65 @@
     <title th:text="${title}"></title>
 </head>
 <div th:replace="fragments/menu :: header"/>
+<script>
+    window.onload = init;
 
+    function init(){
+        var updateButton = document.getElementById("updateButton")
+        updateButton.onclick = updateButtonClick;
+
+        var deleteButton = document.getElementById("deleteButton")
+        deleteButton.onclick = deleteButtonClick;
+    }
+
+    function updateButtonClick() {
+        let objectId = document.getElementById('objectId').innerText;
+        alert("Вы нажали на кнопку update : " + objectId);
+    }
+    function deleteButtonClick() {
+        let objectId = document.getElementById('objectId').innerText;
+
+        const success = document.getElementById('success');
+        const error = document.getElementById('error');
+
+        const xhr = new XMLHttpRequest();
+        let path = window.location.protocol + '//' + window.location.hostname + ':' + window.location.port;
+        xhr.open("GET", path + "/edit-mode/delete/object/"+objectId, true);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+
+        xhr.send();
+
+        xhr.onreadystatechange = function () {
+
+            if (xhr.readyState === XMLHttpRequest.DONE){
+                if (xhr.status === 200) {
+                    console.log('200');
+                    let rez = JSON.parse(xhr.response).message;
+                    success.innerHTML =`<div><span >${rez}</span></div>`
+                    console.log("1: " + xhr.status);
+                } else if (xhr.status === 400) {
+                    let rez = JSON.parse(xhr.response).message;
+                    error.innerHTML = `<div><span>${rez}</span></div>`
+                    console.log("2: " + xhr.status);
+                } else {
+                    error.innerHTML = `<div><span>Упс, произошла ошибка</span></div>`
+                    console.log("3: Статус ошибки" + xhr.status);
+                }
+            }
+        }
+    }
+</script>
 
 <div class = "inner">
     <h2 th:text="${title}"></h2>
     <h2 th:text="${id}" id = "objectId"></h2>
+    <div>
+        <input type="button" id="updateButton"  value="Обновить">
+        <input type="button" id="deleteButton"  value="Удалить">
+        <div class="success" id="success" style="color: green"></div>
+        <div class="error" id="error" style="color: red"></div>
+        <br/>
+    </div>
     <table>
         <thead>
         <tr >
@@ -136,7 +190,7 @@
             <tr th:each="assosiation : ${associationsImplF}">
                 <td th:text="${assosiation.id}"></td>
                 <td><a th:href="@{${detailObjectPath}+${assosiation.toObjectId}}" th:text="${assosiation.toObjectId}"></a></td>
-                <td><a th:href="@{${detailAssociationImplPath}+${assosiation.associationId}}">(---)</a></td>
+                <td><a th:href="@{${detailAssociationImplPath}+${assosiation.id}}">(---)</a></td>
             </tr>
             </tbody>
         </table>
@@ -159,7 +213,7 @@
             <tr th:each="assosiation : ${associationsImplT}">
                 <td th:text="${assosiation.id}"></td>
                 <td><a th:href="@{${detailObjectPath}+${assosiation.fromObjectId}}" th:text="${assosiation.fromObjectId}"></a></td>
-                <td><a th:href="@{${detailAssociationImplPath}+${assosiation.associationId}}">(---)</a></td>
+                <td><a th:href="@{${detailAssociationImplPath}+${assosiation.id}}">(---)</a></td>
             </tr>
             </tbody>
         </table>

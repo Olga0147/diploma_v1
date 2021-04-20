@@ -6,9 +6,9 @@ import nsu.ru.diploma_v1.model.dto.NewClassForm;
 import nsu.ru.diploma_v1.model.dto.NewObjectForm;
 import nsu.ru.diploma_v1.model.dto.ObjectAttribute;
 import nsu.ru.diploma_v1.model.entity.*;
-import nsu.ru.diploma_v1.model.enums.resource_types.SysResourceType;
-import nsu.ru.diploma_v1.service.database.*;
-import nsu.ru.diploma_v1.service.system.CustomService;
+import nsu.ru.diploma_v1.template_parse.resource_types.SysResourceType;
+import nsu.ru.diploma_v1.database.sys.*;
+import nsu.ru.diploma_v1.database.custom.CustomService;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 

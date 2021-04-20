@@ -123,12 +123,15 @@ public class CustomRepository{
      * Получить объект
      * @param tableName имя таблицы
      * @param id идентификатор объекта
-     * @return карта колонка - значение
+     * @return карта колонка - значение \ null
      */
     public Map<String, Object> getObject(@NonNull String tableName, @NonNull int id){
         Map<String,Object> param = new HashMap<>();
         param.put("ID",id);
         List<java.util.Map<String, Object>> list = selectFromTable(tableName,null,param);
+        if(list.isEmpty()){
+            return null;
+        }
         return list.get(0);
     }
 
@@ -164,6 +167,24 @@ public class CustomRepository{
 
         String sql = String.format("UPDATE %s SET %s WHERE %s ",tableName,columns,vars);
         namedParameterJdbcTemplate.update(sql, namedParameters);
+    }
+
+    @Transactional
+    public int deleteRowInTable(String tableName, int id){
+        Map<String,Object> list = new HashMap<>();
+        list.put("id",id);
+        SqlParameterSource namedParameters = new MapSqlParameterSource().addValues(list);
+        String sql = String.format("DELETE FROM %s WHERE id = :id",tableName);
+        return namedParameterJdbcTemplate.update(sql, namedParameters);
+    }
+
+    public void deleteTable(String tableName){
+        try{
+            jdbcTemplate.execute(String.format("DROP TABLE %s",tableName));
+        }
+        catch (Exception e){
+            //TODO : log + send error
+        }
     }
 
 }

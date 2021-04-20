@@ -2,10 +2,7 @@ package nsu.ru.diploma_v1.controller.user_mode;
 
 import lombok.RequiredArgsConstructor;
 import nsu.ru.diploma_v1.configuration.urls.mode.UserMode;
-import nsu.ru.diploma_v1.service.database.SysObjectService;
-import nsu.ru.diploma_v1.service.database.SysTemplateService;
-import nsu.ru.diploma_v1.service.system.CustomService;
-import nsu.ru.diploma_v1.service.system.TemplateService;
+import nsu.ru.diploma_v1.template_parse.TemplateService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;

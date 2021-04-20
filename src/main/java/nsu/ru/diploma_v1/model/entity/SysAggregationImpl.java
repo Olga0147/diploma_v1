@@ -1,9 +1,8 @@
 package nsu.ru.diploma_v1.model.entity;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import nsu.ru.diploma_v1.model.enums.aggregations.AggregationTypes;
+import nsu.ru.diploma_v1.template_parse.aggregations.AggregationTypes;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;

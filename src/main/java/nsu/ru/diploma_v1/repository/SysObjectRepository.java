@@ -12,4 +12,6 @@ public interface SysObjectRepository extends JpaRepository<SysObject, Long> {
     List<SysObject> findAll();
 
     SysObject getSysObjectById(int id);
+
+    Integer deleteById(int id);
 }

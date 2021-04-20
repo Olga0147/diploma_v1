@@ -25,4 +25,6 @@ public interface SysAggregationImplRepository extends JpaRepository<SysAggregati
 
     void deleteById(int id);
 
+    void deleteAllByToTemplateId(int id);
+
 }

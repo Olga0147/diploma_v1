@@ -72,4 +72,9 @@ public class SysClass {
      */
     @OneToMany(mappedBy="ownerSysClass", fetch=FetchType.LAZY)
     List<SysResource> resourceList;
+
+
+    public void deleteObject(SysObject sysObject){
+        this.objectList.remove(sysObject);
+    }
 }

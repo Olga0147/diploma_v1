@@ -2,7 +2,7 @@ package nsu.ru.diploma_v1.controller.view_mode;
 
 import lombok.RequiredArgsConstructor;
 import nsu.ru.diploma_v1.configuration.urls.menu.ViewMenu;
-import nsu.ru.diploma_v1.service.database.*;
+import nsu.ru.diploma_v1.database.sys.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;

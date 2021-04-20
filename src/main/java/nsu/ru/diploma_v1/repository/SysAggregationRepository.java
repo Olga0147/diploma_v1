@@ -12,4 +12,8 @@ public interface SysAggregationRepository extends JpaRepository<SysAggregation, 
     List<SysAggregation> findAll();
 
     SysAggregation getSysAggregationById(int id);
+
+    SysAggregation removeById(int id);
+
+    void deleteById(Integer id);
 }

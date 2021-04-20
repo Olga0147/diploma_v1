@@ -6,7 +6,7 @@ import nsu.ru.diploma_v1.model.dto.NewClassForm;
 import nsu.ru.diploma_v1.model.entity.SysAttribute;
 import nsu.ru.diploma_v1.model.entity.SysClass;
 import nsu.ru.diploma_v1.model.enums.database_types.SysTypes;
-import nsu.ru.diploma_v1.model.enums.resource_types.SysResourceType;
+import nsu.ru.diploma_v1.template_parse.resource_types.SysResourceType;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;

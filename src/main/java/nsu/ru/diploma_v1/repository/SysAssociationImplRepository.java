@@ -8,4 +8,6 @@ import org.springframework.stereotype.Repository;
 public interface SysAssociationImplRepository extends JpaRepository<SysAssociationImpl, Long> {
 
     SysAssociationImpl getSysAssociationImplById(int id);
+
+    Integer deleteById(int id);
 }

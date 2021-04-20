@@ -10,4 +10,6 @@ public interface SysResourceRepository extends JpaRepository<SysResource, Long> 
     List<SysResource> getSysResourceByOwnerClassId(int classId);
 
     SysResource getSysResourceById(int id);
+
+    void deleteById(int id);
 }

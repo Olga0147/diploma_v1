@@ -1,0 +1,47 @@
+<head>
+    <style type="text/css">
+    .menu{
+        background-color: #dedede;
+    }
+    .menu *{
+        margin: 0 20px 0 20px;
+        display: inline-block;
+    }
+    .menu a{
+        color: black;
+        font-size: 20px;
+    }
+    .inner{
+        text-align: left;
+        margin:0 10% 0 10%;
+        width:80%;
+        padding: 10px;
+        border-left: 2px solid #dedede;
+        border-right: 2px solid #dedede;
+        min-height: 100%;
+    }
+    .inner div img{
+        display: block;
+        margin: 0 auto;
+    }
+    html{
+        position: relative;
+        min-height: 100%;
+    }
+
+    body {
+        background-color: #f8f8f8;
+    }
+    </style>
+</head>
+<body>
+<div class="menu">
+    <resource resourceId="1" type="whole"></resource>
+    <association associationId="4" templateId="3" type="hyperlink">Название</association>
+</div>
+<div class="inner">
+    <h2><field>Название</field></h2>
+    <div><field>Текст</field></div>
+    <div><field>Иллюстрация</field></div>
+</div>
+</body>

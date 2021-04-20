@@ -12,4 +12,6 @@ public interface SysTemplateRepository extends JpaRepository<SysTemplate, Long> 
     List<SysTemplate> findAll();
 
     SysTemplate getSysTemplateById(int id);
+
+    void deleteById(int id);
 }

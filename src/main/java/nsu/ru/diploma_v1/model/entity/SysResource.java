@@ -2,7 +2,7 @@ package nsu.ru.diploma_v1.model.entity;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import nsu.ru.diploma_v1.model.enums.resource_types.SysResourceType;
+import nsu.ru.diploma_v1.template_parse.resource_types.SysResourceType;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 

@@ -12,4 +12,6 @@ public interface SysAssociationRepository extends JpaRepository<SysAssociation, 
     List<SysAssociation> findAll();
 
     SysAssociation getSysAssociationById(int id);
+
+    void deleteById(int id);
 }
