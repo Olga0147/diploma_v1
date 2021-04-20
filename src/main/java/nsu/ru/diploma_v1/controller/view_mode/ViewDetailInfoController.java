@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import nsu.ru.diploma_v1.configuration.urls.menu.ViewMenu;
 import nsu.ru.diploma_v1.configuration.urls.mode.UserMode;
 import nsu.ru.diploma_v1.exception.EditException;
+import nsu.ru.diploma_v1.exception.EntityNotFoundException;
 import nsu.ru.diploma_v1.model.entity.*;
 import nsu.ru.diploma_v1.database.sys.*;
 import nsu.ru.diploma_v1.database.custom.CustomService;
@@ -58,11 +59,16 @@ public class ViewDetailInfoController {
     }
 
     @GetMapping(DetailInfo.GET_AGGREGATION)
-    public String showInfoAggregation(Model model, @PathVariable String id) {
+    public String showInfoAggregation(Model model, @PathVariable String id) throws EntityNotFoundException {
 
-        //TODO: ERROR NOT FOUND
-        SysAggregation aggregation = sysAggregationService.getSysAggregation(Integer.parseInt(id));
-
+        model.addAttribute("m", menu);
+        SysAggregation aggregation;
+        try{
+            aggregation = sysAggregationService.getSysAggregation(Integer.parseInt(id));//throws EntityNotFoundException
+        }catch (EntityNotFoundException e){
+            model.addAttribute("exception", e.getMessage());
+            return "/exception/exception";
+        }
         model.addAttribute("aggregation", aggregation);
         model.addAttribute("aggregationsImpl", aggregation.getSysAggregationList());
 
@@ -71,7 +77,6 @@ public class ViewDetailInfoController {
         model.addAttribute("detailClassPath", getPath(DetailInfo.GET_CLASS));
         model.addAttribute("detailAggregationImplPath", getPath(DetailInfo.GET_AGGREGATION_IMPL));
 
-        model.addAttribute("m", menu);
 
         return "/view_mode/detail_info/detail_aggregation";
     }
@@ -149,18 +154,22 @@ public class ViewDetailInfoController {
         }
 
     @GetMapping(DetailInfo.GET_AGGREGATION_IMPL)
-    public String showInfoAggregationImpl(Model model, @PathVariable Integer id) {
+    public String showInfoAggregationImpl(Model model, @PathVariable Integer id){
+        model.addAttribute("m", menu);
 
-        //TODO: ERROR NOT FOUND
-        SysAggregationImpl aggregationImpl = sysAggregationService.getSysAggregationImpl(id);
-
+        SysAggregationImpl aggregationImpl;
+        try{
+            aggregationImpl = sysAggregationService.getSysAggregationImpl(id);//throws EntityNotFoundException
+        }catch (EntityNotFoundException e){
+            model.addAttribute("exception", e.getMessage());
+            return "/exception/exception";
+        }
         model.addAttribute("aggregationImpl", aggregationImpl);
 
         model.addAttribute("title", "Связь: детально");
         model.addAttribute("detailObjectPath", getPath(DetailInfo.GET_OBJECT));
         model.addAttribute("detailAggregationPath", getPath(DetailInfo.GET_AGGREGATION));
 
-        model.addAttribute("m", menu);
 
         return "/view_mode/detail_info/detail_aggregation_impl";
     }

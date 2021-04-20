@@ -5,15 +5,14 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface SysAggregationRepository extends JpaRepository<SysAggregation, Long> {
 
     List<SysAggregation> findAll();
 
-    SysAggregation getSysAggregationById(int id);
-
-    SysAggregation removeById(int id);
+    Optional<SysAggregation> getSysAggregationById(int id);
 
     void deleteById(Integer id);
 }

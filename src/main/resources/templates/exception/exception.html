@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="fragments/menu :: header-css"/>
+    <meta charset="UTF-8">
+    <title>Ошибка!</title>
+</head>
+<div th:replace="fragments/menu :: header"/>
+<div class = "inner_text">
+    <h1>Ошибка!</h1>
+    <div th:text="${exception}"></div>
+</div>
+</html>

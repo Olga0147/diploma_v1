@@ -1,7 +1,10 @@
 package nsu.ru.diploma_v1.database.sys;
 
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
-import nsu.ru.diploma_v1.model.dto.AnswerMessage;
+import lombok.extern.slf4j.Slf4j;
+import nsu.ru.diploma_v1.exception.EditException;
+import nsu.ru.diploma_v1.exception.EntityNotFoundException;
 import nsu.ru.diploma_v1.model.entity.SysAggregation;
 import nsu.ru.diploma_v1.model.entity.SysAggregationImpl;
 import nsu.ru.diploma_v1.repository.SysAggregationImplRepository;
@@ -15,6 +18,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class SysAggregationService {
@@ -36,11 +40,17 @@ public class SysAggregationService {
         return result;
     }
 
-    public SysAggregation getSysAggregation(int id){
-        return sysAggregationRepository.getSysAggregationById(id);
+    public SysAggregation getSysAggregation(int id) throws EntityNotFoundException{
+        Optional<SysAggregation> aggregation = sysAggregationRepository.getSysAggregationById(id);
+        if(aggregation.isPresent()){
+            return aggregation.get();
+        }else{
+            log.error(String.format("Агрегация %d не найдена.",id));
+            throw new EntityNotFoundException(String.format("Агрегация %d не найдена.",id));
+        }
     }
 
-    public SysAggregation saveSysAggregation(SysAggregation sysAggregation){
+    public SysAggregation saveSysAggregation(@NonNull SysAggregation sysAggregation){
         return sysAggregationRepository.save(sysAggregation);
     }
 
@@ -50,8 +60,14 @@ public class SysAggregationService {
         return sysAggregationImplRepository.findAll();
     }
 
-    public SysAggregationImpl getSysAggregationImpl(int id){
-        return sysAggregationImplRepository.getSysAggregationImplById(id);
+    public SysAggregationImpl getSysAggregationImpl(int id)throws EntityNotFoundException{
+        Optional<SysAggregationImpl> aggregation = sysAggregationImplRepository.getSysAggregationImplById(id);
+        if(aggregation.isPresent()){
+            return aggregation.get();
+        }else{
+            log.error(String.format("Реализация Агрегации %d не была найдена.",id));
+            throw new EntityNotFoundException(String.format("Реализация Агрегации %d не была найдена.",id));
+        }
     }
 
     public void saveSysAggregationImpl(SysAggregationImpl sysAggregation){
@@ -86,15 +102,20 @@ public class SysAggregationService {
     //---
 
     @Transactional
-    public String deleteAggregation(Integer id){
-        SysAggregation sysAggregation = sysAggregationRepository.getSysAggregationById(id);
-        if(sysAggregation.getSysAggregationList().isEmpty()){
+    public String deleteAggregation(Integer id) throws EntityNotFoundException, EditException{
+        Optional<SysAggregation> aggregation = sysAggregationRepository.getSysAggregationById(id);
+        if (aggregation.isEmpty()) {
+            log.error(String.format("Агрегация %d не найдена.",id));
+            throw new EntityNotFoundException(String.format("Агрегация %d не найдена.",id));
+        }
+        if(aggregation.get().getSysAggregationList().isEmpty()){
             sysAggregationRepository.deleteById(id);
             return "Успешно удалено";
         }
         else{
-            return "Удаление невозможно, существуют реализации данной агрегации. " +
-                    "Сначала необходимо удалить в Шаблоне указания на создание агрегаций.";
+            log.info(String.format("Агрегация %d не доступна для удаления.",id));
+            throw new EditException("Удаление невозможно, существуют реализации данной агрегации. " +
+                    "Сначала необходимо удалить в Шаблоне указания на создание агрегаций.");
         }
     }
 

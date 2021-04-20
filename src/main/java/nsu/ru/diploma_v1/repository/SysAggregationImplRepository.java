@@ -10,7 +10,7 @@ import java.util.Optional;
 @Repository
 public interface SysAggregationImplRepository extends JpaRepository<SysAggregationImpl, Long> {
 
-    SysAggregationImpl getSysAggregationImplById(int id);
+    Optional<SysAggregationImpl> getSysAggregationImplById(int id);
 
     Optional<SysAggregationImpl>
     getSysAggregationImplByAggregationIdAndToTemplateIdAndFromObjectIdAndToObjectIdAndAttributeId(

@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import nsu.ru.diploma_v1.configuration.urls.mode.EditMode;
 import nsu.ru.diploma_v1.database.sys.*;
 import nsu.ru.diploma_v1.exception.EditException;
+import nsu.ru.diploma_v1.exception.EntityNotFoundException;
 import nsu.ru.diploma_v1.model.dto.AnswerMessage;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,8 +24,8 @@ public class DeleteController {
     private final SysObjectService sysObjectService;
 
     @GetMapping(EditMode.Delete.DELETE_AGGREGATION)
-    public AnswerMessage deleteAggregation(@PathVariable Integer id) {
-        String message = sysAggregationService.deleteAggregation(id);
+    public AnswerMessage deleteAggregation(@PathVariable Integer id) throws EntityNotFoundException, EditException {
+        String message = sysAggregationService.deleteAggregation(id);//throws EntityNotFoundException, EditException
         return new AnswerMessage(message,String.valueOf(id));
     }
 
