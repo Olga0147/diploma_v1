@@ -1,6 +1,8 @@
 package nsu.ru.diploma_v1.database.sys;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import nsu.ru.diploma_v1.exception.EntityNotFoundException;
 import nsu.ru.diploma_v1.model.entity.SysMmedia;
 import nsu.ru.diploma_v1.template_parse.resource_types.SysResourceType;
 import nsu.ru.diploma_v1.repository.SysMMediaRepository;
@@ -9,7 +11,9 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
 import java.util.List;
+import java.util.Optional;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class SysMMediaService {
@@ -24,17 +28,28 @@ public class SysMMediaService {
         return sysMMediaRepository.getSysMmediaByOwnerObjectId(objectId);
     }
 
-    public SysMmedia getSysMMediaByMMediaId(int mmediaId){
-        return sysMMediaRepository.getSysMmediaById(mmediaId);
+    public SysMmedia getSysMMediaByMMediaId(int id) throws EntityNotFoundException{
+        Optional<SysMmedia> mmedia = sysMMediaRepository.getSysMmediaById(id);
+        if(mmedia.isPresent()){
+            return mmedia.get();
+        }else{
+            log.error(String.format("Ммедиа %d не был найден.",id));
+            throw new EntityNotFoundException(String.format("Ммедиа %d не был найден.",id));
+        }
     }
 
     public SysMmedia saveSysMmedia(SysMmedia sysMmedia){
         return sysMMediaRepository.save(sysMmedia);
     }
 
-    public Node getTag(String resourceId, Document doc){
-        SysMmedia resource = sysMMediaRepository.getSysMmediaById(Integer.parseInt(resourceId));
-        return SysResourceType.getTagForResource(resource.getResourceType(), doc, resourceId);
+    public Node getTag(String id, Document doc) throws EntityNotFoundException{
+        Optional<SysMmedia> mmedia = sysMMediaRepository.getSysMmediaById(Integer.parseInt(id));
+        if(mmedia.isPresent()){
+            return SysResourceType.getTagForResource(mmedia.get().getResourceType(), doc, id);
+        }else{
+            log.error(String.format("Ммедиа %d не был найден.",id));
+            throw new EntityNotFoundException(String.format("Ммедиа %d не был найден.",id));
+        }
     }
 
 }

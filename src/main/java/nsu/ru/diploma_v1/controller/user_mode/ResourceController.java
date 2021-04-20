@@ -30,8 +30,7 @@ public class ResourceController {
 
     @GetMapping(UserMode.GetFile.GET_MMEDIA)
     public ResponseEntity<byte[]> getMMedia(@PathVariable Integer id){
-        //TODO error all
-        SysMmedia media = sysMMediaService.getSysMMediaByMMediaId(id);
+        SysMmedia media = sysMMediaService.getSysMMediaByMMediaId(id);//EntityNotFoundException
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + media.getName() + "\"")
                 .body(media.getData());
