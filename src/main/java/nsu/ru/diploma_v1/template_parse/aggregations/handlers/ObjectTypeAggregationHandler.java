@@ -1,6 +1,7 @@
 package nsu.ru.diploma_v1.template_parse.aggregations.handlers;
 
 import lombok.RequiredArgsConstructor;
+import nsu.ru.diploma_v1.exception.EntityNotFoundException;
 import nsu.ru.diploma_v1.model.entity.SysAggregationImpl;
 import nsu.ru.diploma_v1.template_parse.aggregations.AggregationTypeHandler;
 import nsu.ru.diploma_v1.template_parse.aggregations.AggregationTypes;
@@ -29,7 +30,7 @@ public class ObjectTypeAggregationHandler implements AggregationTypeHandler {
     }
 
     @Override
-    public String handle(NamedNodeMap attributes, String innerText, Integer attributeId, Integer fromObjectId){
+    public String handle(NamedNodeMap attributes, String innerText, Integer attributeId, Integer fromObjectId) throws EntityNotFoundException {
 
         Node template = attributes.getNamedItem("templateId");
         Node object = attributes.getNamedItem("objectId");
@@ -42,7 +43,7 @@ public class ObjectTypeAggregationHandler implements AggregationTypeHandler {
         Integer toTemplateId = Integer.parseInt(template.getTextContent());
         Integer toObjectId = Integer.parseInt(object.getTextContent());
 
-        String result = templateService.getObjectInTemplate(toObjectId,toTemplateId);
+        String result = templateService.getObjectInTemplate(toObjectId,toTemplateId);// throws EntityNotFoundException
         String resultWithoutRoot = templateService.clearXMLMeta(result);
         return resultWithoutRoot;
     }

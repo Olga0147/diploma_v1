@@ -1,6 +1,7 @@
 package nsu.ru.diploma_v1.database.sys;
 
 import lombok.RequiredArgsConstructor;
+import nsu.ru.diploma_v1.exception.EditException;
 import nsu.ru.diploma_v1.model.entity.SysAttribute;
 import nsu.ru.diploma_v1.model.entity.SysClass;
 import nsu.ru.diploma_v1.model.enums.database_types.SysTypes;
@@ -77,9 +78,10 @@ public class SysClassService {
     }
 
     @Transactional
-    public String delete(int id){
+    public String delete(int id) throws EditException {
         SysClass sysClass = sysClassRepository.getSysClassById(id);
         if(!sysClass.getAssociationToList().isEmpty() || !sysClass.getAssociationFromList().isEmpty()){
+            //TODO : make as an error
             return "Невозможно удалить. Класс участвует в Ассоциациях";
         }else if(!sysClass.getAggregationFromList().isEmpty() || !sysClass.getAggregationToList().isEmpty()){
             return "Невозможно удалить. Класс участвует в Агрегациях";
@@ -89,7 +91,7 @@ public class SysClassService {
             return "Невозможно удалить. У Класса есть Шаблоны";
         }else {
             sysAttributeRepository.deleteAllByOwnerClassId(id);
-            customRepository.deleteTable("class_"+sysClass.getId());
+            customRepository.deleteTable("class_"+sysClass.getId());// throws EditException
             sysClassRepository.delete(sysClass);
             return "Удалено успешно";
         }

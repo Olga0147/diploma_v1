@@ -1,6 +1,7 @@
 package nsu.ru.diploma_v1.controller.edit_mode;
 
 import lombok.RequiredArgsConstructor;
+import nsu.ru.diploma_v1.exception.EditException;
 import nsu.ru.diploma_v1.model.dto.AnswerMessage;
 import nsu.ru.diploma_v1.model.dto.NewClassForm;
 import nsu.ru.diploma_v1.model.dto.NewObjectForm;
@@ -29,17 +30,15 @@ public class PostFormController {
     private final SysMMediaService sysMMediaService;
 
     @PostMapping(PostForm.POST_CLASS)
-    public AnswerMessage postNewClass(@RequestBody NewClassForm newClassForm) {
-        //TODO ERROR : unsuccessful
-        SysClass sysClass = customService.saveClass(newClassForm);
+    public AnswerMessage postNewClass(@RequestBody NewClassForm newClassForm) throws EditException {
+        SysClass sysClass = customService.saveClass(newClassForm);// throws EditException
         return new AnswerMessage("Удачно!", String.valueOf(sysClass.getId()));
     }
 
     @PostMapping(PostForm.POST_OBJECT)
-    public AnswerMessage postNewObject(@RequestBody NewObjectForm newObjectForm, @PathVariable Integer classId) {
-        //TODO ERROR : unsuccessful
-        SysObject sysObject = customService.saveObject(newObjectForm.getAttributes(),classId);
+    public AnswerMessage postNewObject(@RequestBody NewObjectForm newObjectForm, @PathVariable Integer classId) throws EditException {
         //TODO check all aggregatioins : use  parseXMemoToSaveObject
+        SysObject sysObject = customService.saveObject(newObjectForm.getAttributes(),classId);// throws EditException
         return new AnswerMessage("Удачно!",String.valueOf(sysObject.getId()));
     }
 
@@ -99,7 +98,7 @@ public class PostFormController {
     public AnswerMessage postNewMmedia(
             @PathVariable Integer objectId,
             @PathVariable String attributeName,
-            @RequestPart(name = "file", required = false) MultipartFile file) {
+            @RequestPart(name = "file", required = false) MultipartFile file) throws EditException {
         //TODO ERROR : unsuccessful
         SysMmedia mmedia = new SysMmedia();
         mmedia.setName(file.getOriginalFilename());
@@ -116,7 +115,7 @@ public class PostFormController {
         SysMmedia sysMmedia = sysMMediaService.saveSysMmedia(mmedia);
         List<ObjectAttribute> list = new LinkedList<>();
         list.add(new ObjectAttribute(attributeName,sysMmedia.getId()));
-        SysObject sysObject = customService.updateObject(list,objectId);
+        SysObject sysObject = customService.updateObject(list,objectId);// throws EditException
 
         return new AnswerMessage("Удачно!",String.valueOf(sysMmedia.getId()));
     }

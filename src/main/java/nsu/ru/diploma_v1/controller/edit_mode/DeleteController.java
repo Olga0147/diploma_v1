@@ -3,6 +3,7 @@ package nsu.ru.diploma_v1.controller.edit_mode;
 import lombok.RequiredArgsConstructor;
 import nsu.ru.diploma_v1.configuration.urls.mode.EditMode;
 import nsu.ru.diploma_v1.database.sys.*;
+import nsu.ru.diploma_v1.exception.EditException;
 import nsu.ru.diploma_v1.model.dto.AnswerMessage;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -52,13 +53,13 @@ public class DeleteController {
     }
 
     @GetMapping(EditMode.Delete.DELETE_OBJECT)
-    public AnswerMessage deleteObject(@PathVariable Integer id) {
+    public AnswerMessage deleteObject(@PathVariable Integer id) throws EditException {
         String message = sysObjectService.delete(id);
         return new AnswerMessage(message,String.valueOf(id));
     }
 
     @GetMapping(EditMode.Delete.DELETE_CLASS)
-    public AnswerMessage deleteClass(@PathVariable Integer id) {
+    public AnswerMessage deleteClass(@PathVariable Integer id) throws EditException {
         String message = sysClassService.delete(id);
         return new AnswerMessage(message,String.valueOf(id));
     }

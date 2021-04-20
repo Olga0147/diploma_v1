@@ -3,6 +3,7 @@ package nsu.ru.diploma_v1.controller.view_mode;
 import lombok.RequiredArgsConstructor;
 import nsu.ru.diploma_v1.configuration.urls.menu.ViewMenu;
 import nsu.ru.diploma_v1.configuration.urls.mode.UserMode;
+import nsu.ru.diploma_v1.exception.EditException;
 import nsu.ru.diploma_v1.model.entity.*;
 import nsu.ru.diploma_v1.database.sys.*;
 import nsu.ru.diploma_v1.database.custom.CustomService;
@@ -111,14 +112,14 @@ public class ViewDetailInfoController {
     }
 
     @GetMapping(DetailInfo.GET_OBJECT)
-    public String showInfoObject(Model model, @PathVariable Integer id) {
+    public String showInfoObject(Model model, @PathVariable Integer id) throws EditException {
 
         //TODO: ERROR NOT FOUND
         SysObject sysObject = sysObjectService.getSysObjectById(id);
         SysClass sysClass = sysObject.getOwnerSysClass();
-        Map<String, Object> object = customService.getObject(sysClass,id);
+        Map<String, Object> object = customService.getObject(sysClass,id);// throws EditException
 
-        Map<String, Object> objectMMediaAndXMemo = customService.getObjectMMediaAndXMemo(sysClass,id);
+        Map<String, Object> objectMMediaAndXMemo = customService.getObjectMMediaAndXMemo(sysClass,object);
 
         model.addAttribute("id", String.valueOf(sysObject.getId()));
         model.addAttribute("object", object.entrySet());

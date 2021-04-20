@@ -1,6 +1,7 @@
 package nsu.ru.diploma_v1.template_parse.associations.handlers;
 
 import lombok.RequiredArgsConstructor;
+import nsu.ru.diploma_v1.exception.EntityNotFoundException;
 import nsu.ru.diploma_v1.model.entity.SysAssociationImpl;
 import nsu.ru.diploma_v1.model.entity.SysObject;
 import nsu.ru.diploma_v1.template_parse.associations.AssociationTypeHandler;
@@ -31,7 +32,7 @@ public class ObjectTypeAssociationHandler implements AssociationTypeHandler {
     }
 
     @Override
-    public String handle(int objectId, NamedNodeMap attributes, String innerText){
+    public String handle(int objectId, NamedNodeMap attributes, String innerText) throws EntityNotFoundException {
 
         Node association = attributes.getNamedItem("associationId");
         Node template = attributes.getNamedItem("templateId");
@@ -55,7 +56,7 @@ public class ObjectTypeAssociationHandler implements AssociationTypeHandler {
 
         for (SysAssociationImpl sysAssociation : list) {
             //TODO: проверка, что корректен шаблон для объекта
-            String currentResult = templateService.getObjectInTemplate(sysAssociation.getToObjectId(),templateId);
+            String currentResult = templateService.getObjectInTemplate(sysAssociation.getToObjectId(),templateId);// throws EntityNotFoundException
             result.append(currentResult).append(del);
         }
         if(delimiter != null) {

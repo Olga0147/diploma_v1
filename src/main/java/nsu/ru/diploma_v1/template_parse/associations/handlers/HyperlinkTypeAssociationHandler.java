@@ -2,6 +2,7 @@ package nsu.ru.diploma_v1.template_parse.associations.handlers;
 
 import lombok.RequiredArgsConstructor;
 import nsu.ru.diploma_v1.configuration.urls.ModePath;
+import nsu.ru.diploma_v1.exception.EntityNotFoundException;
 import nsu.ru.diploma_v1.model.entity.SysAssociationImpl;
 import nsu.ru.diploma_v1.model.entity.SysObject;
 import nsu.ru.diploma_v1.template_parse.associations.AssociationTypeHandler;
@@ -29,7 +30,7 @@ public class HyperlinkTypeAssociationHandler implements AssociationTypeHandler {
     }
 
     @Override
-    public String handle(int objectId, NamedNodeMap attributes, String innerText){
+    public String handle(int objectId, NamedNodeMap attributes, String innerText) throws EntityNotFoundException {
 
     //<association associationId="1" templateId="2" delimiter="<br>" type="hyperlink">TITLE AUTHOR</association>
 
@@ -60,7 +61,7 @@ public class HyperlinkTypeAssociationHandler implements AssociationTypeHandler {
         for (SysAssociationImpl sysAssociation : list) {
 
             Integer toSysObjectId = sysAssociation.getToSysObject().getId();
-            String inner = templateService.getObjectFields(fields,toSysObjectId);
+            String inner = templateService.getObjectFields(fields,toSysObjectId);// throws EntityNotFoundException
             //TODO: проверка, что корректен шаблон для объекта
             String currentResult = String.format("<a href=\"%s/%d/%d\"> %s </a>",ModePath.USER_MODE,toSysObjectId,templateId,inner);
             result.append(currentResult).append(del);

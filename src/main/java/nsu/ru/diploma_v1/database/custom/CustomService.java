@@ -2,6 +2,8 @@ package nsu.ru.diploma_v1.database.custom;
 
 import lombok.RequiredArgsConstructor;
 import nsu.ru.diploma_v1.configuration.urls.mode.UserMode;
+import nsu.ru.diploma_v1.exception.EditException;
+import nsu.ru.diploma_v1.exception.EntityNotFoundException;
 import nsu.ru.diploma_v1.exception.ValidationException;
 import nsu.ru.diploma_v1.mapper.FormMapper;
 import nsu.ru.diploma_v1.model.dto.NewClassForm;
@@ -21,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * Отвечает за основную логику системы
@@ -49,7 +52,7 @@ public class CustomService {
     }
 
     @Transactional
-    public SysClass saveClass(NewClassForm newClassForm){
+    public SysClass saveClass(NewClassForm newClassForm) throws EntityNotFoundException {
 
         //зарегистрировали класс
         SysClass sysClass = formMapper.convertToSysClass(newClassForm);
@@ -66,12 +69,12 @@ public class CustomService {
         sysAttributeList = sysClassService.saveAttributes(sysAttributeList);
 
         //создали таблицу
-        customRepository.createTable(sysName,sysAttributeList);
+        customRepository.createTable(sysName,sysAttributeList); // throws EntityNotFoundException
         return sysClass;
     }
 
     @Transactional
-    public SysObject saveObject(List<ObjectAttribute> list, Integer classId){
+    public SysObject saveObject(List<ObjectAttribute> list, Integer classId) throws EditException {
 
         Map<String,Object> dataNameValue = new HashMap<>();
         for (ObjectAttribute objectAttribute : list) {
@@ -109,12 +112,12 @@ public class CustomService {
 
         param.put("id",objectId);
         //сохранить объект
-        customRepository.insertInTable(param,tableName);
+        customRepository.insertInTable(param,tableName);// throws EditException
         return sysObject;
     }
 
     @Transactional
-    public SysObject updateObject(List<ObjectAttribute> list, Integer objectId){
+    public SysObject updateObject(List<ObjectAttribute> list, Integer objectId) throws EditException{
 
         Map<String,Object> dataNameValue = new HashMap<>();
         for (ObjectAttribute objectAttribute : list) {
@@ -151,20 +154,17 @@ public class CustomService {
 
         param.put("id",objectId);
         //обновить объект
-        customRepository.updateRowInTable(param,tableName);
+        customRepository.updateRowInTable(param,tableName);// throws EditException
         return sysObject;
     }
 
-    public Map<String, Object> getObject(@NonNull SysClass sysClass, @NonNull int id){
-        //TODO: исключение что не нашли
-        List<SysAttribute> attributeList = sysClass.getAttributeList();
+    public Map<String, Object> getObject(@NonNull SysClass sysClass, @NonNull int id) throws EntityNotFoundException{
         return customRepository.getObject(sysClass.getSystemName(), id);
     }
 
-    public Map<String, Object> getObjectMMediaAndXMemo(@NonNull SysClass sysClass, @NonNull int id){
+    public Map<String, Object> getObjectMMediaAndXMemo(@NonNull SysClass sysClass, Map<String, Object> obj){
         //TODO: исключение что не нашли
         List<SysAttribute> attributeList = sysClass.getAttributeList();
-        Map<String, Object> obj = customRepository.getObject(sysClass.getSystemName(), id);
 
         for (SysAttribute attribute : attributeList) {
             if(attribute.getAttributeType()==SysTypes.MMEDIA.getId()){
@@ -183,8 +183,6 @@ public class CustomService {
                             attribute.getName(),
                             attribute.getName()
                             );
-
-
                     obj.put(attribute.getName(),replace);
                 }else{
                     obj.put(attribute.getName(), String.format("<a href=\"%s\">%s</a>",
@@ -201,10 +199,10 @@ public class CustomService {
         return obj;
     }
 
-    public Map<String, AttributeAndValue> getObjectForTemplate(Integer objectId){
+    public Map<String, AttributeAndValue> getObjectForTemplate(Integer objectId) throws EntityNotFoundException{
         SysObject sysObject = sysObjectService.getSysObjectById(objectId);
         SysClass sysClass = sysObject.getOwnerSysClass();
-        Map<String, Object> object = customRepository.getObject(sysClass.getSystemName(),objectId);
+        Map<String, Object> object = customRepository.getObject(sysClass.getSystemName(),objectId);// throws EntityNotFoundException
 
         Map<String, AttributeAndValue> nameValueFields = new HashMap<>();
 

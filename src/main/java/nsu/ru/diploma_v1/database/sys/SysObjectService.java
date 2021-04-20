@@ -1,6 +1,7 @@
 package nsu.ru.diploma_v1.database.sys;
 
 import lombok.RequiredArgsConstructor;
+import nsu.ru.diploma_v1.exception.EditException;
 import nsu.ru.diploma_v1.model.entity.SysClass;
 import nsu.ru.diploma_v1.model.entity.SysObject;
 import nsu.ru.diploma_v1.repository.CustomRepository;
@@ -30,7 +31,7 @@ public class SysObjectService {
     }
 
     @Transactional
-    public String delete(int id){
+    public String delete(int id) throws EditException {
         SysObject sysObject = getSysObjectById(id);
         SysClass sysClass = sysObject.getOwnerSysClass();
 
@@ -41,7 +42,7 @@ public class SysObjectService {
         }else{
             sysClass.deleteObject(sysObject);
             boolean wtf = sysClass.getObjectList().contains(sysObject);
-            int i = customRepository.deleteRowInTable("class_"+sysClass.getId(),id);
+            customRepository.deleteRowInTable("class_"+sysClass.getId(),id);// throws EditException
             int i1 = sysObjectRepository.deleteById(id);
             return "Объект успешно удален.";
         }

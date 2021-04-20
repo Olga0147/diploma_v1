@@ -1,6 +1,9 @@
 package nsu.ru.diploma_v1.repository;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import nsu.ru.diploma_v1.exception.EditException;
+import nsu.ru.diploma_v1.exception.EntityNotFoundException;
 import nsu.ru.diploma_v1.model.entity.SysAttribute;
 import nsu.ru.diploma_v1.model.enums.database_types.SysTypes;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -16,6 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 @Repository
 @AllArgsConstructor
 public class CustomRepository{
@@ -33,7 +37,7 @@ public class CustomRepository{
      * @param attributeList её атрибуты
      */
     @Transactional
-    public void createTable(String tableName, List<SysAttribute> attributeList){
+    public void createTable(String tableName, List<SysAttribute> attributeList) throws EntityNotFoundException{
         StringBuilder columns = new StringBuilder();
 
         for (SysAttribute attribute : attributeList) {
@@ -46,7 +50,8 @@ public class CustomRepository{
             jdbcTemplate.execute(sql);
         }
         catch (Exception e){
-            //TODO : log + send error
+            log.error(String.format("Не получилось создать таблицу с названием : %s. Ошибка : %s.",tableName,e.getMessage()));
+            throw new EntityNotFoundException(String.format("Не получилось создать таблицу с названием : %s.",tableName));
         }
     }
 
@@ -55,10 +60,10 @@ public class CustomRepository{
      * @param tableName имя таблицы
      * @return колонки
      */
-    public List<java.util.Map<String, Object>> selectFromTable(
+    public List<java.util.Map<String, Object>> selectFromTable (
             @NonNull String tableName,
             @Nullable List<String> col,
-            @Nullable Map<String,Object> param){
+            @Nullable Map<String,Object> param) throws EntityNotFoundException{
 
         StringBuilder columns = new StringBuilder();
 
@@ -85,7 +90,12 @@ public class CustomRepository{
         }
 
         String sql = String.format("SELECT %s FROM %s %s",columns.toString(),tableName,where.toString());
-         return namedParameterJdbcTemplate.queryForList(sql,namedParameters);
+        try{
+            return namedParameterJdbcTemplate.queryForList(sql,namedParameters);
+        }catch (Exception e){
+            log.error(String.format("Не получилось найти в таблице %s  колонки. Ошибка : %s.",tableName,e.getMessage()));
+            throw new EntityNotFoundException(String.format("Не получилось найти в таблице %s  колонки.",tableName));
+        }
     }
 
     /**
@@ -123,20 +133,28 @@ public class CustomRepository{
      * Получить объект
      * @param tableName имя таблицы
      * @param id идентификатор объекта
-     * @return карта колонка - значение \ null
+     * @return карта колонка - значение
+     * @throws EntityNotFoundException не нашли объект
      */
-    public Map<String, Object> getObject(@NonNull String tableName, @NonNull int id){
+    public Map<String, Object> getObject(@NonNull String tableName, @NonNull int id) throws EntityNotFoundException{
         Map<String,Object> param = new HashMap<>();
         param.put("ID",id);
-        List<java.util.Map<String, Object>> list = selectFromTable(tableName,null,param);
+        List<java.util.Map<String, Object>> list = selectFromTable(tableName,null,param);//throws EntityNotFoundException
         if(list.isEmpty()){
-            return null;
+            log.error(String.format("Не получилось найти в таблице %s объект.",tableName));
+            throw new EntityNotFoundException(String.format("Не получилось найти в таблице %s объект.",tableName));
         }
         return list.get(0);
     }
 
+    /**
+     * Вставить строку в таблицу
+     * @param list столбцы и их значения
+     * @param tableName имя таблицы
+     * @throws EditException не получилось вставить
+     */
     @Transactional
-    public void insertInTable(Map<String,Object> list, String tableName){
+    public void insertInTable(Map<String,Object> list, String tableName) throws EditException{
         StringBuilder columns = new StringBuilder();
         StringBuilder vars = new StringBuilder();
 
@@ -150,11 +168,26 @@ public class CustomRepository{
         columns.deleteCharAt(columns.length()-1);
 
         String sql = String.format("INSERT INTO %s ( %s ) VALUES ( %s )",tableName,columns,vars);
-        namedParameterJdbcTemplate.update(sql, namedParameters);
+        try{
+            int numRows = namedParameterJdbcTemplate.update(sql, namedParameters);
+            if(numRows < 1){
+                log.error(String.format("Не удалось вставить строку в таблицу %s.",tableName));
+                throw new EditException(String.format("Не удалось вставить строку в таблицу %s.",tableName));
+            }
+        }catch (Exception e){
+            log.error(String.format("Не удалось вставить строку в таблицу %s. Ошибка : %s.",tableName,e.getMessage()));
+            throw new EditException(String.format("Не удалось вставить строку в таблицу %s.",tableName));
+        }
     }
 
+    /**
+     * Обновить строку в таблице по id
+     * @param list столбец-значение + id
+     * @param tableName имя таблицы
+     * @throws EditException Не удалось обновить строку в таблице
+     */
     @Transactional
-    public void updateRowInTable(Map<String,Object> list, String tableName){
+    public void updateRowInTable(Map<String,Object> list, String tableName) throws EditException{
         StringBuilder columns = new StringBuilder();
         String vars = "id = :id";
 
@@ -166,24 +199,43 @@ public class CustomRepository{
         }
 
         String sql = String.format("UPDATE %s SET %s WHERE %s ",tableName,columns,vars);
-        namedParameterJdbcTemplate.update(sql, namedParameters);
+        try{
+            int numRows = namedParameterJdbcTemplate.update(sql, namedParameters);
+            if(numRows < 1){
+                log.error(String.format("Не удалось обновить строку в таблице %s.",tableName));
+                throw new EditException(String.format("Не удалось обновить строку в таблице %s.",tableName));
+            }
+        }catch (Exception e){
+            log.error(String.format("Не удалось обновить строку в таблице %s. Ошибка : %s.",tableName,e.getMessage()));
+            throw new EditException(String.format("Не удалось обновить строку в таблице %s.",tableName));
+        }
     }
 
     @Transactional
-    public int deleteRowInTable(String tableName, int id){
+    public void deleteRowInTable(String tableName, int id) throws EditException{
         Map<String,Object> list = new HashMap<>();
         list.put("id",id);
         SqlParameterSource namedParameters = new MapSqlParameterSource().addValues(list);
         String sql = String.format("DELETE FROM %s WHERE id = :id",tableName);
-        return namedParameterJdbcTemplate.update(sql, namedParameters);
+        try{
+            int numRows = namedParameterJdbcTemplate.update(sql, namedParameters);
+                if(numRows < 1){
+                    log.error(String.format("Не удалось удалить строку в таблице %s.",tableName));
+                    throw new EditException(String.format("Не удалось удалить строку в таблице %s.",tableName));
+                }
+        }catch (Exception e){
+            log.error(String.format("Не удалось удалить строку в таблице %s. Ошибка : %s.",tableName,e.getMessage()));
+            throw new EditException(String.format("Не удалось удалить строку в таблице %s.",tableName));
+        }
     }
 
-    public void deleteTable(String tableName){
+    public void deleteTable(String tableName) throws EditException{
         try{
             jdbcTemplate.execute(String.format("DROP TABLE %s",tableName));
         }
         catch (Exception e){
-            //TODO : log + send error
+            log.error(String.format("Не удалось удалить таблицу %s. Ошибка : %s.",tableName,e.getMessage()));
+            throw new EditException(String.format("Не удалось удалить таблицу %s.",tableName));
         }
     }
 
