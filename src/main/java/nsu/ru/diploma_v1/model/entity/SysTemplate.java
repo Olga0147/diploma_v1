@@ -32,7 +32,7 @@ public class SysTemplate {
     private SysClass ownerSysClass;
 
     @OneToMany(mappedBy="toSysTemplate", fetch=FetchType.LAZY)
-    List<SysAggregationImpl> notNeedAtAll;//TODO : understand and delete
+    List<SysAggregationImpl> notNeedAtAll;
 
     @Lob
     @Type(type = "org.hibernate.type.TextType")

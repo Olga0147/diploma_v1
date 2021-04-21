@@ -3,7 +3,9 @@ package nsu.ru.diploma_v1.template_parse.associations.handlers;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import nsu.ru.diploma_v1.exception.EntityNotFoundException;
+import nsu.ru.diploma_v1.exception.TemplateException;
 import nsu.ru.diploma_v1.model.entity.SysAssociationImpl;
+import nsu.ru.diploma_v1.model.entity.SysClass;
 import nsu.ru.diploma_v1.model.entity.SysObject;
 import nsu.ru.diploma_v1.template_parse.associations.AssociationTypeHandler;
 import nsu.ru.diploma_v1.template_parse.associations.AssociationTypes;
@@ -34,15 +36,15 @@ public class ObjectTypeAssociationHandler implements AssociationTypeHandler {
     }
 
     @Override
-    public String handle(int objectId, NamedNodeMap attributes, String innerText) throws EntityNotFoundException {
+    public String handle(int objectId, NamedNodeMap attributes, String innerText) throws EntityNotFoundException,TemplateException {
 
         Node association = attributes.getNamedItem("associationId");
         Node template = attributes.getNamedItem("templateId");
         Node delimiter = attributes.getNamedItem("delimiter");
 
         if(association == null || template == null ){
-            //TODO: log or tell user
-            return "";
+            log.info("Ассоциация не верна");
+            throw new TemplateException("Ассоциация не верна");
         }
         String del = "";
         if(delimiter != null){
@@ -59,11 +61,22 @@ public class ObjectTypeAssociationHandler implements AssociationTypeHandler {
             return "";
         }
         List<SysAssociationImpl> list = sysObject.getAssociationImplFromList();
+        if(list.isEmpty()){
+            log.info("Ассоциация не была зарегистрирована");
+            throw new TemplateException("Ассоциация не была зарегистрирована");
+        }
 
         StringBuilder result = new StringBuilder();
 
         for (SysAssociationImpl sysAssociation : list) {
-            //TODO: проверка, что корректен шаблон для объекта
+
+            //проверка, что корректен шаблон для объекта
+            SysObject toObj = sysObjectService.getSysObjectById(sysAssociation.getToObjectId());// throws EntityNotFoundException
+            SysClass toClass = toObj.getOwnerSysClass();
+            if(!toClass.checkTemplateExist(templateId)){
+                throw new TemplateException(String.format("Шаблон %s не может быть использован для Объекта %d",templateId,sysAssociation.getToObjectId()));
+            }
+
             String currentResult = templateService.getObjectInTemplate(sysAssociation.getToObjectId(),templateId);// throws EntityNotFoundException
             result.append(currentResult).append(del);
         }
@@ -71,7 +84,6 @@ public class ObjectTypeAssociationHandler implements AssociationTypeHandler {
             result.delete(result.length() - del.length() - 1, result.length() - 1);
         }
 
-        String resultWithoutRoot = templateService.clearXMLMeta(result.toString());
-        return resultWithoutRoot;
+        return templateService.clearXMLMeta(result.toString());
     }
 }

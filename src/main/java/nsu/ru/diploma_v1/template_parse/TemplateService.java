@@ -1,6 +1,7 @@
 package nsu.ru.diploma_v1.template_parse;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import nsu.ru.diploma_v1.exception.EntityNotFoundException;
 import nsu.ru.diploma_v1.exception.TemplateException;
 import nsu.ru.diploma_v1.model.entity.AttributeAndValue;
@@ -35,6 +36,7 @@ import java.io.InputStream;
 import java.io.StringWriter;
 import java.util.*;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class TemplateService {
@@ -72,15 +74,15 @@ public class TemplateService {
     }
 
     //MAIN METHOD
-    public String getObjectInTemplate(Integer objectId, Integer templateId) throws EntityNotFoundException {
+    public String getObjectInTemplate(Integer objectId, Integer templateId) throws EntityNotFoundException, TemplateException {
         Map<String, AttributeAndValue> object = customService.getObjectForTemplate(objectId);// throws EntityNotFoundException
         SysTemplate template = sysTemplateService.getSysTemplate(templateId);//// throws EntityNotFoundException
 
-        return parseTemplate(object,template.getBody(),objectId);// throws EntityNotFoundException
+        return parseTemplate(object,template.getBody(),objectId);// throws EntityNotFoundException, TemplateException
     }
 
-    private String parseTemplate(Map<String, AttributeAndValue> object, String template,Integer objectId) throws EntityNotFoundException{
-        Document doc = parseXML(template);
+    private String parseTemplate(Map<String, AttributeAndValue> object, String template,Integer objectId) throws EntityNotFoundException, TemplateException{
+        Document doc = parseXML(template);// throws TemplateException
 
         //1) вставляем метки <field>fieldName</field>
         NodeList fields = doc.getElementsByTagName("field");
@@ -92,7 +94,7 @@ public class TemplateService {
             Integer attributeId = object.get(name).getAttributeId();
             Node newNode = (object.get(name).getType() == SysTypes.XMEMO ||
                             object.get(name).getType() == SysTypes.MMEDIA) ?
-                    parseXMemo(value, attributeId, objectId) : doc.createTextNode(value);
+                    parseXMemo(value, attributeId, objectId) : doc.createTextNode(value);//throws EntityNotFoundException,TemplateException
 
             NodesToReplace nodesToReplace = new NodesToReplace(field.getParentNode(), newNode, field);
             nodesToReplaceList.add(nodesToReplace);
@@ -108,8 +110,8 @@ public class TemplateService {
             AssociationTypes associationType = AssociationTypes.valueOf(type.getTextContent().toUpperCase(Locale.ROOT));
             AssociationTypeHandler handler = associationHandlerMap.get(associationType);
 
-            String value = handler.handle(objectId,map,association.getTextContent());// throws EntityNotFoundException
-            Document docAssociation = parseXML(value);
+            String value = handler.handle(objectId,map,association.getTextContent());// throws EntityNotFoundException,TemplateException
+            Document docAssociation = parseXML(value);// throws TemplateException
 
             NodeList nodeList = docAssociation.getChildNodes();
             DocumentFragment documentFragment = docAssociation.createDocumentFragment();
@@ -167,8 +169,8 @@ public class TemplateService {
     }
 
     //так как тут новая нода - это root, то далее задействован костыль по очистке от root
-    private Node parseXMemo(String XMemoValue, Integer attributeId, Integer objectId) {
-        Document doc = parseXML(XMemoValue);
+    private Node parseXMemo(String XMemoValue, Integer attributeId, Integer objectId)throws EntityNotFoundException,TemplateException {
+        Document doc = parseXML(XMemoValue);//throws TemplateException
 
         NodeList aggregations = doc.getElementsByTagName("aggregation");
         List<NodesToReplace> nodesToReplaceList = new LinkedList<>();
@@ -182,9 +184,9 @@ public class TemplateService {
             AggregationTypes aggregationType = AggregationTypes.valueOf(type.getTextContent().toUpperCase(Locale.ROOT));
 
             AggregationTypeHandler handler = aggregationHandlerMap.get(aggregationType);
-            String value = handler.handle(map,aggregation.getTextContent(),attributeId,objectId);// throws EntityNotFoundException
+            String value = handler.handle(map,aggregation.getTextContent(),attributeId,objectId);// throws EntityNotFoundException,TemplateException
 
-            Document docXMemo = parseXML(value);
+            Document docXMemo = parseXML(value);//throws TemplateException
             Node newNode = docXMemo.getFirstChild();
 
             NodeList nodeList = newNode.getChildNodes();
@@ -208,11 +210,12 @@ public class TemplateService {
         return node;
     }
 
-    public void parseXMemoToSaveObject(String XMemoValue, Integer attributeId, Integer objectId) {
+    public void parseXMemoToSaveObject(String XMemoValue, Integer attributeId, Integer objectId) throws TemplateException {
 
-        Map<Integer, SysAggregationImpl> aggregationMap = sysAggregationService.getXMemoAggregationList(attributeId,objectId);
 
-        Document doc = parseXML(XMemoValue);
+        Map<Integer, SysAggregationImpl> aggregationMap = sysAggregationService.getXMemoAggregationList(attributeId,objectId);//can be null
+
+        Document doc = parseXML(XMemoValue);//throws TemplateException
         NodeList aggregations = doc.getElementsByTagName("aggregation");
 
         for (int i = 0; i < aggregations.getLength(); i++) {
@@ -221,10 +224,16 @@ public class TemplateService {
             NamedNodeMap map = aggregation.getAttributes();
 
             Node type = map.getNamedItem("type");
-            AggregationTypes aggregationType = AggregationTypes.valueOf(type.getTextContent().toUpperCase(Locale.ROOT));
+            AggregationTypes aggregationType;
+            try {
+                aggregationType = AggregationTypes.valueOf(type.getTextContent().toUpperCase(Locale.ROOT));
+            }catch (Exception e){
+                log.info(String.format("Типа %s не существует",type.getTextContent().toUpperCase(Locale.ROOT)));
+                throw new TemplateException(String.format("Типа %s не существует",type.getTextContent().toUpperCase(Locale.ROOT)));
+            }
             AggregationTypeHandler handler = aggregationHandlerMap.get(aggregationType);
 
-            Integer check = handler.checkExist(map,attributeId,objectId);
+            Integer check = handler.checkExist(map,attributeId,objectId);//throws TemplateException
             if(check != null){
                 aggregationMap.remove(check);
             }
@@ -234,7 +243,7 @@ public class TemplateService {
 
 
 
-    private Document parseXML(String text){
+    private Document parseXML(String text) throws TemplateException{
         String root = ROOT_1 + text + ROOT_2;
         InputStream is = new ByteArrayInputStream( root.getBytes() );
 
@@ -245,7 +254,7 @@ public class TemplateService {
             builder = factory.newDocumentBuilder();
             doc = builder.parse(is);
         } catch (ParserConfigurationException | SAXException | IOException e) {
-            //TODO: logger or msg to user
+            log.info(String.format("При построение документа из xml произошла ошибка : %s.\nДокумент : %s",e.getMessage(), root));
             throw new TemplateException( String.format("При построение документа из xml произошла ошибка : %s.\nДокумент : %s",e.getMessage(), root) );
         }
         doc.getDocumentElement().normalize();
@@ -272,7 +281,7 @@ public class TemplateService {
                 replaceAll(XML_REGEX,"");
     }
 
-    public String getObjectFields(String[] fields,int objectId){
+    public String getObjectFields(String[] fields,int objectId) throws EntityNotFoundException{
         Map<String, AttributeAndValue> object = customService.getObjectForTemplate(objectId);// throws EntityNotFoundException
         StringBuilder result = new StringBuilder();
 

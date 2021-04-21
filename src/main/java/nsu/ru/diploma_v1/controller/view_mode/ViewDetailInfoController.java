@@ -218,7 +218,6 @@ public class ViewDetailInfoController {
     @GetMapping(DetailInfo.GET_RESOURCE)
     public String showInfoResource(Model model, @PathVariable Integer id) {
 
-        //TODO: ERROR NOT FOUND
         model.addAttribute("m", menu);
 
         SysResource template;

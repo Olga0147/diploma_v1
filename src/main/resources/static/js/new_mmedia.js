@@ -24,21 +24,14 @@ function sendPost(objectId,attributeName) {
         },
         error: function(jqXHR, exception){
             if (jqXHR.status === 400) {
-                let rez = JSON.parse(jqXHR.response);
+                let rez = JSON.parse(xhr.response).message;
                 toDelete.remove();
                 error.innerHTML =`<div><span>${rez}</span></div>`;
                 console.log('400');
                 console.log(rez.errorMessage);
-            } else if (jqXHR.status === 401) {
-                console.log('401');
-            } else if (jqXHR.status === 403) {
-                console.log('403');
-            } else if (jqXHR.status === 404) {
-                console.log('404');
-            } else if (exception === 'abort') {
-                console.log('Ajax request aborted.');
-            } else {
-                console.log('Uncaught Error. ' + jqXHR.responseText);
+            }  else {
+                error.innerHTML = `<div><span>Упс, произошла ошибка</span></div>`
+                console.log("3: Статус ошибки" + xhr.status);
             }
     }
     });

@@ -15,8 +15,7 @@ public class XmemoTypeHandler implements AttributeTypeHandler {
 
     @Override
     public Object handle(SysAttribute attribute, Object value) {
-        //TODO : check relations in it, delete old, make new
-        return (String)value;
+        return (String)value;//проверка идет дальше
     }
 
     @Override

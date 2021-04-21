@@ -3,6 +3,7 @@ package nsu.ru.diploma_v1.controller.edit_mode;
 import lombok.RequiredArgsConstructor;
 import nsu.ru.diploma_v1.exception.EditException;
 import nsu.ru.diploma_v1.exception.EntityNotFoundException;
+import nsu.ru.diploma_v1.exception.TemplateException;
 import nsu.ru.diploma_v1.model.dto.AnswerMessage;
 import nsu.ru.diploma_v1.model.dto.NewClassForm;
 import nsu.ru.diploma_v1.model.dto.NewObjectForm;
@@ -39,7 +40,12 @@ public class PostFormController {
     @PostMapping(PostForm.POST_OBJECT)
     public AnswerMessage postNewObject(@RequestBody NewObjectForm newObjectForm, @PathVariable Integer classId) throws EditException, EntityNotFoundException {
         //TODO check all aggregatioins : use  parseXMemoToSaveObject
-        SysObject sysObject = customService.saveObject(newObjectForm.getAttributes(),classId);// throws EditException,EntityNotFoundException
+        SysObject sysObject;
+        sysObject = customService.saveObject(newObjectForm.getAttributes(),classId);// throws EditException,EntityNotFoundException
+//        try {
+//        }catch (Exception e){
+//            throw new EditException(e.getMessage());
+//        }
         return new AnswerMessage("Удачно!",String.valueOf(sysObject.getId()));
     }
 
@@ -99,24 +105,26 @@ public class PostFormController {
     public AnswerMessage postNewMmedia(
             @PathVariable Integer objectId,
             @PathVariable String attributeName,
-            @RequestPart(name = "file", required = false) MultipartFile file) throws EditException {
-        //TODO ERROR : unsuccessful
+            @RequestPart(name = "file", required = false) MultipartFile file) throws EditException,EntityNotFoundException, TemplateException {
+
         SysMmedia mmedia = new SysMmedia();
         mmedia.setName(file.getOriginalFilename());
         try {
             mmedia.setData(file.getBytes());
         } catch (IOException e) {
-            return new AnswerMessage("Ошибка!","-1");
+            throw  new EditException("Ошибка при обработке файла.");
         }
-        String  mime = file.getContentType();
+        String mime = file.getContentType();
+        if(mime == null){
+            throw  new EditException("Ошибка при обработке файла.");
+        }
         mmedia.setResourceType(SysResourceType.getByMime(mime));
         mmedia.setOwnerObjectId(objectId);
 
-        //TODO : error
         SysMmedia sysMmedia = sysMMediaService.saveSysMmedia(mmedia);
         List<ObjectAttribute> list = new LinkedList<>();
         list.add(new ObjectAttribute(attributeName,sysMmedia.getId()));
-        SysObject sysObject = customService.updateObject(list,objectId);// throws EditException,EntityNotFoundException
+        customService.updateObject(list,objectId);// throws EditException,EntityNotFoundException,TemplateException,ValidationException
 
         return new AnswerMessage("Удачно!",String.valueOf(sysMmedia.getId()));
     }

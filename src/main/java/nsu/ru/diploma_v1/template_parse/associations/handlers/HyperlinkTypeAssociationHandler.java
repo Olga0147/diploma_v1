@@ -3,8 +3,11 @@ package nsu.ru.diploma_v1.template_parse.associations.handlers;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import nsu.ru.diploma_v1.configuration.urls.ModePath;
+import nsu.ru.diploma_v1.exception.EditException;
 import nsu.ru.diploma_v1.exception.EntityNotFoundException;
+import nsu.ru.diploma_v1.exception.TemplateException;
 import nsu.ru.diploma_v1.model.entity.SysAssociationImpl;
+import nsu.ru.diploma_v1.model.entity.SysClass;
 import nsu.ru.diploma_v1.model.entity.SysObject;
 import nsu.ru.diploma_v1.template_parse.associations.AssociationTypeHandler;
 import nsu.ru.diploma_v1.template_parse.associations.AssociationTypes;
@@ -32,7 +35,7 @@ public class HyperlinkTypeAssociationHandler implements AssociationTypeHandler {
     }
 
     @Override
-    public String handle(int objectId, NamedNodeMap attributes, String innerText) throws EntityNotFoundException {
+    public String handle(int objectId, NamedNodeMap attributes, String innerText) throws EntityNotFoundException, TemplateException {
 
     //<association associationId="1" templateId="2" delimiter="<br>" type="hyperlink">TITLE AUTHOR</association>
 
@@ -42,8 +45,8 @@ public class HyperlinkTypeAssociationHandler implements AssociationTypeHandler {
         String[] fields = innerText.split(" ");
 
         if(association == null || template == null ){
-            //TODO: log or tell user
-            return "";
+            log.info("Ассоциация не верна");
+            throw new TemplateException("Ассоциация не верна");
         }
         String del = "";
         if(delimiter != null){
@@ -52,16 +55,12 @@ public class HyperlinkTypeAssociationHandler implements AssociationTypeHandler {
 
         Integer templateId = Integer.parseInt(template.getTextContent());
 
-        SysObject sysObject;
-        try {
-            sysObject = sysObjectService.getSysObjectById(objectId);// throws EntityNotFoundException
-        }catch (EntityNotFoundException  e){
-            log.error(String.format("Не найден объект %d",objectId));
-            return "";
-        }
+        SysObject sysObject = sysObjectService.getSysObjectById(objectId);// throws EntityNotFoundException
+
         List<SysAssociationImpl> list = sysObject.getAssociationImplFromList();
         if(list.isEmpty()){
-            return "";
+            log.info("Ассоциация не была зарегистрирована");
+            throw new TemplateException("Ассоциация не была зарегистрирована");
         }
 
         StringBuilder result = new StringBuilder();
@@ -70,15 +69,21 @@ public class HyperlinkTypeAssociationHandler implements AssociationTypeHandler {
 
             Integer toSysObjectId = sysAssociation.getToSysObject().getId();
             String inner = templateService.getObjectFields(fields,toSysObjectId);// throws EntityNotFoundException
-            //TODO: проверка, что корректен шаблон для объекта
+
+            //проверка, что корректен шаблон для объекта
+            SysObject toObj = sysObjectService.getSysObjectById(toSysObjectId);// throws EntityNotFoundException
+            SysClass toClass = toObj.getOwnerSysClass();
+            if(!toClass.checkTemplateExist(templateId)){
+                throw new TemplateException(String.format("Шаблон %s не может быть использован для Объекта %d",templateId,toSysObjectId));
+            }
+
             String currentResult = String.format("<a href=\"%s/%d/%d\"> %s </a>",ModePath.USER_MODE,toSysObjectId,templateId,inner);
             result.append(currentResult).append(del);
         }
         if(delimiter != null) {
             result.delete(result.length() - del.length() - 1, result.length() - 1);
         }
-        String resultWithoutRoot = templateService.clearXMLMeta(result.toString());
-        return resultWithoutRoot;
+        return templateService.clearXMLMeta(result.toString());
 
     }
 }

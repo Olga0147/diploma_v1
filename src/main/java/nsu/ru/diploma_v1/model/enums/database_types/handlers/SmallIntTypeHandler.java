@@ -20,7 +20,6 @@ public class SmallIntTypeHandler implements AttributeTypeHandler {
 
     @Override
     public String toString(Object object) {
-        //todo why integer?
         return Integer.toString((Integer)object);
     }
 }

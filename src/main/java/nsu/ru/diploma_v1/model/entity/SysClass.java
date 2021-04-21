@@ -77,4 +77,15 @@ public class SysClass {
     public void deleteObject(SysObject sysObject){
         this.objectList.remove(sysObject);
     }
+
+    public boolean checkTemplateExist(int templateId){
+        boolean flag = false;
+        for (SysTemplate template : templateList) {
+            if (template.getId().equals(templateId)) {
+                flag = true;
+                break;
+            }
+        }
+        return flag;
+    }
 }

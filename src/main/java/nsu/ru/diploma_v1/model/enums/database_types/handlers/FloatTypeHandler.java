@@ -20,7 +20,6 @@ public class FloatTypeHandler implements AttributeTypeHandler {
 
     @Override
     public String toString(Object object){
-        //todo why Double?
         return Double.toString((Double)object);
     }
 

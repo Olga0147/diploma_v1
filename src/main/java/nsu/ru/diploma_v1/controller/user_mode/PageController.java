@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import nsu.ru.diploma_v1.configuration.urls.menu.ViewMenu;
 import nsu.ru.diploma_v1.configuration.urls.mode.UserMode;
 import nsu.ru.diploma_v1.exception.EntityNotFoundException;
+import nsu.ru.diploma_v1.exception.TemplateException;
 import nsu.ru.diploma_v1.template_parse.TemplateService;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,12 +19,11 @@ public class PageController {
     private final ViewMenu menu;
 
     @GetMapping(UserMode.Show.GET_OBJECT)
-    public String getObjectInTemplate(Model model, @PathVariable Integer object_id, @PathVariable Integer id) throws EntityNotFoundException {
-        //TODO error all
+    public String getObjectInTemplate(Model model, @PathVariable Integer object_id, @PathVariable Integer id) {
         String html;
         try {
             html = templateService.getObjectInTemplate(object_id, id);// throws EntityNotFoundException
-        }catch (EntityNotFoundException e){
+        }catch (EntityNotFoundException|TemplateException e){
             return "<!DOCTYPE html>\n" +
                     "<head>\n" +
                     "    <meta charset=\"UTF-8\">\n" +

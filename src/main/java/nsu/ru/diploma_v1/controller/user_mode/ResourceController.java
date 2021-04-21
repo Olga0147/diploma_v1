@@ -21,7 +21,6 @@ public class ResourceController {
 
     @GetMapping(UserMode.GetFile.GET_RESOURCE)
     public ResponseEntity<byte[]> getResource(@PathVariable Integer id){
-        //TODO error all
         SysResource resource = sysResourceService.getSysResourcesByResourceId(id);//EntityNotFoundException
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getName() + "\"")

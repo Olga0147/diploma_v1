@@ -168,14 +168,15 @@ public class CustomRepository{
         columns.deleteCharAt(columns.length()-1);
 
         String sql = String.format("INSERT INTO %s ( %s ) VALUES ( %s )",tableName,columns,vars);
+        int numRows;
         try{
-            int numRows = namedParameterJdbcTemplate.update(sql, namedParameters);
-            if(numRows < 1){
-                log.error(String.format("Не удалось вставить строку в таблицу %s.",tableName));
-                throw new EditException(String.format("Не удалось вставить строку в таблицу %s.",tableName));
-            }
+            numRows = namedParameterJdbcTemplate.update(sql, namedParameters);
         }catch (Exception e){
             log.error(String.format("Не удалось вставить строку в таблицу %s. Ошибка : %s.",tableName,e.getMessage()));
+            throw new EditException(String.format("Не удалось вставить строку в таблицу %s.",tableName));
+        }
+        if(numRows < 1){
+            log.error(String.format("Не удалось вставить строку в таблицу %s.",tableName));
             throw new EditException(String.format("Не удалось вставить строку в таблицу %s.",tableName));
         }
     }

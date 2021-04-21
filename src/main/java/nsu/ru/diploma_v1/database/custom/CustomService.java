@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import nsu.ru.diploma_v1.configuration.urls.mode.UserMode;
 import nsu.ru.diploma_v1.exception.EditException;
 import nsu.ru.diploma_v1.exception.EntityNotFoundException;
+import nsu.ru.diploma_v1.exception.TemplateException;
 import nsu.ru.diploma_v1.exception.ValidationException;
 import nsu.ru.diploma_v1.mapper.FormMapper;
 import nsu.ru.diploma_v1.model.dto.NewClassForm;
@@ -23,7 +24,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 /**
  * Отвечает за основную логику системы
@@ -98,15 +98,13 @@ public class CustomService {
 
             AttributeTypeHandler attributeTypeHandler = attributeTypeMap.get(attr.getAttributeType());
             Object value = null;
-            try{
-                value = attributeTypeHandler.handle(attr,dataNameValue.get(attr.getName()));
-                //сохранить агрегации
-                if(attr.getAttributeType() == SysTypes.XMEMO.getId()){
-                    templateService.parseXMemoToSaveObject( (String)value,attr.getId(),objectId);
-                }
-            }catch (ValidationException e){
-                //TODO: error handler
+
+            value = attributeTypeHandler.handle(attr,dataNameValue.get(attr.getName()));
+            //проверить и сохранить агрегации
+            if(attr.getAttributeType() == SysTypes.XMEMO.getId()){
+                templateService.parseXMemoToSaveObject( (String)value,attr.getId(),objectId);//throws TemplateException
             }
+
             param.put(attr.getName(), value);
         }
 
@@ -117,7 +115,7 @@ public class CustomService {
     }
 
     @Transactional
-    public SysObject updateObject(List<ObjectAttribute> list, Integer objectId) throws EditException,EntityNotFoundException{
+    public void updateObject(List<ObjectAttribute> list, Integer objectId) throws EditException,EntityNotFoundException,TemplateException,ValidationException{
 
         Map<String,Object> dataNameValue = new HashMap<>();
         for (ObjectAttribute objectAttribute : list) {
@@ -140,22 +138,19 @@ public class CustomService {
 
             AttributeTypeHandler attributeTypeHandler = attributeTypeMap.get(attr.getAttributeType());
             Object value = null;
-            try{
-                value = attributeTypeHandler.handle(attr,dataNameValue.get(attr.getName()));
-                //сохранить агрегации
-                if(attr.getAttributeType() == SysTypes.XMEMO.getId()){
-                    templateService.parseXMemoToSaveObject( (String)value,attr.getId(),objectId);
-                }
-            }catch (ValidationException e){
-                //TODO: error handler
+
+            value = attributeTypeHandler.handle(attr,dataNameValue.get(attr.getName()));
+            //сохранить агрегации
+            if(attr.getAttributeType() == SysTypes.XMEMO.getId()){
+                templateService.parseXMemoToSaveObject( (String)value,attr.getId(),objectId);//throws TemplateException
             }
+
             param.put(attr.getName(), value);
         }
 
         param.put("id",objectId);
         //обновить объект
         customRepository.updateRowInTable(param,tableName);// throws EditException
-        return sysObject;
     }
 
     public Map<String, Object> getObject(@NonNull SysClass sysClass, @NonNull int id) throws EntityNotFoundException{

@@ -44,7 +44,7 @@ public class SysAttribute {
      * Реализации Агрегаций Объекта
      */
     @OneToMany(mappedBy="sysAttribute", fetch=FetchType.LAZY)
-    List<SysAggregationImpl> notNeedAtAll;//TODO : understand and delete
+    List<SysAggregationImpl> notNeedAtAll;
 
     /**
      * Поля MMedia

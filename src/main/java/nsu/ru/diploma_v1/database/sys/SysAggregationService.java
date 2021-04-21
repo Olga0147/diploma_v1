@@ -71,18 +71,30 @@ public class SysAggregationService {
     }
 
     public void saveSysAggregationImpl(SysAggregationImpl sysAggregation){
-        sysAggregationImplRepository.save(sysAggregation);
+        try {
+            sysAggregationImplRepository.save(sysAggregation);
+        }catch (Exception e){
+            log.error("Реализация Агрегации не может быть сохранена.");
+            throw new EditException("Реализация Агрегации не может быть сохранена.");
+        }
     }
 
-    public boolean checkExist(SysAggregationImpl sysAggregation){
-        Optional<SysAggregationImpl> impl =
-                sysAggregationImplRepository.getSysAggregationImplByAggregationIdAndToTemplateIdAndFromObjectIdAndToObjectIdAndAttributeId(
-                sysAggregation.getAggregationId(),
-                sysAggregation.getToTemplateId(),
-                sysAggregation.getFromObjectId(),
-                sysAggregation.getToObjectId(),
-                sysAggregation.getAttributeId()
-        );
+    public boolean checkExist(SysAggregationImpl sysAggregation)throws EntityNotFoundException{
+        Optional<SysAggregationImpl> impl;
+        try {
+            impl =
+                    sysAggregationImplRepository.getSysAggregationImplByAggregationIdAndToTemplateIdAndFromObjectIdAndToObjectIdAndAttributeId(
+                            sysAggregation.getAggregationId(),
+                            sysAggregation.getToTemplateId(),
+                            sysAggregation.getFromObjectId(),
+                            sysAggregation.getToObjectId(),
+                            sysAggregation.getAttributeId()
+                    );
+
+        }catch (Exception e){
+            log.info(String.format("Реализация Агрегации %d не была найдена.",sysAggregation.getAggregationId()));
+            throw new EntityNotFoundException(String.format("Реализация Агрегации %d не была найдена.",sysAggregation.getAggregationId()));
+        }
         return impl.isPresent();
     }
 

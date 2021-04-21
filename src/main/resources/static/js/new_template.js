@@ -15,21 +15,20 @@ function sendPost() {
     xhr.setRequestHeader('Content-Type', 'application/json');
 
     xhr.onreadystatechange = function () {
-        if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+        if (xhr.readyState === XMLHttpRequest.DONE){
+            if (xhr.status === 200) {
             console.log('200');
             let rez = JSON.parse(xhr.response).message;
             $("#toDelete").remove();
             success.innerHTML =`<div><span>${rez}</span></div>`
-        } else if (xhr.status === 400) {
-            let rez = JSON.parse(xhr.response);
-            error.innerHTML =`<div><span>${rez}</span></div>`
-            console.log(rez.errorMessage);
-        } else if (xhr.status === 401) {
-            console.log('401');
-        } else if (xhr.status === 403) {
-            console.log('403');
-        } else if (xhr.status === 404) {
-            console.log('404');
+            } else if (xhr.status === 400) {
+                let rez = JSON.parse(xhr.response);
+                error.innerHTML =`<div><span>${rez}</span></div>`
+                console.log(rez.errorMessage);
+            } else {
+                error.innerHTML = `<div><span>Упс, произошла ошибка</span></div>`
+                console.log("3: Статус ошибки" + xhr.status);
+            }
         }
     }
 
