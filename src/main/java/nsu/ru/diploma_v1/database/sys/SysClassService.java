@@ -95,6 +95,8 @@ public class SysClassService {
         List<SysAttribute> newList = new LinkedList<>();
         for (SysAttribute attribute : list) {
             try {
+                String name = attribute.getName();
+                attribute.setName(name.replaceAll(" ","_"));
                 SysAttribute current = sysAttributeRepository.save(attribute);
                 newList.add(current);
             }catch (Exception e){

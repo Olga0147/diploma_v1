@@ -239,5 +239,4 @@ public class CustomRepository{
             throw new EditException(String.format("Не удалось удалить таблицу %s.",tableName));
         }
     }
-
 }

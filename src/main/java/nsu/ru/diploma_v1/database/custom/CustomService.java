@@ -97,7 +97,7 @@ public class CustomService {
         for (SysAttribute attr : sysAttribute) {
 
             AttributeTypeHandler attributeTypeHandler = attributeTypeMap.get(attr.getAttributeType());
-            Object value = null;
+            Object value;
 
             value = attributeTypeHandler.handle(attr,dataNameValue.get(attr.getName()));
             //проверить и сохранить агрегации
