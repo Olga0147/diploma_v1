@@ -1,7 +1,9 @@
 package nsu.ru.diploma_v1.database.sys;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import nsu.ru.diploma_v1.exception.EditException;
+import nsu.ru.diploma_v1.exception.EntityNotFoundException;
 import nsu.ru.diploma_v1.model.entity.SysClass;
 import nsu.ru.diploma_v1.model.entity.SysObject;
 import nsu.ru.diploma_v1.repository.CustomRepository;
@@ -10,7 +12,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class SysObjectService {
@@ -22,8 +26,14 @@ public class SysObjectService {
         return sysObjectRepository.findAll();
     }
 
-    public SysObject getSysObjectById(int id){
-        return sysObjectRepository.getSysObjectById(id);
+    public SysObject getSysObjectById(int id) throws EntityNotFoundException{
+        Optional<SysObject> object = sysObjectRepository.getSysObjectById(id);
+        if(object.isPresent()){
+            return object.get();
+        }else{
+            log.error(String.format("Объект %d не найден.",id));
+            throw new EntityNotFoundException(String.format("Объект %d не найден.",id));
+        }
     }
 
     public SysObject saveSysObject(SysObject sysObject){
@@ -31,19 +41,20 @@ public class SysObjectService {
     }
 
     @Transactional
-    public String delete(int id) throws EditException {
-        SysObject sysObject = getSysObjectById(id);
+    public String delete(int id) throws EditException, EntityNotFoundException {
+        SysObject sysObject = getSysObjectById(id);// throws EntityNotFoundException
         SysClass sysClass = sysObject.getOwnerSysClass();
 
         if(!sysObject.getAssociationImplFromList().isEmpty() || !sysObject.getAssociationImplToList().isEmpty()){
-            return "Невозможно удалить. Объект участвует в Реализациях Ассоциаций";
+            log.error("Невозможно удалить. Объект участвует в Реализациях Ассоциаций");
+            throw new EditException("Невозможно удалить. Объект участвует в Реализациях Ассоциаций");
         }else if(!sysObject.getAggregationImplFromList().isEmpty() || !sysObject.getAggregationImplToList().isEmpty()){
-            return "Невозможно удалить. Объект участвует в Реализациях Агрегаций";
+            log.error("Невозможно удалить. Объект участвует в Реализациях Агрегаций");
+            throw new EditException("Невозможно удалить. Объект участвует в Реализациях Агрегаций");
         }else{
             sysClass.deleteObject(sysObject);
-            boolean wtf = sysClass.getObjectList().contains(sysObject);
             customRepository.deleteRowInTable("class_"+sysClass.getId(),id);// throws EditException
-            int i1 = sysObjectRepository.deleteById(id);
+            sysObjectRepository.deleteById(id);
             return "Объект успешно удален.";
         }
     }

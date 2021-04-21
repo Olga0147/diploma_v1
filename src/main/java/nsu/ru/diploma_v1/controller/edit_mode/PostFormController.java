@@ -116,7 +116,7 @@ public class PostFormController {
         SysMmedia sysMmedia = sysMMediaService.saveSysMmedia(mmedia);
         List<ObjectAttribute> list = new LinkedList<>();
         list.add(new ObjectAttribute(attributeName,sysMmedia.getId()));
-        SysObject sysObject = customService.updateObject(list,objectId);// throws EditException
+        SysObject sysObject = customService.updateObject(list,objectId);// throws EditException,EntityNotFoundException
 
         return new AnswerMessage("Удачно!",String.valueOf(sysMmedia.getId()));
     }

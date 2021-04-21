@@ -128,13 +128,19 @@ public class ViewDetailInfoController {
     }
 
     @GetMapping(DetailInfo.GET_OBJECT)
-    public String showInfoObject(Model model, @PathVariable Integer id) throws EditException {
+    public String showInfoObject(Model model, @PathVariable Integer id) throws EditException,EntityNotFoundException {
 
-        //TODO: ERROR NOT FOUND
-        SysObject sysObject = sysObjectService.getSysObjectById(id);
-        SysClass sysClass = sysObject.getOwnerSysClass();
-        Map<String, Object> object = customService.getObject(sysClass,id);// throws EditException
+        model.addAttribute("m", menu);
 
+        SysObject sysObject; SysClass sysClass; Map<String, Object> object;
+        try{
+            sysObject = sysObjectService.getSysObjectById(id);//EntityNotFoundException
+            sysClass = sysObject.getOwnerSysClass();
+            object = customService.getObject(sysClass,id);// throws EntityNotFoundException
+        }catch (EntityNotFoundException e){
+            model.addAttribute("exception", e.getMessage());
+            return "/exception/exception";
+        }
         Map<String, Object> objectMMediaAndXMemo = customService.getObjectMMediaAndXMemo(sysClass,object);
 
         model.addAttribute("id", String.valueOf(sysObject.getId()));
@@ -158,8 +164,6 @@ public class ViewDetailInfoController {
         model.addAttribute("detailTemplatePath", getPath(DetailInfo.GET_TEMPLATE) );
         model.addAttribute("detailClassPath", getPath(DetailInfo.GET_CLASS) );
         model.addAttribute("detailObjectPath", getPath(DetailInfo.GET_OBJECT) );
-
-        model.addAttribute("m", menu);
 
         return "/view_mode/detail_info/detail_object";
         }

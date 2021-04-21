@@ -183,7 +183,7 @@ public class TemplateService {
             AggregationTypes aggregationType = AggregationTypes.valueOf(type.getTextContent().toUpperCase(Locale.ROOT));
 
             AggregationTypeHandler handler = aggregationHandlerMap.get(aggregationType);
-            String value = handler.handle(map,aggregation.getTextContent(),attributeId,objectId);
+            String value = handler.handle(map,aggregation.getTextContent(),attributeId,objectId);// throws EntityNotFoundException
 
             Document docXMemo = parseXML(value);
             Node newNode = docXMemo.getFirstChild();

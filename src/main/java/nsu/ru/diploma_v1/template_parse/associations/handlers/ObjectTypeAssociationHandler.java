@@ -1,6 +1,7 @@
 package nsu.ru.diploma_v1.template_parse.associations.handlers;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import nsu.ru.diploma_v1.exception.EntityNotFoundException;
 import nsu.ru.diploma_v1.model.entity.SysAssociationImpl;
 import nsu.ru.diploma_v1.model.entity.SysObject;
@@ -17,6 +18,7 @@ import java.util.List;
 /**
  * Вставить ссылки на объекты по ассоциации
  */
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class ObjectTypeAssociationHandler implements AssociationTypeHandler {
@@ -49,7 +51,13 @@ public class ObjectTypeAssociationHandler implements AssociationTypeHandler {
 
         Integer templateId = Integer.parseInt(template.getTextContent());
 
-        SysObject sysObject = sysObjectService.getSysObjectById(objectId);
+        SysObject sysObject;
+        try {
+            sysObject = sysObjectService.getSysObjectById(objectId);// throws EntityNotFoundException
+        }catch (EntityNotFoundException  e){
+            log.error(String.format("Не найден объект %d",objectId));
+            return "";
+        }
         List<SysAssociationImpl> list = sysObject.getAssociationImplFromList();
 
         StringBuilder result = new StringBuilder();

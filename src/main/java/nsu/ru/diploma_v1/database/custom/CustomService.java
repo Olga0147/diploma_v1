@@ -117,14 +117,14 @@ public class CustomService {
     }
 
     @Transactional
-    public SysObject updateObject(List<ObjectAttribute> list, Integer objectId) throws EditException{
+    public SysObject updateObject(List<ObjectAttribute> list, Integer objectId) throws EditException,EntityNotFoundException{
 
         Map<String,Object> dataNameValue = new HashMap<>();
         for (ObjectAttribute objectAttribute : list) {
             dataNameValue.put(objectAttribute.getName(),objectAttribute.getValue());
         }
 
-        SysObject sysObject = sysObjectService.getSysObjectById(objectId);
+        SysObject sysObject = sysObjectService.getSysObjectById(objectId);//throws EntityNotFoundException
 
         //получить название таблицы
         SysClass sysClass =  sysObject.getOwnerSysClass();
@@ -163,7 +163,6 @@ public class CustomService {
     }
 
     public Map<String, Object> getObjectMMediaAndXMemo(@NonNull SysClass sysClass, Map<String, Object> obj){
-        //TODO: исключение что не нашли
         List<SysAttribute> attributeList = sysClass.getAttributeList();
 
         for (SysAttribute attribute : attributeList) {
@@ -200,7 +199,7 @@ public class CustomService {
     }
 
     public Map<String, AttributeAndValue> getObjectForTemplate(Integer objectId) throws EntityNotFoundException{
-        SysObject sysObject = sysObjectService.getSysObjectById(objectId);
+        SysObject sysObject = sysObjectService.getSysObjectById(objectId);//EntityNotFoundException
         SysClass sysClass = sysObject.getOwnerSysClass();
         Map<String, Object> object = customRepository.getObject(sysClass.getSystemName(),objectId);// throws EntityNotFoundException
 
