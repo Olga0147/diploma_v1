@@ -74,8 +74,7 @@ public class TemplateService {
     //MAIN METHOD
     public String getObjectInTemplate(Integer objectId, Integer templateId) throws EntityNotFoundException {
         Map<String, AttributeAndValue> object = customService.getObjectForTemplate(objectId);// throws EntityNotFoundException
-        //TODO: not found
-        SysTemplate template = sysTemplateService.getSysTemplate(templateId);
+        SysTemplate template = sysTemplateService.getSysTemplate(templateId);//// throws EntityNotFoundException
 
         return parseTemplate(object,template.getBody(),objectId);// throws EntityNotFoundException
     }

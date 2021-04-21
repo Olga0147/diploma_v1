@@ -114,15 +114,20 @@ public class ViewDetailInfoController {
     @GetMapping(DetailInfo.GET_TEMPLATE)
     public String showInfoTemplate(Model model, @PathVariable Integer id) {
 
-        //TODO: ERROR NOT FOUND
-        SysTemplate template = sysTemplateService.getSysTemplate(id);
+        model.addAttribute("m", menu);
 
+        SysTemplate template;
+        try{
+            template = sysTemplateService.getSysTemplate(id);
+        }catch (EntityNotFoundException e){
+            model.addAttribute("exception", e.getMessage());
+            return "/exception/exception";
+        }
         model.addAttribute("template", template);
 
         model.addAttribute("title", "Шаблон: детально");
         model.addAttribute("detailClassPath", getPath(DetailInfo.GET_CLASS));
 
-        model.addAttribute("m", menu);
 
         return "/view_mode/detail_info/detail_template";
     }
