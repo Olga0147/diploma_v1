@@ -214,15 +214,21 @@ public class ViewDetailInfoController {
     public String showInfoResource(Model model, @PathVariable Integer id) {
 
         //TODO: ERROR NOT FOUND
-        SysResource template = sysResourceService.getSysResourcesByResourceId(id);
+        model.addAttribute("m", menu);
 
+        SysResource template;
+        try {
+        template = sysResourceService.getSysResourcesByResourceId(id);//throws EntityNotFoundException
+        }catch (EntityNotFoundException e){
+            model.addAttribute("exception", e.getMessage());
+            return "/exception/exception";
+        }
         model.addAttribute("resource", template);
 
         model.addAttribute("title", "Ресурс: детально");
         model.addAttribute("detailClassPath", getPath(DetailInfo.GET_CLASS));
         model.addAttribute("downloadPath", getPath(UserMode.GetFile.GET_RESOURCE));
 
-        model.addAttribute("m", menu);
 
         return "/view_mode/detail_info/detail_resource";
     }

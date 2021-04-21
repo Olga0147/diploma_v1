@@ -1,6 +1,7 @@
 package nsu.ru.diploma_v1.model.enums.database_types.handlers;
 
 import lombok.RequiredArgsConstructor;
+import nsu.ru.diploma_v1.exception.EntityNotFoundException;
 import nsu.ru.diploma_v1.model.entity.SysAttribute;
 import nsu.ru.diploma_v1.model.entity.SysMmedia;
 import nsu.ru.diploma_v1.model.enums.database_types.AttributeTypeHandler;
@@ -32,9 +33,11 @@ public class MmediaTypeHandler implements AttributeTypeHandler {
         if(object == null){
             return "";
         }
+        SysMmedia mmedia;
         Integer id = (Integer)object;
-        SysMmedia mmedia = sysMMediaService.getSysMMediaByMMediaId(id);
-        if(mmedia == null){
+        try {
+            mmedia = sysMMediaService.getSysMMediaByMMediaId(id);// throws EntityNotFoundException
+        }catch (EntityNotFoundException e){
             return "";
         }
         SysResourceType type = mmedia.getResourceType();

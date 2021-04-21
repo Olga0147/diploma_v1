@@ -10,7 +10,8 @@ public enum SysResourceType {
     IMAGE,
     AUDIO,
     TEXT_FILE,
-    VIDEO;
+    VIDEO,
+    NOT_FOUND;
 
     public static SysResourceType getByMime(String mime){
 
@@ -56,6 +57,12 @@ public enum SysResourceType {
                 source.setAttribute("src", UserMode.GetFile.GET_RESOURCE.replace("{id}",id));
                 source.setAttribute("alt","видео "+id);
                 tag.appendChild(source);
+                break;
+            }
+            case NOT_FOUND:{
+                tag = doc.createElement("a");
+                tag.setAttribute("href", UserMode.GetFile.GET_RESOURCE.replace("{id}",id));
+                tag.setTextContent("404");
                 break;
             }
             default:{
