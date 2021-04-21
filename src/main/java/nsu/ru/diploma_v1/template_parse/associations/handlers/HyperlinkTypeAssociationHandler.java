@@ -68,7 +68,7 @@ public class HyperlinkTypeAssociationHandler implements AssociationTypeHandler {
         for (SysAssociationImpl sysAssociation : list) {
 
             Integer toSysObjectId = sysAssociation.getToSysObject().getId();
-            String inner = templateService.getObjectFields(fields,toSysObjectId);// throws EntityNotFoundException
+            String inner = templateService.getObjectFields(fields,toSysObjectId,templateId);// throws EntityNotFoundException
 
             //проверка, что корректен шаблон для объекта
             SysObject toObj = sysObjectService.getSysObjectById(toSysObjectId);// throws EntityNotFoundException
@@ -85,5 +85,16 @@ public class HyperlinkTypeAssociationHandler implements AssociationTypeHandler {
         }
         return templateService.clearXMLMeta(result.toString());
 
+    }
+
+    @Override
+    public void check(NamedNodeMap attributes, String innerText) {
+        Node association = attributes.getNamedItem("associationId");
+        Node template = attributes.getNamedItem("templateId");
+
+        if(association == null || template == null ){
+            log.info("Ассоциация не верна");
+            throw new TemplateException("Ассоциация не верна");
+        }
     }
 }

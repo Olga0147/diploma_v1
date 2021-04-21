@@ -86,4 +86,15 @@ public class ObjectTypeAssociationHandler implements AssociationTypeHandler {
 
         return templateService.clearXMLMeta(result.toString());
     }
+
+    @Override
+    public void check(NamedNodeMap attributes, String innerText) {
+        Node association = attributes.getNamedItem("associationId");
+        Node template = attributes.getNamedItem("templateId");
+
+        if(association == null || template == null ){
+            log.info("Ассоциация не верна");
+            throw new TemplateException("Ассоциация не верна");
+        }
+    }
 }

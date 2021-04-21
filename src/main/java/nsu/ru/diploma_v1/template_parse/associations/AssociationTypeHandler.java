@@ -7,4 +7,6 @@ public interface AssociationTypeHandler {
     AssociationTypes getType();
 
     String handle(int objectId, NamedNodeMap attributes, String innerText);
+
+    void check(NamedNodeMap attributes, String innerText);
 }

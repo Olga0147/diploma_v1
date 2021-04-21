@@ -14,8 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class DeleteController {
 
-    //TODO error send code (400), throw an error?
-
     private final SysClassService sysClassService;
     private final SysAssociationService sysAssociationService;
     private final SysAggregationService sysAggregationService;
@@ -63,10 +61,5 @@ public class DeleteController {
     public AnswerMessage deleteClass(@PathVariable Integer id) throws EditException,EntityNotFoundException {
         String message = sysClassService.delete(id);//throws EditException,EntityNotFoundException
         return new AnswerMessage(message,String.valueOf(id));
-    }
-
-
-    private String getPath(String str){
-        return str.substring(0, str.length() - 4);
     }
 }

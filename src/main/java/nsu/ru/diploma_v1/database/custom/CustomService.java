@@ -193,10 +193,14 @@ public class CustomService {
         return obj;
     }
 
-    public Map<String, AttributeAndValue> getObjectForTemplate(Integer objectId) throws EntityNotFoundException{
+    public Map<String, AttributeAndValue> getObjectForTemplate(Integer objectId, Integer templateId) throws EntityNotFoundException{
         SysObject sysObject = sysObjectService.getSysObjectById(objectId);//EntityNotFoundException
         SysClass sysClass = sysObject.getOwnerSysClass();
         Map<String, Object> object = customRepository.getObject(sysClass.getSystemName(),objectId);// throws EntityNotFoundException
+
+        if(sysClass.checkTemplateExist(templateId)){
+            throw new EntityNotFoundException("Шаблон не принадлежит Классу.");
+        }
 
         Map<String, AttributeAndValue> nameValueFields = new HashMap<>();
 
@@ -217,10 +221,6 @@ public class CustomService {
 
             nameValueFields.put(attr.getName(),attributeAndValue);
         }
-
-        //TODO: сравнить что шаблон принадлежит классу
-
-        //SysTemplate template = sysTemplateService.getSysTemplate(templateId);
 
         return nameValueFields;
     }

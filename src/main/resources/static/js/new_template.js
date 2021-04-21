@@ -22,7 +22,7 @@ function sendPost() {
             $("#toDelete").remove();
             success.innerHTML =`<div><span>${rez}</span></div>`
             } else if (xhr.status === 400) {
-                let rez = JSON.parse(xhr.response);
+                let rez = JSON.parse(xhr.response).message;
                 error.innerHTML =`<div><span>${rez}</span></div>`
                 console.log(rez.errorMessage);
             } else {

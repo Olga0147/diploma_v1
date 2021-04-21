@@ -34,6 +34,7 @@ public class SysTemplateService {
     }
 
     public SysTemplate saveSysTemplate(SysTemplate sysTemplate){
+
         return sysTemplateRepository.save(sysTemplate);
     }
 

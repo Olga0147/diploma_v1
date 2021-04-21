@@ -90,12 +90,16 @@ public class SysClassService {
         return notMMedia;
     }
 
-    public List<SysAttribute> saveAttributes(List<SysAttribute> list){
+    @Transactional
+    public List<SysAttribute> saveAttributes(List<SysAttribute> list) throws EditException{
         List<SysAttribute> newList = new LinkedList<>();
         for (SysAttribute attribute : list) {
-            //TODO ERROR
-            SysAttribute current = sysAttributeRepository.save(attribute);
-            newList.add(current);
+            try {
+                SysAttribute current = sysAttributeRepository.save(attribute);
+                newList.add(current);
+            }catch (Exception e){
+                throw new EditException("Атрибуты не моут быть сохранены.");
+            }
         }
         return newList;
     }

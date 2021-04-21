@@ -4,9 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import nsu.ru.diploma_v1.exception.EntityNotFoundException;
 import nsu.ru.diploma_v1.exception.TemplateException;
-import nsu.ru.diploma_v1.model.entity.AttributeAndValue;
-import nsu.ru.diploma_v1.model.entity.SysAggregationImpl;
-import nsu.ru.diploma_v1.model.entity.SysTemplate;
+import nsu.ru.diploma_v1.model.entity.*;
 import nsu.ru.diploma_v1.template_parse.associations.AssociationTypeHandler;
 import nsu.ru.diploma_v1.template_parse.associations.AssociationTypes;
 import nsu.ru.diploma_v1.model.enums.database_types.SysTypes;
@@ -75,10 +73,13 @@ public class TemplateService {
 
     //MAIN METHOD
     public String getObjectInTemplate(Integer objectId, Integer templateId) throws EntityNotFoundException, TemplateException {
-        Map<String, AttributeAndValue> object = customService.getObjectForTemplate(objectId);// throws EntityNotFoundException
+        Map<String, AttributeAndValue> object = customService.getObjectForTemplate(objectId,templateId);// throws EntityNotFoundException
         SysTemplate template = sysTemplateService.getSysTemplate(templateId);//// throws EntityNotFoundException
-
         return parseTemplate(object,template.getBody(),objectId);// throws EntityNotFoundException, TemplateException
+    }
+
+    public void checkTemplate(SysTemplate sysTemplate,SysClass sysClass){
+        parseTemplate(sysTemplate.getBody(),sysClass);
     }
 
     private String parseTemplate(Map<String, AttributeAndValue> object, String template,Integer objectId) throws EntityNotFoundException, TemplateException{
@@ -154,6 +155,48 @@ public class TemplateService {
         String result = clearXMLMeta(toString(doc));
         return result;
     }
+
+    private void parseTemplate(String template, SysClass sysClass) throws EntityNotFoundException, TemplateException{
+        Document doc = parseXML(template);// throws TemplateException
+
+        List<SysAttribute> list = sysClass.getAttributeList();
+        List<String> names = new LinkedList<>();
+        list.forEach(e -> names.add(e.getName()));
+
+        //1) вставляем метки <field>fieldName</field>
+        NodeList fields = doc.getElementsByTagName("field");
+        List<NodesToReplace> nodesToReplaceList = new LinkedList<>();
+        for (int i = 0; i < fields.getLength(); i++) {
+            Node field = fields.item(i);
+            String name = field.getTextContent();
+            if(!names.contains(name)){
+                throw new TemplateException(String.format("Поля %s не существует",name));
+            }
+        }
+
+        //2)вставляем метки <association></association>
+        NodeList associations = doc.getElementsByTagName("association");
+        for (int i = 0; i < associations.getLength(); i++) {
+            Node association = associations.item(i);
+            NamedNodeMap map = association.getAttributes();
+            Node type = map.getNamedItem("type");
+            AssociationTypes associationType = AssociationTypes.valueOf(type.getTextContent().toUpperCase(Locale.ROOT));
+            AssociationTypeHandler handler = associationHandlerMap.get(associationType);
+            handler.check(map,association.getTextContent());// throws EntityNotFoundException,TemplateException
+        }
+
+        //2)вставляем метки <resource></resource>
+        NodeList resources = doc.getElementsByTagName("resource");
+        for (int i = resources.getLength()-1; i >=0; i--) {
+            Node resource = resources.item(i);
+            NamedNodeMap map = resource.getAttributes();
+            Node type = map.getNamedItem("type");
+            ResourceTagType resourceType = ResourceTagType.valueOf(type.getTextContent().toUpperCase(Locale.ROOT));
+            ResourceTypeHandler handler = resourceHandlerMap.get(resourceType);
+            handler.check(resource);//EntityNotFoundException
+        }
+    }
+
 
     private String toString(Node node) {
         try {
@@ -281,8 +324,8 @@ public class TemplateService {
                 replaceAll(XML_REGEX,"");
     }
 
-    public String getObjectFields(String[] fields,int objectId) throws EntityNotFoundException{
-        Map<String, AttributeAndValue> object = customService.getObjectForTemplate(objectId);// throws EntityNotFoundException
+    public String getObjectFields(String[] fields,int objectId,Integer templateId) throws EntityNotFoundException{
+        Map<String, AttributeAndValue> object = customService.getObjectForTemplate(objectId,templateId);// throws EntityNotFoundException
         StringBuilder result = new StringBuilder();
 
         for (String field : fields) {

@@ -9,6 +9,7 @@ import nsu.ru.diploma_v1.model.dto.NewClassForm;
 import nsu.ru.diploma_v1.model.dto.NewObjectForm;
 import nsu.ru.diploma_v1.model.dto.ObjectAttribute;
 import nsu.ru.diploma_v1.model.entity.*;
+import nsu.ru.diploma_v1.template_parse.TemplateService;
 import nsu.ru.diploma_v1.template_parse.resource_types.SysResourceType;
 import nsu.ru.diploma_v1.database.sys.*;
 import nsu.ru.diploma_v1.database.custom.CustomService;
@@ -30,6 +31,8 @@ public class PostFormController {
     private final SysTemplateService sysTemplateService;
     private final SysResourceService sysResourceService;
     private final SysMMediaService sysMMediaService;
+    private final TemplateService templateService;
+    private final SysClassService sysClassService;
 
     @PostMapping(PostForm.POST_CLASS)
     public AnswerMessage postNewClass(@RequestBody NewClassForm newClassForm) throws EditException {
@@ -39,7 +42,6 @@ public class PostFormController {
 
     @PostMapping(PostForm.POST_OBJECT)
     public AnswerMessage postNewObject(@RequestBody NewObjectForm newObjectForm, @PathVariable Integer classId) throws EditException, EntityNotFoundException {
-        //TODO check all aggregatioins : use  parseXMemoToSaveObject
         SysObject sysObject;
         sysObject = customService.saveObject(newObjectForm.getAttributes(),classId);// throws EditException,EntityNotFoundException
 //        try {
@@ -73,8 +75,8 @@ public class PostFormController {
 
     @PostMapping(PostForm.POST_TEMPLATE)
     public AnswerMessage postNewTemplate(@RequestBody SysTemplate sysTemplate, @PathVariable Integer classId) {
-        //TODO ERROR : unsuccessful
         sysTemplate.setOwnerClassId(classId);
+        templateService.checkTemplate(sysTemplate,sysClassService.getClassById(classId));
         SysTemplate template = sysTemplateService.saveSysTemplate(sysTemplate);
         return new AnswerMessage("Удачно!",String.valueOf(template.getId()));
     }
