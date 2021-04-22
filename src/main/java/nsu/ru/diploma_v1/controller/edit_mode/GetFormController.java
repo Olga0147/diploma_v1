@@ -2,6 +2,9 @@ package nsu.ru.diploma_v1.controller.edit_mode;
 
 import lombok.RequiredArgsConstructor;
 import nsu.ru.diploma_v1.configuration.urls.menu.EditMenu;
+import nsu.ru.diploma_v1.configuration.urls.mode.EditMode;
+import nsu.ru.diploma_v1.database.sys.SysTemplateService;
+import nsu.ru.diploma_v1.model.entity.SysTemplate;
 import nsu.ru.diploma_v1.model.enums.database_types.SysTypes;
 import nsu.ru.diploma_v1.template_parse.resource_types.SysResourceType;
 import nsu.ru.diploma_v1.database.sys.SysAssociationService;
@@ -9,6 +12,7 @@ import nsu.ru.diploma_v1.database.sys.SysClassService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
@@ -22,6 +26,7 @@ public class GetFormController {
     private final EditMenu menu;
     private final SysClassService sysClassService;
     private final SysAssociationService sysAssociationService;
+    private final SysTemplateService sysTemplateService;
 
     @GetMapping(EDIT_MODE)
     public String editStart(Model model) {
@@ -118,7 +123,34 @@ public class GetFormController {
         return "/edit_mode/new_resource";
     }
 
-    private String getPath(String str){
-        return str.substring(0, str.length() - 4);
-        }
+    @GetMapping(EditMode.UpdateForm.UPDATE_RESOURCE)
+    public String editOldResource(Model model,@PathVariable Integer id) {
+
+        model.addAttribute("resourceId", id);
+
+        model.addAttribute("title", "Изменить Ресурс");
+
+        model.addAttribute("m", menu);
+
+        return "/edit_mode/old_resource";
+    }
+
+    @GetMapping(EditMode.UpdateForm.UPDATE_TEMPLATE)
+    public String editOldTemplate(Model model,@PathVariable Integer id) {
+
+        SysTemplate template = sysTemplateService.getSysTemplate(id);
+
+        model.addAttribute("templateId", id);
+
+        model.addAttribute("title", "Изменить Шаблон");
+
+        model.addAttribute("name", template.getName());
+        model.addAttribute("description", template.getDescription()!=null ?template.getDescription():"");
+        model.addAttribute("body", template.getBody());
+
+        model.addAttribute("m", menu);
+
+        return "/edit_mode/old_template_by_class";
+    }
+
 }

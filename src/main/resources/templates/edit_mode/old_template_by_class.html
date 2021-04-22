@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="fragments/menu_editor :: header-css"></div>
+    <script async src="/js/old_template.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <meta charset="UTF-8">
+    <title th:text="${title}"></title>
+</head>
+<div th:replace="fragments/menu_editor :: header"></div>
+<teacherCard>
+    <div class = "inner" >
+        <h2 align="center" th:text="${title}"></h2>
+        <div th:text="${templateId}" id="templateId"></div>
+        <div class = "inner" id = "toDelete">
+
+            <form onsubmit="sendPost(); return false;" method="post">
+                <p><label for="name">Название</label><textarea id="name" placeholder="Class_name" cols="60" rows="1" th:text="${name}"></textarea></p>
+                <p><label for="description">Описание</label><textarea id="description" placeholder="for page Home" cols="60" rows="2" th:text="${description}"></textarea></p>
+                <p><label for="body">Тело</label><textarea id="body" placeholder="<div>Hello</div>" cols="60" rows="5" th:text="${body}"></textarea></p>
+                <p><input type="submit" value="Сохранить шаблон"></p>
+            </form>
+        </div>
+
+        <div class="error" id="error"></div>
+        <div class="success" id="success"></div>
+    </div>
+</teacherCard>
+</html>

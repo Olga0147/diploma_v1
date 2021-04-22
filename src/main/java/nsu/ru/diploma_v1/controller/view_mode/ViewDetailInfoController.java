@@ -2,6 +2,7 @@ package nsu.ru.diploma_v1.controller.view_mode;
 
 import lombok.RequiredArgsConstructor;
 import nsu.ru.diploma_v1.configuration.urls.menu.ViewMenu;
+import nsu.ru.diploma_v1.configuration.urls.mode.EditMode;
 import nsu.ru.diploma_v1.configuration.urls.mode.UserMode;
 import nsu.ru.diploma_v1.exception.EditException;
 import nsu.ru.diploma_v1.exception.EntityNotFoundException;
@@ -127,7 +128,7 @@ public class ViewDetailInfoController {
 
         model.addAttribute("title", "Шаблон: детально");
         model.addAttribute("detailClassPath", getPath(DetailInfo.GET_CLASS));
-
+        model.addAttribute("href", getPath(EditMode.UpdateForm.UPDATE_TEMPLATE)+template.getId());
 
         return "/view_mode/detail_info/detail_template";
     }
@@ -220,18 +221,19 @@ public class ViewDetailInfoController {
 
         model.addAttribute("m", menu);
 
-        SysResource template;
+        SysResource resource;
         try {
-        template = sysResourceService.getSysResourcesByResourceId(id);//throws EntityNotFoundException
+        resource = sysResourceService.getSysResourcesByResourceId(id);//throws EntityNotFoundException
         }catch (EntityNotFoundException e){
             model.addAttribute("exception", e.getMessage());
             return "/exception/exception";
         }
-        model.addAttribute("resource", template);
+        model.addAttribute("resource", resource);
 
         model.addAttribute("title", "Ресурс: детально");
         model.addAttribute("detailClassPath", getPath(DetailInfo.GET_CLASS));
         model.addAttribute("downloadPath", getPath(UserMode.GetFile.GET_RESOURCE));
+        model.addAttribute("href", getPath(EditMode.UpdateForm.UPDATE_RESOURCE)+resource.getId());
 
 
         return "/view_mode/detail_info/detail_resource";

@@ -51,4 +51,28 @@ public class EditMode extends EntityPath {
         public static final String DELETE_TEMPLATE =         PREF + TEMPLATE         + "/{id}";
         public static final String DELETE_RESOURCE =         PREF + RESOURCE         + "/{id}";
     }
+
+    public static class UpdateForm {
+        public static final String PREF = EDIT_MODE +"/update";
+
+        public static final String UPDATE_CLASS =            PREF + CLASS            + "/{id}";
+        public static final String UPDATE_OBJECT =           PREF + OBJECT           + "/{id}";
+        public static final String UPDATE_AGGREGATION =      PREF + AGGREGATION      + "/{id}";
+        public static final String UPDATE_ASSOCIATION =      PREF + ASSOCIATION      + "/{id}";
+        public static final String UPDATE_ASSOCIATION_IMPL = PREF + ASSOCIATION_IMPL + "/{id}";
+        public static final String UPDATE_TEMPLATE =         PREF + TEMPLATE         + "/{id}";
+        public static final String UPDATE_RESOURCE =         PREF + RESOURCE         + "/{id}";
+    }
+
+    public static class UpdateCheck {
+        public static final String PREF = EDIT_MODE +"/update-check";
+
+        public static final String UPDATE_CHECK_CLASS =            PREF + CLASS            + "/{id}";
+        public static final String UPDATE_CHECK_OBJECT =           PREF + OBJECT           + "/{id}";
+        public static final String UPDATE_CHECK_AGGREGATION =      PREF + AGGREGATION      + "/{id}";
+        public static final String UPDATE_CHECK_ASSOCIATION =      PREF + ASSOCIATION      + "/{id}";
+        public static final String UPDATE_CHECK_ASSOCIATION_IMPL = PREF + ASSOCIATION_IMPL + "/{id}";
+        public static final String UPDATE_CHECK_TEMPLATE =         PREF + TEMPLATE         + "/{id}";
+        public static final String UPDATE_CHECK_RESOURCE =         PREF + RESOURCE         + "/{id}";
+    }
 }

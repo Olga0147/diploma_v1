@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="fragments/menu_editor :: header-css"></div>
+    <script async src="/js/old_resource.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <meta charset="UTF-8">
+    <title th:text="${title}"></title>
+</head>
+<div th:replace="fragments/menu_editor :: header"></div>
+    <div class = "inner" >
+        <h2 align="center" th:text="${title}"></h2>
+        <div th:text="${resourceId}" id="resourceId"></div>
+        <form onsubmit="sendPost(); return false;" method="post" class="attribute">
+            <input type="file" th:id="'res'" >
+            <p><input type="submit" value="Сохранить"></p>
+        </form>
+        <div class="error" id="error"></div>
+        <div class="success" id="success"></div>
+    </div>
+</html>

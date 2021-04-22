@@ -19,7 +19,34 @@
 
     function updateButtonClick() {
         let resourceId = document.getElementById('resourceId').innerText;
-        alert("Вы нажали на кнопку update : " + resourceId);
+        const success = document.getElementById('success');
+        const error = document.getElementById('error');
+
+        const xhr = new XMLHttpRequest();
+        let path = window.location.protocol + '//' + window.location.hostname + ':' + window.location.port;
+        xhr.open("GET", path + "/edit-mode/update/resource/"+resourceId, true);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+
+        xhr.send();
+
+        xhr.onreadystatechange = function () {
+
+            if (xhr.readyState === XMLHttpRequest.DONE){
+                if (xhr.status === 200) {
+                    console.log('200');
+                    let rez = JSON.parse(xhr.response).message;
+                    success.innerHTML =`<div><span >${rez}</span></div>`
+                    console.log("1: " + xhr.status);
+                } else if (xhr.status === 400) {
+                    let rez = JSON.parse(xhr.response).message;
+                    error.innerHTML = `<div><span>${rez}</span></div>`
+                    console.log("2: " + xhr.status);
+                } else {
+                    error.innerHTML = `<div><span>Упс, произошла ошибка</span></div>`
+                    console.log("3: Статус ошибки" + xhr.status);
+                }
+            }
+        }
     }
     function deleteButtonClick() {
         let resourceId = document.getElementById('resourceId').innerText;
@@ -57,8 +84,8 @@
 <div class = "inner" >
     <h2 th:text="${title}"></h2>
     <div>
-        <input type="button" id="updateButton"  value="Обновить">
-        <input type="button" id="deleteButton"  value="Удалить">
+        <a type="button" id="updateButton" th:href="${href}" >Обновить</a>
+        <a type="button" id="deleteButton"  onclick="deleteButtonClick()">Удалить</a>
         <div class="success" id="success" style="color: green"></div>
         <div class="error" id="error" style="color: red"></div>
     </div>
