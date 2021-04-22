@@ -181,10 +181,22 @@ public class CustomService {
                             );
                     newObj.put(attribute.getName(),replace);
                 }else{
-                    newObj.put(attribute.getName(), String.format("<a href=\"%s\">%s</a>",
+                    newObj.put(attribute.getName(), String.format("<a href=\"%s\" id=\"toDelete\">%s</a>",
                                                     UserMode.GetFile.GET_MMEDIA.replace("{id}",oldObj.get(attribute.getName()).toString()),
-                                                    attribute.getName()
-                                                    )
+                                                    attribute.getName()) +
+                                                    String.format(
+                                                    "<div style=\"border:1px solid grey\"  id=\"div_%s\">" +
+                                                            "<form id=\"form_%s\" onsubmit=\"updatePost('%s','%s'); " +
+                                                            "return false;\" method=\"post\" class=\"attribute\">" +
+                                                            "<input type=\"file\" id=\"%s\">" +
+                                                            "<input type=\"submit\" value=\"Обновить\">" +
+                                                            "</form>" +
+                                                            " </div>",
+                                                    attribute.getName(),
+                                                    attribute.getName(),
+                                                    oldObj.get("id"),
+                                                    attribute.getName(),
+                                                    attribute.getName())
                     );
                 }
             }else if(attribute.getAttributeType()==SysTypes.XMEMO.getId()){

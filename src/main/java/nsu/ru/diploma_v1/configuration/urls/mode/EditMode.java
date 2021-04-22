@@ -74,5 +74,6 @@ public class EditMode extends EntityPath {
         public static final String UPDATE_CHECK_ASSOCIATION_IMPL = PREF + ASSOCIATION_IMPL + "/{id}";
         public static final String UPDATE_CHECK_TEMPLATE =         PREF + TEMPLATE         + "/{id}";
         public static final String UPDATE_CHECK_RESOURCE =         PREF + RESOURCE         + "/{id}";
+        public static final String UPDATE_CHECK_MMEDIA   =         PREF + MMEDIA         + "/{objectId}/{attributeName}";
     }
 }
