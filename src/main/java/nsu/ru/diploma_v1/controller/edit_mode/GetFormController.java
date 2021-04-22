@@ -3,8 +3,11 @@ package nsu.ru.diploma_v1.controller.edit_mode;
 import lombok.RequiredArgsConstructor;
 import nsu.ru.diploma_v1.configuration.urls.menu.EditMenu;
 import nsu.ru.diploma_v1.configuration.urls.mode.EditMode;
+import nsu.ru.diploma_v1.database.custom.CustomService;
+import nsu.ru.diploma_v1.database.sys.SysObjectService;
 import nsu.ru.diploma_v1.database.sys.SysTemplateService;
-import nsu.ru.diploma_v1.model.entity.SysTemplate;
+import nsu.ru.diploma_v1.exception.EntityNotFoundException;
+import nsu.ru.diploma_v1.model.entity.*;
 import nsu.ru.diploma_v1.model.enums.database_types.SysTypes;
 import nsu.ru.diploma_v1.template_parse.resource_types.SysResourceType;
 import nsu.ru.diploma_v1.database.sys.SysAssociationService;
@@ -15,6 +18,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
+import java.util.Map;
 
 import static nsu.ru.diploma_v1.configuration.urls.ModePath.EDIT_MODE;
 import static nsu.ru.diploma_v1.configuration.urls.mode.EditMode.GetForm;
@@ -27,6 +31,8 @@ public class GetFormController {
     private final SysClassService sysClassService;
     private final SysAssociationService sysAssociationService;
     private final SysTemplateService sysTemplateService;
+    private final SysObjectService sysObjectService;
+    private final CustomService customService;
 
     @GetMapping(EDIT_MODE)
     public String editStart(Model model) {
@@ -152,5 +158,31 @@ public class GetFormController {
 
         return "/edit_mode/old_template_by_class";
     }
+    @GetMapping(EditMode.UpdateForm.UPDATE_OBJECT)
+    public String editOldObject(Model model,@PathVariable Integer id) {
 
+        SysObject sysObject = sysObjectService.getSysObjectById(id);
+        SysClass sysClass = sysObject.getOwnerSysClass();
+        List<SysAttribute> list;  Map<String, Object> obj; List<AttributeAndValue> attributeAndValues;
+        try{
+            list = sysClassService.getAttributesNotMMedia(sysObject.getOwnerClassId());//throws EntityNotFoundException
+            obj = customService.getObject(sysClass.getSystemName(),id);
+            attributeAndValues = customService.getObject(list,obj);
+        }catch (EntityNotFoundException e){
+            model.addAttribute("exception", e.getMessage());
+            return "/exception/exception_part";
+        }
+        for (SysAttribute sysAttribute : list) {
+            sysAttribute.setOwnerSysClass(null);
+        }
+
+        model.addAttribute("id", id);
+        model.addAttribute("attributes", attributeAndValues);
+
+        model.addAttribute("title", "Изменить Объект");
+
+        model.addAttribute("m", menu);
+
+        return "/edit_mode/old_object_by_class";
+    }
 }

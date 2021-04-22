@@ -2,8 +2,13 @@ package nsu.ru.diploma_v1.controller.edit_mode;
 
 import lombok.RequiredArgsConstructor;
 import nsu.ru.diploma_v1.configuration.urls.mode.EditMode;
+import nsu.ru.diploma_v1.database.custom.CustomService;
 import nsu.ru.diploma_v1.database.sys.*;
+import nsu.ru.diploma_v1.exception.EditException;
+import nsu.ru.diploma_v1.exception.EntityNotFoundException;
 import nsu.ru.diploma_v1.model.dto.AnswerMessage;
+import nsu.ru.diploma_v1.model.dto.NewObjectForm;
+import nsu.ru.diploma_v1.model.entity.SysObject;
 import nsu.ru.diploma_v1.model.entity.SysResource;
 import nsu.ru.diploma_v1.model.entity.SysTemplate;
 import nsu.ru.diploma_v1.template_parse.resource_types.SysResourceType;
@@ -23,6 +28,7 @@ public class UpdateController {
     private final SysResourceService sysResourceService;
     private final SysTemplateService sysTemplateService;
     private final SysObjectService sysObjectService;
+    private final CustomService customService;
 
 
     @PostMapping(EditMode.UpdateCheck.UPDATE_CHECK_RESOURCE)
@@ -55,9 +61,10 @@ public class UpdateController {
     }
 
     @PostMapping(EditMode.UpdateCheck.UPDATE_CHECK_OBJECT)
-    public AnswerMessage updateObject(@PathVariable Integer id){
+    public AnswerMessage updateObject(@RequestBody NewObjectForm newObjectForm, @PathVariable Integer id) throws EditException, EntityNotFoundException {
 
-        return new AnswerMessage("",String.valueOf(id));
+        customService.updateObject(newObjectForm.getAttributes(),id);//// throws EditException,EntityNotFoundException
+        return new AnswerMessage("Удачно!",String.valueOf(id));
     }
 
 }

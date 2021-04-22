@@ -19,10 +19,6 @@
         deleteButton.onclick = deleteButtonClick;
     }
 
-    function updateButtonClick() {
-        let objectId = document.getElementById('objectId').innerText;
-        alert("Вы нажали на кнопку update : " + objectId);
-    }
     function deleteButtonClick() {
         let objectId = document.getElementById('objectId').innerText;
 
@@ -61,8 +57,8 @@
     <h2 th:text="${title}"></h2>
     <h2 th:text="${id}" id = "objectId"></h2>
     <div>
-        <input type="button" id="updateButton"  value="Обновить">
-        <input type="button" id="deleteButton"  value="Удалить">
+        <a type="button" id="updateButton" th:href="${href}" >Обновить</a>
+        <a type="button" id="deleteButton"  onclick="deleteButtonClick()">Удалить</a>
         <div class="success" id="success" style="color: green"></div>
         <div class="error" id="error" style="color: red"></div>
         <br/>

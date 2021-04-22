@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="fragments/menu_editor :: header-css"></div>
+    <script async src="/js/old_object.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <meta charset="UTF-8">
+    <title th:text="${title}"></title>
+</head>
+<div th:replace="fragments/menu_editor :: header"></div>
+<teacherCard>
+    <div class = "inner" >
+        <h2 align="center" th:text="${title}"></h2>
+        <html xmlns:th="http://www.thymeleaf.org">
+        <div class = "inner" id = "toDelete">
+            <h2 align="center" th:text="${id}" th:id="'objectId'" style="color: #BABABA"></h2>
+
+            <form onsubmit="sendPost(); return false;" method="post">
+                <div class="attr" th:each="attribute,iterStat : ${attributes}">
+                    <div th:switch="${attribute.type.id}">
+                        <div th:case="'1'"><div th:replace="fragments/sysTypesOld/float_input :: div_input"></div></div>
+                        <div th:case="'2'"><div th:replace="fragments/sysTypesOld/integer_input :: div_input"></div></div>
+                        <div th:case="'3'"><div th:replace="fragments/sysTypesOld/smallint_input :: div_input"></div></div>
+                        <div th:case="'4'"><div th:replace="fragments/sysTypesOld/mmedia_input :: div_input"></div></div>
+                        <div th:case="'5'"><div th:replace="fragments/sysTypesOld/text_input :: div_input"></div></div>
+                        <div th:case="'6'"><div th:replace="fragments/sysTypesOld/string_input :: div_input"></div></div>
+                        <div th:case="'7'"><div th:replace="fragments/sysTypesOld/xmemo_input :: div_input"></div></div>
+                        <div th:case="'8'"><div th:replace="fragments/sysTypesOld/time_input :: div_input"></div></div>
+                    </div>
+                </div>
+                <p><input type="submit" value="Сохранить объект"></p>
+            </form>
+        </div>
+        </html>
+        <div class="error" id="error"></div>
+        <div class="success" id="success"></div>
+    </div>
+</teacherCard>
+</html>

@@ -196,8 +196,9 @@ public class CustomRepository{
 
         for (Map.Entry<String, Object> objectAttribute : list.entrySet()) {
             if(objectAttribute.getKey().equals("id")){continue;}
-            columns.append(String.format("%s = :%s ",objectAttribute.getKey(),objectAttribute.getKey()));
+            columns.append(String.format("%s = :%s, ",objectAttribute.getKey(),objectAttribute.getKey()));
         }
+        columns.delete(columns.length()-2,columns.length()-1);
 
         String sql = String.format("UPDATE %s SET %s WHERE %s ",tableName,columns,vars);
         try{

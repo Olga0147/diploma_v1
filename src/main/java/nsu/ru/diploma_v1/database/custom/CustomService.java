@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -153,16 +154,17 @@ public class CustomService {
         customRepository.updateRowInTable(param,tableName);// throws EditException
     }
 
-    public Map<String, Object> getObject(@NonNull SysClass sysClass, @NonNull int id) throws EntityNotFoundException{
-        return customRepository.getObject(sysClass.getSystemName(), id);
+    public Map<String, Object> getObject(@NonNull String systemNameClass, @NonNull int id) throws EntityNotFoundException{
+        Map<String, Object> obj =  customRepository.getObject(systemNameClass, id);
+        return obj;
     }
 
-    public Map<String, Object> getObjectMMediaAndXMemo(@NonNull SysClass sysClass, Map<String, Object> obj){
+    public Map<String, Object> getObjectMMediaAndXMemo(@NonNull SysClass sysClass, Map<String, Object> oldObj){
         List<SysAttribute> attributeList = sysClass.getAttributeList();
-
+        Map<String, Object> newObj = new HashMap<>();
         for (SysAttribute attribute : attributeList) {
             if(attribute.getAttributeType()==SysTypes.MMEDIA.getId()){
-                if(obj.get(attribute.getName()) == null){
+                if(oldObj.get(attribute.getName()) == null){
                     String replace = String.format(
                             "<div  id=\"div_%s\">" +
                                     "<form id=\"form_%s\" onsubmit=\"sendPost('%s','%s'); " +
@@ -173,24 +175,38 @@ public class CustomService {
                             " </div>",
                             attribute.getName(),
                             attribute.getName(),
-                            obj.get("id"),
+                            oldObj.get("id"),
                             attribute.getName(),
                             attribute.getName()
                             );
-                    obj.put(attribute.getName(),replace);
+                    newObj.put(attribute.getName(),replace);
                 }else{
-                    obj.put(attribute.getName(), String.format("<a href=\"%s\">%s</a>",
-                                                    UserMode.GetFile.GET_MMEDIA.replace("{id}",obj.get(attribute.getName()).toString()),
+                    newObj.put(attribute.getName(), String.format("<a href=\"%s\">%s</a>",
+                                                    UserMode.GetFile.GET_MMEDIA.replace("{id}",oldObj.get(attribute.getName()).toString()),
                                                     attribute.getName()
                                                     )
                     );
                 }
-            }else if(attribute.getAttributeType()!=SysTypes.XMEMO.getId()){
-                obj.remove(attribute.getName());
+            }else if(attribute.getAttributeType()==SysTypes.XMEMO.getId()){
+                newObj.put(attribute.getName(),oldObj.get(attribute.getName()));
             }
         }
-        obj.remove("id");
-        return obj;
+        return newObj;
+    }
+
+    public List<AttributeAndValue> getObject(List<SysAttribute> attributeList,Map<String, Object> objectMap){
+        List<AttributeAndValue> list = new LinkedList<>();
+        for (SysAttribute attribute : attributeList) {
+            String key = attribute.getName();
+            if(objectMap.containsKey(key)){
+                list.add(new AttributeAndValue(
+                        key,
+                        String.valueOf(objectMap.get(key)),
+                        SysTypes.getType(attribute.getAttributeType()),
+                        attribute.getId()) );
+            }
+        }
+        return list;
     }
 
     public Map<String, AttributeAndValue> getObjectForTemplate(Integer objectId, Integer templateId) throws EntityNotFoundException{

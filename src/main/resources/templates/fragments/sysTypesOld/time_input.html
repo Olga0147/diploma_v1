@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<div class = "div_input" th:fragment="div_input">
+    <label th:for="'attr'+${iterStat.index}" th:text="${attribute.name}" th:id="'label'+${iterStat.index}"></label>
+    <input th:id="'attr'+${iterStat.index}"
+           type="date"
+           value="2018-07-22"
+           min="1900-01-01" max="3000-12-31" th:text="${attribute.value}">
+</div>
+</html>

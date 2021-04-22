@@ -142,7 +142,7 @@ public class ViewDetailInfoController {
         try{
             sysObject = sysObjectService.getSysObjectById(id);//EntityNotFoundException
             sysClass = sysObject.getOwnerSysClass();
-            object = customService.getObject(sysClass,id);// throws EntityNotFoundException
+            object = customService.getObject(sysClass.getSystemName(),id);// throws EntityNotFoundException
         }catch (EntityNotFoundException e){
             model.addAttribute("exception", e.getMessage());
             return "/exception/exception";
@@ -170,6 +170,8 @@ public class ViewDetailInfoController {
         model.addAttribute("detailTemplatePath", getPath(DetailInfo.GET_TEMPLATE) );
         model.addAttribute("detailClassPath", getPath(DetailInfo.GET_CLASS) );
         model.addAttribute("detailObjectPath", getPath(DetailInfo.GET_OBJECT) );
+
+        model.addAttribute("href", getPath(EditMode.UpdateForm.UPDATE_OBJECT)+sysObject.getId());
 
         return "/view_mode/detail_info/detail_object";
         }
