@@ -48,7 +48,7 @@ public class ViewInfoController {
 
         model.addAttribute("m", menu);
 
-        return "/view_mode/info/classes";
+        return "view_mode/info/classes";
     }
 
     @GetMapping(Info.GET_AGGREGATION)
@@ -61,7 +61,7 @@ public class ViewInfoController {
 
         model.addAttribute("m", menu);
 
-        return "/view_mode/info/aggregations";
+        return "view_mode/info/aggregations";
     }
 
     @GetMapping(Info.GET_ASSOCIATION)
@@ -73,7 +73,7 @@ public class ViewInfoController {
         model.addAttribute("detailPath", getPath(DetailInfo.GET_ASSOCIATION));
 
         model.addAttribute("m", menu);
-        return "/view_mode/info/associations";
+        return "view_mode/info/associations";
     }
 
     @GetMapping(Info.GET_TEMPLATE)
@@ -85,7 +85,7 @@ public class ViewInfoController {
         model.addAttribute("detailPath", getPath(DetailInfo.GET_TEMPLATE));
 
         model.addAttribute("m", menu);
-        return "/view_mode/info/templates";
+        return "view_mode/info/templates";
     }
 
     @GetMapping(Info.GET_OBJECT)
@@ -97,7 +97,7 @@ public class ViewInfoController {
         model.addAttribute("detailPath", getPath(DetailInfo.GET_OBJECT));
 
         model.addAttribute("m", menu);
-        return "/view_mode/info/objects";
+        return "view_mode/info/objects";
     }
 
     @GetMapping(Info.GET_AGGREGATION_IMPL)
@@ -110,7 +110,7 @@ public class ViewInfoController {
 
         model.addAttribute("m", menu);
 
-        return "/view_mode/info/aggregationsI_impl";
+        return "view_mode/info/aggregationsI_impl";
     }
 
     @GetMapping(Info.GET_ASSOCIATION_IMPL)
@@ -123,7 +123,7 @@ public class ViewInfoController {
 
         model.addAttribute("m", menu);
 
-        return "/view_mode/info/associations_impl";
+        return "view_mode/info/associations_impl";
     }
 
     @GetMapping(Info.GET_RESOURCE)
@@ -136,7 +136,7 @@ public class ViewInfoController {
 
         model.addAttribute("m", menu);
 
-        return "/view_mode/info/resources";
+        return "view_mode/info/resources";
     }
 
     private String getPath(String str){

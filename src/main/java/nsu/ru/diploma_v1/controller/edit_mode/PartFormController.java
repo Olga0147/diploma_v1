@@ -28,7 +28,7 @@ public class PartFormController {
         model.addAttribute("attributeTypes", SysTypes.getSysTypes());
         model.addAttribute("id",Integer.parseInt(length)+1);
 
-        return "/edit_mode/new_attribute";
+        return "edit_mode/new_attribute";
     }
 
     @GetMapping(PartForm.OBJECT_FORM)
@@ -39,7 +39,7 @@ public class PartFormController {
             list = sysClassService.getAttributesNotMMedia(classId);//throws EntityNotFoundException
         }catch (EntityNotFoundException e){
             model.addAttribute("exception", e.getMessage());
-            return "/exception/exception_part";
+            return "exception/exception_part";
         }
         for (SysAttribute sysAttribute : list) {
             sysAttribute.setOwnerSysClass(null);
@@ -49,7 +49,7 @@ public class PartFormController {
 
         model.addAttribute("title", "Создать Объект");
 
-        return "/edit_mode/new_object_by_class";
+        return "edit_mode/new_object_by_class";
     }
 
     @GetMapping(PartForm.ASSOCIATION_IMPL_FORM)
@@ -60,7 +60,7 @@ public class PartFormController {
             sysAssociation = sysAssociationService.getSysAssociation(associationId);//EntityNotFoundException
         }catch (EntityNotFoundException e){
             model.addAttribute("exception", e.getMessage());
-            return "/exception/exception_part";
+            return "exception/exception_part";
         }
         int fromClassId = sysAssociation.getFromClassId();
         int toClassId  = sysAssociation.getToClassId();
@@ -71,7 +71,7 @@ public class PartFormController {
             toClass = sysClassService.getClassById(toClassId);//throws EntityNotFoundException
         }catch (EntityNotFoundException e){
             model.addAttribute("exception", e.getMessage());
-            return "/exception/exception_part";
+            return "exception/exception_part";
         }
         List<SysObject> fromObject = fromClass.getObjectList();
         List<SysObject> toObject = toClass.getObjectList();
@@ -92,7 +92,7 @@ public class PartFormController {
 
         model.addAttribute("title", "Выбрать из доступных Объектов");
 
-        return "/edit_mode/new_associationImpl_by_association";
+        return "edit_mode/new_associationImpl_by_association";
     }
 
     @GetMapping(PartForm.TEMPLATE_FORM)
@@ -102,6 +102,6 @@ public class PartFormController {
 
         model.addAttribute("title", "Создать Шаблон");
 
-        return "/edit_mode/new_template_by_class";
+        return "edit_mode/new_template_by_class";
     }
 }

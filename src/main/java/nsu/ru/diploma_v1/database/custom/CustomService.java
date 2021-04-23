@@ -226,7 +226,7 @@ public class CustomService {
         SysClass sysClass = sysObject.getOwnerSysClass();
         Map<String, Object> object = customRepository.getObject(sysClass.getSystemName(),objectId);// throws EntityNotFoundException
 
-        if(sysClass.checkTemplateExist(templateId)){
+        if(!sysClass.checkTemplateExist(templateId)){
             throw new EntityNotFoundException("Шаблон не принадлежит Классу.");
         }
 

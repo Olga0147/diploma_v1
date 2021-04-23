@@ -16,10 +16,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class PageController {
 
     private final TemplateService templateService;
-    private final ViewMenu menu;
 
     @GetMapping(UserMode.Show.GET_OBJECT)
-    public String getObjectInTemplate(Model model, @PathVariable Integer object_id, @PathVariable Integer id) {
+    public String getObjectInTemplate(@PathVariable Integer object_id, @PathVariable Integer id) {
         String html;
         try {
             html = templateService.getObjectInTemplate(object_id, id);// throws EntityNotFoundException

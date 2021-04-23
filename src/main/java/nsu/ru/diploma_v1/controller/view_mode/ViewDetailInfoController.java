@@ -42,7 +42,7 @@ public class ViewDetailInfoController {
             sysClass = sysClassService.getClassById(Integer.parseInt(id));
         }catch (EntityNotFoundException e){
             model.addAttribute("exception", e.getMessage());
-            return "/exception/exception";
+            return "exception/exception";
         }
 
         model.addAttribute("page", sysClass);
@@ -62,7 +62,7 @@ public class ViewDetailInfoController {
         model.addAttribute("detailObjectPath", getPath(DetailInfo.GET_OBJECT));
 
 
-        return "/view_mode/detail_info/detail_class";
+        return "view_mode/detail_info/detail_class";
     }
 
     @GetMapping(DetailInfo.GET_AGGREGATION)
@@ -74,7 +74,7 @@ public class ViewDetailInfoController {
             aggregation = sysAggregationService.getSysAggregation(Integer.parseInt(id));//throws EntityNotFoundException
         }catch (EntityNotFoundException e){
             model.addAttribute("exception", e.getMessage());
-            return "/exception/exception";
+            return "exception/exception";
         }
         model.addAttribute("aggregation", aggregation);
         model.addAttribute("aggregationsImpl", aggregation.getSysAggregationList());
@@ -84,8 +84,7 @@ public class ViewDetailInfoController {
         model.addAttribute("detailClassPath", getPath(DetailInfo.GET_CLASS));
         model.addAttribute("detailAggregationImplPath", getPath(DetailInfo.GET_AGGREGATION_IMPL));
 
-
-        return "/view_mode/detail_info/detail_aggregation";
+        return "view_mode/detail_info/detail_aggregation";
     }
 
     @GetMapping(DetailInfo.GET_ASSOCIATION)
@@ -97,7 +96,7 @@ public class ViewDetailInfoController {
             association = sysAssociationService.getSysAssociation(Integer.parseInt(id));//throws EntityNotFoundException
         }catch (EntityNotFoundException e){
             model.addAttribute("exception", e.getMessage());
-            return "/exception/exception";
+            return "exception/exception";
         }
 
         model.addAttribute("association", association);
@@ -109,7 +108,7 @@ public class ViewDetailInfoController {
         model.addAttribute("detailAssociationImplPath", getPath(DetailInfo.GET_ASSOCIATION_IMPL));
 
 
-        return "/view_mode/detail_info/detail_association";
+        return "view_mode/detail_info/detail_association";
     }
 
     @GetMapping(DetailInfo.GET_TEMPLATE)
@@ -122,7 +121,7 @@ public class ViewDetailInfoController {
             template = sysTemplateService.getSysTemplate(id);
         }catch (EntityNotFoundException e){
             model.addAttribute("exception", e.getMessage());
-            return "/exception/exception";
+            return "exception/exception";
         }
         model.addAttribute("template", template);
 
@@ -130,7 +129,7 @@ public class ViewDetailInfoController {
         model.addAttribute("detailClassPath", getPath(DetailInfo.GET_CLASS));
         model.addAttribute("href", getPath(EditMode.UpdateForm.UPDATE_TEMPLATE)+template.getId());
 
-        return "/view_mode/detail_info/detail_template";
+        return "view_mode/detail_info/detail_template";
     }
 
     @GetMapping(DetailInfo.GET_OBJECT)
@@ -145,7 +144,7 @@ public class ViewDetailInfoController {
             object = customService.getObject(sysClass.getSystemName(),id);// throws EntityNotFoundException
         }catch (EntityNotFoundException e){
             model.addAttribute("exception", e.getMessage());
-            return "/exception/exception";
+            return "exception/exception";
         }
         Map<String, Object> objectMMediaAndXMemo = customService.getObjectMMediaAndXMemo(sysClass,object);
 
@@ -173,7 +172,7 @@ public class ViewDetailInfoController {
 
         model.addAttribute("href", getPath(EditMode.UpdateForm.UPDATE_OBJECT)+sysObject.getId());
 
-        return "/view_mode/detail_info/detail_object";
+        return "view_mode/detail_info/detail_object";
         }
 
     @GetMapping(DetailInfo.GET_AGGREGATION_IMPL)
@@ -185,7 +184,7 @@ public class ViewDetailInfoController {
             aggregationImpl = sysAggregationService.getSysAggregationImpl(id);//throws EntityNotFoundException
         }catch (EntityNotFoundException e){
             model.addAttribute("exception", e.getMessage());
-            return "/exception/exception";
+            return "exception/exception";
         }
         model.addAttribute("aggregationImpl", aggregationImpl);
 
@@ -194,7 +193,7 @@ public class ViewDetailInfoController {
         model.addAttribute("detailAggregationPath", getPath(DetailInfo.GET_AGGREGATION));
 
 
-        return "/view_mode/detail_info/detail_aggregation_impl";
+        return "view_mode/detail_info/detail_aggregation_impl";
     }
 
     @GetMapping(DetailInfo.GET_ASSOCIATION_IMPL)
@@ -206,7 +205,7 @@ public class ViewDetailInfoController {
             associationImpl = sysAssociationService.getSysAssociationImpl(id);//EntityNotFoundException
         }catch (EntityNotFoundException e){
             model.addAttribute("exception", e.getMessage());
-            return "/exception/exception";
+            return "exception/exception";
         }
         model.addAttribute("associationImpl", associationImpl);
 
@@ -215,7 +214,7 @@ public class ViewDetailInfoController {
         model.addAttribute("detailAssociationPath", getPath(DetailInfo.GET_ASSOCIATION));
 
 
-        return "/view_mode/detail_info/detail_association_impl";
+        return "view_mode/detail_info/detail_association_impl";
     }
 
     @GetMapping(DetailInfo.GET_RESOURCE)
@@ -228,7 +227,7 @@ public class ViewDetailInfoController {
         resource = sysResourceService.getSysResourcesByResourceId(id);//throws EntityNotFoundException
         }catch (EntityNotFoundException e){
             model.addAttribute("exception", e.getMessage());
-            return "/exception/exception";
+            return "exception/exception";
         }
         model.addAttribute("resource", resource);
 
@@ -238,7 +237,7 @@ public class ViewDetailInfoController {
         model.addAttribute("href", getPath(EditMode.UpdateForm.UPDATE_RESOURCE)+resource.getId());
 
 
-        return "/view_mode/detail_info/detail_resource";
+        return "view_mode/detail_info/detail_resource";
     }
 
     private String getPath(String str){

@@ -53,7 +53,7 @@ public class GetFormController {
 
         model.addAttribute("m", menu);
 
-        return "/edit_mode/new_class";
+        return "edit_mode/new_class";
     }
 
     @GetMapping(GetForm.GET_OBJECT)
@@ -65,7 +65,7 @@ public class GetFormController {
 
         model.addAttribute("m", menu);
 
-        return "/edit_mode/new_object";
+        return "edit_mode/new_object";
     }
 
     @GetMapping(GetForm.GET_AGGREGATION)
@@ -77,7 +77,7 @@ public class GetFormController {
 
         model.addAttribute("m", menu);
 
-        return "/edit_mode/new_aggregation";
+        return "edit_mode/new_aggregation";
     }
 
     @GetMapping(GetForm.GET_ASSOCIATION)
@@ -90,7 +90,7 @@ public class GetFormController {
 
         model.addAttribute("m", menu);
 
-        return "/edit_mode/new_association";
+        return "edit_mode/new_association";
     }
 
     @GetMapping(GetForm.GET_ASSOCIATION_IMPL)
@@ -102,7 +102,7 @@ public class GetFormController {
 
         model.addAttribute("m", menu);
 
-        return "/edit_mode/new_associationImpl";
+        return "edit_mode/new_associationImpl";
     }
 
     @GetMapping(GetForm.GET_TEMPLATE)
@@ -114,7 +114,7 @@ public class GetFormController {
 
         model.addAttribute("m", menu);
 
-        return "/edit_mode/new_template";
+        return "edit_mode/new_template";
     }
 
     @GetMapping(GetForm.GET_RESOURCE)
@@ -126,7 +126,7 @@ public class GetFormController {
 
         model.addAttribute("m", menu);
 
-        return "/edit_mode/new_resource";
+        return "edit_mode/new_resource";
     }
 
     @GetMapping(EditMode.UpdateForm.UPDATE_RESOURCE)
@@ -138,7 +138,7 @@ public class GetFormController {
 
         model.addAttribute("m", menu);
 
-        return "/edit_mode/old_resource";
+        return "edit_mode/old_resource";
     }
 
     @GetMapping(EditMode.UpdateForm.UPDATE_TEMPLATE)
@@ -156,7 +156,7 @@ public class GetFormController {
 
         model.addAttribute("m", menu);
 
-        return "/edit_mode/old_template_by_class";
+        return "edit_mode/old_template_by_class";
     }
     @GetMapping(EditMode.UpdateForm.UPDATE_OBJECT)
     public String editOldObject(Model model,@PathVariable Integer id) {
@@ -170,7 +170,7 @@ public class GetFormController {
             attributeAndValues = customService.getObject(list,obj);
         }catch (EntityNotFoundException e){
             model.addAttribute("exception", e.getMessage());
-            return "/exception/exception_part";
+            return "exception/exception_part";
         }
         for (SysAttribute sysAttribute : list) {
             sysAttribute.setOwnerSysClass(null);
@@ -183,6 +183,6 @@ public class GetFormController {
 
         model.addAttribute("m", menu);
 
-        return "/edit_mode/old_object_by_class";
+        return "edit_mode/old_object_by_class";
     }
 }
